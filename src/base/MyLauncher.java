@@ -1,5 +1,6 @@
 package base;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -12,8 +13,15 @@ import java.io.IOException;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 @SuppressWarnings("serial")
 public class MyLauncher extends JFrame {
@@ -46,45 +54,126 @@ public class MyLauncher extends JFrame {
 		setTitle("청계 농장");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resource/logo32x32.png").getPath());
+		setIconImage(imageIcon.getImage());
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(new Color(233, 233, 233));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("로고 라벨");
-		lblNewLabel.setFont(font);
-		lblNewLabel.setBounds(12, 10, 52, 15);
-		contentPane.add(lblNewLabel);
+		JLabel lblLogo = new JLabel("로고 라벨");
+		lblLogo.setFont(font);
+		lblLogo.setBounds(12, 10, 52, 15);
+		contentPane.add(lblLogo);
 		
-		JLabel lblNewLabel_1 = new JLabel("해상도");
-		lblNewLabel_1.setFont(font);
-		lblNewLabel_1.setBounds(284, 196, 36, 15);
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		contentPane.add(lblNewLabel_1);
+		JLabel lblResolution = new JLabel("해상도");
+		lblResolution.setFont(font);
+		lblResolution.setBounds(284, 196, 36, 15);
+		lblResolution.setHorizontalAlignment(SwingConstants.CENTER);
+		contentPane.add(lblResolution);
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setFont(font);
 		comboBox.setBounds(332, 191, 90, 25);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"960x540", "1280x720", "1600x900", "1920x1080", "2560x1440"}));
 		comboBox.setSelectedIndex(1);
-		comboBox.setToolTipText("");
+		comboBox.setBackground(Color.white);
 		contentPane.add(comboBox);
 		
-		JButton btnNewButton_2 = new JButton("설명");
-		btnNewButton_2.setFont(font);
-		btnNewButton_2.setBounds(170, 226, 75,25);
-		contentPane.add(btnNewButton_2);
+		JButton btnDescription = new JButton("설명");
+		btnDescription.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	btnDescription.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	btnDescription.setBackground(Color.white);
+            }
+        });
+		btnDescription.setFont(font);
+		btnDescription.setBounds(220, 226, 65, 25);
+		btnDescription.setBackground(Color.white);
+		contentPane.add(btnDescription);
 		
-		JButton btnNewButton = new JButton("시작");
-		btnNewButton.setFont(font);
-		btnNewButton.setBounds(260, 226, 75, 25);
-		contentPane.add(btnNewButton);
+		JButton btnStart = new JButton("시작");
+		btnStart.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	btnStart.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	btnStart.setBackground(Color.white);
+            }
+        });
+		btnStart.setFont(font);
+		btnStart.setBounds(290, 226, 65, 25);
+		btnStart.setBackground(Color.white);
+		contentPane.add(btnStart);
 		
-		JButton btnNewButton_1 = new JButton("종료");
-		btnNewButton_1.setFont(font);
-		btnNewButton_1.setBounds(347, 226, 75, 25);
-		contentPane.add(btnNewButton_1);
+		JButton btnExit = new JButton("종료");
+		btnExit.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	btnExit.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	btnExit.setBackground(Color.white);
+            }
+        });
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//종료 버튼 눌렀을 때 하는 일
+				dispose();
+			}
+		});
+		btnExit.setFont(font);
+		btnExit.setBounds(360, 226, 65, 25);
+		btnExit.setBackground(Color.white);
+		contentPane.add(btnExit);
 	}
 	
 	private Font createFont() {
@@ -98,14 +187,3 @@ public class MyLauncher extends JFrame {
 	    }
 	}
 }
-	
-	/*private ActionListener actionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			Object btnNewButton_2;
-			if(e.getSource() == btnNewButton_2 ) {
-				JOptionPane.showMessageDialog(
-						.this,"TEST");
-			}
-		}
-	};
-}*/
