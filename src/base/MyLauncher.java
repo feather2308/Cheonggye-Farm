@@ -5,26 +5,17 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
 import javax.swing.JComboBox;
-import java.awt.GridBagConstraints;
 import javax.swing.JButton;
-import java.awt.Insets;
 import java.io.IOException;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+@SuppressWarnings("serial")
 public class MyLauncher extends JFrame {
 
 	private JPanel contentPane;

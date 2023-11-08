@@ -77,7 +77,7 @@ public class FarmCanvas extends Canvas implements Runnable, MouseListener {
 			break;
 		}
 		
-		g.
+//		g.
 //		//네모 박스 스폰지밥
 //		g.setColor(Color.cyan);
 //		g.fillRect(0, 0, 100, 100);
