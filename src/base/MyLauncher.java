@@ -14,6 +14,7 @@ import java.awt.Insets;
 import java.io.IOException;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.imageio.ImageIO;
@@ -21,6 +22,8 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MyLauncher extends JFrame {
 
@@ -77,6 +80,11 @@ public class MyLauncher extends JFrame {
 		comboBox.setToolTipText("");
 		contentPane.add(comboBox);
 		
+		JButton btnNewButton_2 = new JButton("설명");
+		btnNewButton_2.setFont(font);
+		btnNewButton_2.setBounds(170, 226, 75,25);
+		contentPane.add(btnNewButton_2);
+		
 		JButton btnNewButton = new JButton("시작");
 		btnNewButton.setFont(font);
 		btnNewButton.setBounds(260, 226, 75, 25);
@@ -98,5 +106,15 @@ public class MyLauncher extends JFrame {
 	        return new Font("굴림", Font.PLAIN, 12);
 	    }
 	}
-
 }
+	
+	/*private ActionListener actionListener = new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			Object btnNewButton_2;
+			if(e.getSource() == btnNewButton_2 ) {
+				JOptionPane.showMessageDialog(
+						.this,"TEST");
+			}
+		}
+	};
+}*/
