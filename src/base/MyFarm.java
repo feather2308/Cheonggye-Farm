@@ -34,10 +34,10 @@ public class MyFarm extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(bound[0], bound[1], 16*bound[2], 9*bound[2]);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
+		FarmCanvas farmCanvas = new FarmCanvas();
+		add(farmCanvas);
+		farmCanvas.start();
 	}
 
 }
