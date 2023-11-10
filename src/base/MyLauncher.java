@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import java.io.IOException;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -86,8 +87,8 @@ public class MyLauncher extends JFrame {
 		btnDescription.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
+            	JOptionPane.showMessageDialog(contentPane, "Test","농장게임 설명",JOptionPane.INFORMATION_MESSAGE);
             }
-
             @Override
             public void mousePressed(MouseEvent e) {
             }
