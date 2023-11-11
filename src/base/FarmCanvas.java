@@ -49,7 +49,6 @@ public class FarmCanvas extends Canvas implements Runnable, MouseListener {
 	public void paint(Graphics g) {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		
 
 		g.setColor(Color.BLACK);
 		switch(mouseClickEffect) {
@@ -78,11 +77,6 @@ public class FarmCanvas extends Canvas implements Runnable, MouseListener {
 					   mouseClickEffectSize[3]);
 			break;
 		}
-		
-//		g.
-//		//네모 박스 스폰지밥
-//		g.setColor(Color.cyan);
-//		g.fillRect(0, 0, 100, 100);
 	}
 
 	@Override
@@ -94,7 +88,7 @@ public class FarmCanvas extends Canvas implements Runnable, MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
