@@ -15,8 +15,10 @@ public class FarmCanvas extends Canvas implements Runnable, MouseListener {
 	protected final int[] mouseClickEffectSize = {2, 4, 6, 8};
 	
 	protected int mouseClickEffect = -1;
+	protected int resolution;
 	
-	public FarmCanvas() {
+	public FarmCanvas(int resolution) {
+		this.resolution = resolution;
 		addMouseListener(this);
 	}
 
@@ -86,10 +88,7 @@ public class FarmCanvas extends Canvas implements Runnable, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		mouseClickEffect = 0;
-		mouseClick.x = e.getPoint().x;
-		mouseClick.y = e.getPoint().y;
-		repaint();
+		
 	}
 
 	@Override
@@ -101,7 +100,10 @@ public class FarmCanvas extends Canvas implements Runnable, MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		mouseClickEffect = 0;
+		mouseClick.x = e.getPoint().x;
+		mouseClick.y = e.getPoint().y;
+		repaint();
 	}
 
 	@Override

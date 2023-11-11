@@ -18,7 +18,6 @@ import javax.swing.ImageIcon;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -28,10 +27,11 @@ import java.awt.event.MouseListener;
 public class MyLauncher extends JFrame {
 
 	private JPanel contentPane;
+	@SuppressWarnings("rawtypes")
+	private JComboBox comboBox;
+	
+	private Font font = createFont();
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -45,16 +45,30 @@ public class MyLauncher extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public MyLauncher() {
-		Font font = createFont();
+		setBounds(100, 100, 450, 300);
+		addLauncher();
+	}
+	
+	private Font createFont() {
+	    try {
+	        Font customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resource/MAPLESTORY BOLD.TTF"));
+	        customFont = customFont.deriveFont(12f);
+	        return customFont;
+	    } catch (IOException | FontFormatException e) {
+	        System.err.println("폰트를 불러올 수 없습니다: " + e.getMessage());
+	        return new Font("굴림", Font.PLAIN, 12);
+	    }
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void addLauncher() {
+		this.getContentPane().removeAll();
 		
 		setResizable(false);
 		setTitle("청계 농장");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(this.getBounds().x, this.getBounds().y, 450, 300);
 		ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resource/logo32x32.png").getPath());
 		setIconImage(imageIcon.getImage());
 		contentPane = new JPanel();
@@ -75,7 +89,7 @@ public class MyLauncher extends JFrame {
 		lblResolution.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblResolution);
 		
-		JComboBox comboBox = new JComboBox();
+		comboBox = new JComboBox();
 		comboBox.setFont(font);
 		comboBox.setBounds(332, 191, 90, 25);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"960x540", "1280x720", "1600x900", "1920x1080", "2560x1440"}));
@@ -87,7 +101,6 @@ public class MyLauncher extends JFrame {
 		btnDescription.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	JOptionPane.showMessageDialog(contentPane, "Test","농장게임 설명",JOptionPane.INFORMATION_MESSAGE);
             }
             @Override
             public void mousePressed(MouseEvent e) {
@@ -95,6 +108,7 @@ public class MyLauncher extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+            	addHelp();
             }
 
             @Override
@@ -124,6 +138,7 @@ public class MyLauncher extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+            	addMyFarm();
             }
 
             @Override
@@ -153,6 +168,7 @@ public class MyLauncher extends JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
+            	dispose();
             }
 
             @Override
@@ -165,26 +181,78 @@ public class MyLauncher extends JFrame {
             	btnExit.setBackground(Color.white);
             }
         });
-		btnExit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//종료 버튼 눌렀을 때 하는 일
-				dispose();
-			}
-		});
 		btnExit.setFont(font);
 		btnExit.setBounds(360, 226, 65, 25);
 		btnExit.setBackground(Color.white);
 		contentPane.add(btnExit);
 	}
 	
-	private Font createFont() {
-	    try {
-	        Font customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resource/MAPLESTORY BOLD.TTF"));
-	        customFont = customFont.deriveFont(12f);
-	        return customFont;
-	    } catch (IOException | FontFormatException e) {
-	        System.err.println("폰트를 불러올 수 없습니다: " + e.getMessage());
-	        return new Font("굴림", Font.PLAIN, 12);
-	    }
+	private void addHelp() {
+		this.getContentPane().removeAll();
+		
+		setTitle("청계 농장 - 도움말");
+		setBounds(this.getBounds().x, this.getBounds().y, 300, 500);
+		JButton btnBack = new JButton("뒤로가기");
+		btnBack.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            	addLauncher();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            	btnBack.setBackground(Color.LIGHT_GRAY);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            	btnBack.setBackground(Color.white);
+            }
+        });
+		btnBack.setFont(font);
+		btnBack.setBounds(this.getWidth()-110, this.getHeight()-80, 80, 25);
+		btnBack.setBackground(Color.white);
+		contentPane.add(btnBack);
+	}
+	
+	private void addMyFarm() {
+		this.getContentPane().removeAll();
+		
+		int resolution;
+		switch(comboBox.getSelectedIndex()) {
+			case 0:
+				resolution = 960/16;
+				break;
+			case 1:
+				resolution = 1280/16;
+				break;
+			case 2:
+				resolution = 1600/16;
+				break;
+			case 3:
+				resolution = 1920/16;
+				break;
+			case 4:
+				resolution = 2560/16;
+				break;
+			default:
+				resolution = 1280/16;
+				break;
+		}
+		setBounds(this.getBounds().x, this.getBounds().y, 16*resolution, 9*resolution);
+
+		FarmCanvas farmCanvas = new FarmCanvas(resolution);
+		farmCanvas.setSize(this.getWidth(), this.getHeight());
+		add(farmCanvas);
+		farmCanvas.start();
+    	contentPane.add(farmCanvas);
 	}
 }
