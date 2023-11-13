@@ -16,7 +16,8 @@ import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class FarmCanvas extends JPanel implements Runnable, MouseListener {
-	protected final String logo = "/resource/mainLobby/logo.png";
+	protected final String logo 	  = "/resource/mainLobby/logo.png",
+						   background = "/resource/mainLobby/background.png";
 	
 	protected Thread worker;
 	protected Point mouseClick = new Point();
@@ -105,6 +106,16 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 		
 		Image image;
+		//배경
+		try {
+			image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(background)));
+		} catch (IOException e) {
+			image = null;
+			e.printStackTrace();
+		}
+		bufferGraphics.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		
+		//로고
 		try {
 			image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(logo)));
 		} catch (IOException e) {
