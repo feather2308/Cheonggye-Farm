@@ -11,20 +11,19 @@ import javax.swing.JButton;
 import java.io.IOException;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 @SuppressWarnings("serial")
 public class MyLauncher extends JFrame {
+	protected final String mapleFont = "/resource/MAPLESTORY BOLD.TTF",
+						   icon 	 = "/resource/icon32x32.png";
 
 	private JPanel contentPane;
 	@SuppressWarnings("rawtypes")
@@ -52,7 +51,7 @@ public class MyLauncher extends JFrame {
 	
 	private Font createFont() {
 	    try {
-	        Font customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/resource/MAPLESTORY BOLD.TTF"));
+	        Font customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream(mapleFont));
 	        customFont = customFont.deriveFont(12f);
 	        return customFont;
 	    } catch (IOException | FontFormatException e) {
@@ -69,7 +68,7 @@ public class MyLauncher extends JFrame {
 		setTitle("청계 농장");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(this.getBounds().x, this.getBounds().y, 450, 300);
-		ImageIcon imageIcon = new ImageIcon(getClass().getResource("/resource/logo32x32.png").getPath());
+		ImageIcon imageIcon = new ImageIcon(getClass().getResource(icon).getPath());
 		setIconImage(imageIcon.getImage());
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

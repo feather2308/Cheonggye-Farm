@@ -6,12 +6,18 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedInputStream;
+import java.io.IOException;
 
 import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class FarmCanvas extends JPanel implements Runnable, MouseListener {
+	protected final String logo = "/resource/mainLobby/logo.png";
+	
 	protected Thread worker;
 	protected Point mouseClick = new Point();
 	
@@ -32,6 +38,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	//paint component
 	protected boolean pa_mainLobbyComponent = true;
+	protected boolean pa_inGameComponent = false;
 	
 	public FarmCanvas(int resolution) {
 		this.resolution = resolution;
@@ -82,32 +89,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		//마우스 클릭 이펙트
 		bufferGraphics.setColor(Color.BLACK);
-		switch(mouseClickEffect) {
-		case 0:
-			bufferGraphics.drawOval(mouseClick.x - mouseClickEffectSize[0]/2,
-					   				mouseClick.y - mouseClickEffectSize[0]/2,
-					   				mouseClickEffectSize[0],
-					   				mouseClickEffectSize[0]);
-			break;
-		case 1:
-			bufferGraphics.drawOval(mouseClick.x - mouseClickEffectSize[1]/2,
-					   				mouseClick.y - mouseClickEffectSize[1]/2,
-					   				mouseClickEffectSize[1],
-					   				mouseClickEffectSize[1]);
-			break;
-		case 2:
-			bufferGraphics.drawOval(mouseClick.x - mouseClickEffectSize[2]/2,
-					   				mouseClick.y - mouseClickEffectSize[2]/2,
-					   				mouseClickEffectSize[2],
-					   				mouseClickEffectSize[2]);
-			break;
-		case 3:
-			bufferGraphics.drawOval(mouseClick.x - mouseClickEffectSize[3]/2,
-					   				mouseClick.y - mouseClickEffectSize[3]/2,
-					   				mouseClickEffectSize[3],
-					   				mouseClickEffectSize[3]);
-			break;
-		}
+		if(mouseClickEffect < mouseClickEffectSize.length && mouseClickEffect >= 0)
+			bufferGraphics.drawOval(mouseClick.x - mouseClickEffectSize[mouseClickEffect]/2,
+   									mouseClick.y - mouseClickEffectSize[mouseClickEffect]/2,
+   									mouseClickEffectSize[mouseClickEffect],
+   									mouseClickEffectSize[mouseClickEffect]);
 		
 	    g.drawImage(offscreen, 0, 0, null);
 	}
@@ -117,10 +103,34 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			paintMainLobby_Component();
 			pa_mainLobbyComponent = false;
 		}
+		
+		Image image;
+		try {
+			image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(logo)));
+		} catch (IOException e) {
+			image = null;
+			e.printStackTrace();
+		}
+		bufferGraphics.drawImage(image,
+								 getWidth() / 2 - 500 * resolution / 80 / 2 - 1,
+								 50 * resolution / 80,
+								 500 * resolution / 80,
+								 260 * resolution / 80,
+								 null);
+		
+		//중앙점
+		bufferGraphics.setColor(Color.black);
+		bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
 	}
 	
 	private void paintMainLobby_Component() {
-		JButton btnStart = new JButton("시작");
+		this.removeAll();
+		this.setLayout(null);
+		
+		Point btnSize = new Point();
+		btnSize.x = 200; btnSize.y = 50;
+		
+		JButton btnStart = new JButton("게임 시작");
 		btnStart.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -134,6 +144,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseReleased(MouseEvent e) {
 				pa_mainLobby = false;
 				pa_inGame = true;
+				pa_inGameComponent = true;
 				mouseClickEffect = 0;
 				mouseClick.x = btnStart.getBounds().x + e.getPoint().x;
 				mouseClick.y = btnStart.getBounds().y + e.getPoint().y;
@@ -149,13 +160,133 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 		});
 //		btnStart.setFont(font);
-		btnStart.setBounds(290, 226, 65, 25);
+		btnStart.setBounds(getWidth() / 2 - btnSize.x * resolution / 80 / 2 - 1,
+						   getHeight() / 2 + btnSize.y,
+						   btnSize.x * resolution / 80,
+						   btnSize.y * resolution / 80);
+		btnStart.setBorder(new RoundedBorder(5));
 		btnStart.setBackground(Color.white);
 		add(btnStart);
+		
+		JButton btnDesc = new JButton("농장 설명");
+		btnDesc.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+
+			public void mousePressed(MouseEvent e) {
+				
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				mouseClickEffect = 0;
+				mouseClick.x = btnDesc.getBounds().x + e.getPoint().x;
+				mouseClick.y = btnDesc.getBounds().y + e.getPoint().y;
+				repaint();
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnDesc.setBackground(Color.LIGHT_GRAY);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnDesc.setBackground(Color.white);
+			}
+		});
+//		btnDesc.setFont(font);
+		btnDesc.setBounds(getWidth() / 2 - btnSize.x * resolution / 80 / 2 - 1,
+						  getHeight() / 2 + btnSize.y + 75 * resolution / 80,
+						  btnSize.x * resolution / 80,
+						  btnSize.y * resolution / 80);
+		btnDesc.setBorder(new RoundedBorder(5));
+		btnDesc.setBackground(Color.white);
+		add(btnDesc);
+		
+		JButton btnSett = new JButton("설정");
+		btnSett.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+
+			public void mousePressed(MouseEvent e) {
+				
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				mouseClickEffect = 0;
+				mouseClick.x = btnSett.getBounds().x + e.getPoint().x;
+				mouseClick.y = btnSett.getBounds().y + e.getPoint().y;
+				repaint();
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnSett.setBackground(Color.LIGHT_GRAY);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnSett.setBackground(Color.white);
+			}
+		});
+//		btnSett.setFont(font);
+		btnSett.setBounds(getWidth() / 2 - btnSize.x * resolution / 80 / 2 - 1,
+						  getHeight() / 2 + btnSize.y + 150 * resolution / 80,
+						  btnSize.x * resolution / 80,
+						  btnSize.y * resolution / 80);
+		btnSett.setBorder(new RoundedBorder(5));
+		btnSett.setBackground(Color.white);
+		add(btnSett);
 	}
 	
 	private void paintInGame() {
+		if(pa_inGameComponent) {
+			paintInGame_Component();
+			pa_inGameComponent = false;
+		}
 		
+		//중앙점
+		bufferGraphics.setColor(Color.black);
+		bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
+	}
+	
+	private void paintInGame_Component() {
+		this.removeAll();
+		this.setLayout(null);
+		
+		CircleButton btnHelp = new CircleButton("?");
+		btnHelp.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+
+			public void mousePressed(MouseEvent e) {
+				
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				mouseClickEffect = 0;
+				mouseClick.x = btnHelp.getBounds().x + e.getPoint().x;
+				mouseClick.y = btnHelp.getBounds().y + e.getPoint().y;
+				repaint();
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				btnHelp.setBackground(Color.LIGHT_GRAY);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				btnHelp.setBackground(Color.white);
+			}
+		});
+//		btnStart.setFont(font);
+		btnHelp.setBounds(getWidth() - (25 + 50) * resolution / 80 - 1,
+						  10 * resolution / 80,
+						  50 * resolution / 80,
+						  50 * resolution / 80);
+		btnHelp.setBackground(Color.white);
+		add(btnHelp);
 	}
 	
 	@Override
@@ -190,5 +321,4 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		// TODO Auto-generated method stub
 		
 	}
-
 }
