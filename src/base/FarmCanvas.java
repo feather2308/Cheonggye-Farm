@@ -16,8 +16,22 @@ import javax.swing.JButton;
 
 @SuppressWarnings("serial")
 public class FarmCanvas extends JPanel implements Runnable, MouseListener {
-	protected final String logo 	  = "/resource/mainLobby/logo.png",
-						   background = "/resource/mainLobby/background.png";
+	
+	//그림 관련 변수
+	protected final String   mainLobby_logo 	    = "/resource/mainLobby/logo.png",
+						     mainLobby_background   = "/resource/mainLobby/background.png",
+						   	 mainLobby_chicken 	    = "/resource/mainLobby/chicken.png",
+						     mainLobby_buttonNormal = "/resource/mainLobby/button_normal.png",
+						     mainLobby_singsing		= "/resource/mainLobby/singsing.png";
+	protected final String[] mainLobby_cloud1 		= {"/resource/mainLobby/cloud1_0.png",
+													   "/resource/mainLobby/cloud1_1.png",
+													   "/resource/mainLobby/cloud1_2.png"},
+							 mainLobby_cloud2		= {"/resource/mainLobby/cloud2_0.png",
+									 				   "/resource/mainLobby/cloud2_1.png",
+									 				   "/resource/mainLobby/cloud2_2.png"};
+	//그림 상태
+	protected int mainLobby_cloud1_stat = 0,
+			      mainLobby_cloud2_stat = 0;
 	
 	protected Thread worker;
 	protected Point mouseClick = new Point();
@@ -61,6 +75,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				if(mouseClickEffect < 4 && mouseClickEffect != -1) {
 					mouseClickEffect++;
 				}
+				if(pa_mainLobby) {
+					if(mainLobby_cloud1_stat < 14) mainLobby_cloud1_stat++;
+					else mainLobby_cloud1_stat = 0;
+					if(mainLobby_cloud2_stat < 14) mainLobby_cloud2_stat++;
+					else mainLobby_cloud2_stat = 0;
+				}
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -79,7 +99,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		
 		if(pa_mainLobby) {
-			paintMainLobby();
+			try {
+				paintMainLobby();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		if(pa_inGame) {
@@ -99,39 +124,114 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	    g.drawImage(offscreen, 0, 0, null);
 	}
 
-	private void paintMainLobby() {
+	private void paintMainLobby() throws IOException {
 		if(pa_mainLobbyComponent) {
 			paintMainLobby_Component();
 			pa_mainLobbyComponent = false;
 		}
 		
-		Image image;
 		//배경
-		try {
-			image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(background)));
-		} catch (IOException e) {
-			image = null;
-			e.printStackTrace();
-		}
+		Image image = null;
+		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_background)));
 		bufferGraphics.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		
 		//로고
-		try {
-			image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(logo)));
-		} catch (IOException e) {
-			image = null;
-			e.printStackTrace();
-		}
+		image = null;
+		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo)));
 		bufferGraphics.drawImage(image,
 								 getWidth() / 2 - 500 * resolution / 80 / 2 - 1,
-								 50 * resolution / 80,
+								 0,
 								 500 * resolution / 80,
 								 260 * resolution / 80,
 								 null);
 		
-		//중앙점
-		bufferGraphics.setColor(Color.black);
-		bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
+		//치킨
+		image = null;
+		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_chicken)));
+		bufferGraphics.drawImage(image,
+								 20 * resolution / 80 - 1,
+								 getHeight() - 275 * resolution / 80,
+								 270 * resolution / 80,
+								 240 * resolution / 80,
+								 null);
+		
+		//싱싱채소
+		image = null;
+		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_singsing)));
+		bufferGraphics.drawImage(image,
+								 getWidth() - 280 * resolution / 80 - 1,
+								 getHeight() - 250 * resolution / 80,
+								 250 * resolution / 80,
+								 200 * resolution / 80,
+								 null);
+		
+		//구름1
+		image = null;
+		switch(mainLobby_cloud1_stat) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[0])));
+				break;
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[1])));
+				break;
+			case 10:
+			case 11:
+			case 12:
+			case 13:
+			case 14:
+				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[2])));
+				break;
+		}
+		bufferGraphics.drawImage(image,
+								 50 * resolution / 80 - 1,
+								 50 * resolution / 80,
+								 240 * resolution / 80,
+								 180 * resolution / 80,
+								 null);
+		
+		//구름2
+		image = null;
+		switch(mainLobby_cloud1_stat) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[0])));
+				break;
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[1])));
+				break;
+			case 10:
+			case 11:
+			case 12:
+			case 13:
+			case 14:
+				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[2])));
+				break;
+		}
+		bufferGraphics.drawImage(image,
+								 getWidth() - 300 * resolution / 80 - 1,
+								 65 * resolution / 80,
+								 250 * resolution / 80,
+								 190 * resolution / 80,
+								 null);
+		
+//		//중앙점
+//		bufferGraphics.setColor(Color.black);
+//		bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
 	}
 	
 	private void paintMainLobby_Component() {
