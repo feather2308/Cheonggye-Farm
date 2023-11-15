@@ -15,10 +15,12 @@ import javax.swing.border.Border;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
+	//mainLobby
 	//그림 관련 변수
 	protected final String   //mainLobby_logo 	    = "/resource/mainLobby/logo.png",
 						     mainLobby_background   = "/resource/mainLobby/background.png",
@@ -49,6 +51,16 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			      mainLobby_cloud2_stat = 0,
 			      mainLobby_cloud2_index = 0;
 	
+	//inGame
+	protected final String inGame_starcoin = 	"/resource/inGame/starcoin.png",
+						   inGame_sprout = 		"/resource/inGame/sprout.png",
+						   inGame_wateringcan = "/resource/inGame/wateringcan.png",
+						   inGame_apple =		"/resource/inGame/apple.png",
+						   inGame_fertilizer =	"/resource/inGame/fertilizer.png",
+						   inGame_shovel =		"/resource/inGame/shovel.png",
+						   inGame_background =	"/resource/inGame/background.png";
+	protected Image inGameImage_background;
+	
 	protected Thread worker;
 	protected Point mouseClick = new Point();
 	
@@ -73,6 +85,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	//loading image
 	protected boolean la_mainLobby = true;
+	protected boolean la_inGame = false;
 	
 	public FarmCanvas(int resolution) {
 		this.resolution = resolution;
@@ -127,7 +140,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 		
 		if(pa_inGame) {
-			paintInGame();
+			try {
+				paintInGame();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		paintComponents(bufferGraphics);
@@ -182,7 +200,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								 null);
 		
 		//구름1
-
 		switch(mainLobby_cloud1_stat) {
 			case 0:
 			case 1:
@@ -287,6 +304,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				pa_mainLobby = false;
 				pa_inGame = true;
 				pa_inGameComponent = true;
+				la_inGame = true;
 				mouseClickEffect = 0;
 				mouseClick.x = btnStart.getBounds().x + e.getPoint().x;
 				mouseClick.y = btnStart.getBounds().y + e.getPoint().y;
@@ -381,54 +399,151 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(btnSett);
 	}
 	
-	private void paintInGame() {
+	private void paintInGame() throws IOException {
 		if(pa_inGameComponent) {
 			paintInGame_Component();
 			pa_inGameComponent = false;
 		}
+		if(la_inGame) {
+			inGameLoading();
+			la_inGame = false;
+		}
+		bufferGraphics.drawImage(inGameImage_background, 0, 0, getWidth(), getHeight(), null);
 		
 		//중앙점
 		bufferGraphics.setColor(Color.black);
 		bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
 	}
 	
-	private void paintInGame_Component() {
+	private void paintInGame_Component() throws IOException {
 		this.removeAll();
 		this.setLayout(null);
 		
-		CircleButton btnHelp = new CircleButton("?");
-		btnHelp.addMouseListener(new MouseListener() {
+//		CircleButton btnHelp = new CircleButton("?");
+//		btnHelp.addMouseListener(new MouseListener() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				
+//			}
+//
+//			public void mousePressed(MouseEvent e) {
+//				
+//			}
+//
+//			public void mouseReleased(MouseEvent e) {
+//				mouseClickEffect = 0;
+//				mouseClick.x = btnHelp.getBounds().x + e.getPoint().x;
+//				mouseClick.y = btnHelp.getBounds().y + e.getPoint().y;
+//				repaint();
+//			}
+//
+//			public void mouseEntered(MouseEvent e) {
+//				btnHelp.setBackground(Color.LIGHT_GRAY);
+//			}
+//
+//			public void mouseExited(MouseEvent e) {
+//				btnHelp.setBackground(Color.white);
+//			}
+//		});
+////		btnStart.setFont(font);
+//		btnHelp.setBounds(getWidth() - (25 + 50) * resolution / 80 - 1,
+//						  10 * resolution / 80,
+//						  50 * resolution / 80,
+//						  50 * resolution / 80);
+//		btnHelp.setBackground(Color.white);
+//		add(btnHelp);
+		
+		Image inGameImage_starcoin = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_starcoin)));
+		Image inGameReImage_starcoin = inGameImage_starcoin.getScaledInstance(250 * resolution / 80, 115 * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbStarCoin = new JLabel(new ImageIcon(inGameReImage_starcoin));
+		jlbStarCoin.setBounds(getWidth() - 260 * resolution / 80 - 1,
+							  0,
+							  250 * resolution / 80,
+							  115 * resolution / 80);
+		add(jlbStarCoin);
+		
+		int labelImageSize = 220;
+		int labelImageGap = 20;
+		
+		Image inGameImage_shovel = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shovel)));
+		Image inGameReImage_shovel = inGameImage_shovel.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbShovel = new JLabel(new ImageIcon(inGameReImage_shovel));
+		jlbShovel.setBounds((labelImageGap * 1 + labelImageSize * 0) * resolution / 80 - 1,
+							getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+							labelImageSize * resolution / 80,
+							labelImageSize * resolution / 80);
+		add(jlbShovel);
+		
+		Image inGameImage_sprout = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_sprout)));
+		Image inGameReImage_sprout = inGameImage_sprout.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbSprout = new JLabel(new ImageIcon(inGameReImage_sprout));
+		jlbSprout.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
 				
 			}
 
+			@Override
 			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
 				
 			}
 
+			@Override
 			public void mouseReleased(MouseEvent e) {
-				mouseClickEffect = 0;
-				mouseClick.x = btnHelp.getBounds().x + e.getPoint().x;
-				mouseClick.y = btnHelp.getBounds().y + e.getPoint().y;
-				repaint();
+				// TODO Auto-generated method stub
+				
 			}
 
+			@Override
 			public void mouseEntered(MouseEvent e) {
-				btnHelp.setBackground(Color.LIGHT_GRAY);
+				// TODO Auto-generated method stub
+				
 			}
 
+			@Override
 			public void mouseExited(MouseEvent e) {
-				btnHelp.setBackground(Color.white);
+				// TODO Auto-generated method stub
+				
 			}
 		});
-//		btnStart.setFont(font);
-		btnHelp.setBounds(getWidth() - (25 + 50) * resolution / 80 - 1,
-						  10 * resolution / 80,
-						  50 * resolution / 80,
-						  50 * resolution / 80);
-		btnHelp.setBackground(Color.white);
-		add(btnHelp);
+		jlbSprout.setBounds((labelImageGap * 2 + labelImageSize * 1) * resolution / 80 - 1,
+							getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+							labelImageSize * resolution / 80,
+							labelImageSize * resolution / 80);
+		add(jlbSprout);
+		
+		Image inGameImage_wateringcan = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_wateringcan)));
+		Image inGameReImage_wateringcan = inGameImage_wateringcan.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbWateringCan = new JLabel(new ImageIcon(inGameReImage_wateringcan));
+		jlbWateringCan.setBounds((labelImageGap * 3 + labelImageSize * 2) * resolution / 80 - 1,
+								 getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+								 labelImageSize * resolution / 80,
+								 labelImageSize * resolution / 80);
+		add(jlbWateringCan);
+		
+		Image inGameImage_fertilizer = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizer)));
+		Image inGameReImage_fertilizer = inGameImage_fertilizer.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbFertilizer = new JLabel(new ImageIcon(inGameReImage_fertilizer));
+		jlbFertilizer.setBounds((labelImageGap * 4 + labelImageSize * 3) * resolution / 80 - 1,
+								getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+								labelImageSize * resolution / 80,
+								labelImageSize * resolution / 80);
+		add(jlbFertilizer);
+		
+		Image inGameImage_apple = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_apple)));
+		Image inGameReImage_apple = inGameImage_apple.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbApple = new JLabel(new ImageIcon(inGameReImage_apple));
+		jlbApple.setBounds((labelImageGap * 5 + labelImageSize * 4) * resolution / 80 - 1,
+						   getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+						   labelImageSize * resolution / 80,
+						   labelImageSize * resolution / 80);
+		add(jlbApple);
+	}
+	
+	private void inGameLoading() throws IOException {
+		inGameImage_background = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background)));
 	}
 	
 	@Override
