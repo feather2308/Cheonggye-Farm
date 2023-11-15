@@ -8,30 +8,58 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
+	//mainLobby
 	//그림 관련 변수
-	protected final String   mainLobby_logo 	    = "/resource/mainLobby/logo.png",
+	protected final String   //mainLobby_logo 	    = "/resource/mainLobby/logo.png",
 						     mainLobby_background   = "/resource/mainLobby/background.png",
-						   	 mainLobby_chicken 	    = "/resource/mainLobby/chicken.png",
+						     mainLobby_chicken 	    = "/resource/mainLobby/chicken.png",
 						     mainLobby_buttonNormal = "/resource/mainLobby/button_normal.png",
 						     mainLobby_singsing		= "/resource/mainLobby/singsing.png";
-	protected final String[] mainLobby_cloud1 		= {"/resource/mainLobby/cloud1_0.png",
+	protected final String[] mainLobby_logo			= {"/resource/mainLobby/logo1.png",
+													   "/resource/mainLobby/logo2.png",
+													   "/resource/mainLobby/logo3.png"},
+							 mainLobby_cloud1 		= {"/resource/mainLobby/cloud1_0.png",
 													   "/resource/mainLobby/cloud1_1.png",
 													   "/resource/mainLobby/cloud1_2.png"},
 							 mainLobby_cloud2		= {"/resource/mainLobby/cloud2_0.png",
 									 				   "/resource/mainLobby/cloud2_1.png",
 									 				   "/resource/mainLobby/cloud2_2.png"};
+	protected Image //mainLobbyImage_logo,
+					mainLobbyImage_background,
+					mainLobbyImage_chicken,
+					mainLobbyImage_singsing;
+	protected Image[] mainLobbyImage_logo,
+					  mainLobbyImage_cloud1,
+					  mainLobbyImage_cloud2;
+	
 	//그림 상태
-	protected int mainLobby_cloud1_stat = 0,
-			      mainLobby_cloud2_stat = 0;
+	protected int mainLobby_logo_index = new Random().nextInt(0, 3),
+				  mainLobby_cloud1_stat = 0,
+				  mainLobby_cloud1_index = 0,
+			      mainLobby_cloud2_stat = 0,
+			      mainLobby_cloud2_index = 0;
+	
+	//inGame
+	protected final String inGame_starcoin = 	"/resource/inGame/starcoin.png",
+						   inGame_sprout = 		"/resource/inGame/sprout.png",
+						   inGame_wateringcan = "/resource/inGame/wateringcan.png",
+						   inGame_apple =		"/resource/inGame/apple.png",
+						   inGame_fertilizer =	"/resource/inGame/fertilizer.png",
+						   inGame_shovel =		"/resource/inGame/shovel.png",
+						   inGame_background =	"/resource/inGame/background.png";
+	protected Image inGameImage_background;
 	
 	protected Thread worker;
 	protected Point mouseClick = new Point();
@@ -54,6 +82,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	//paint component
 	protected boolean pa_mainLobbyComponent = true;
 	protected boolean pa_inGameComponent = false;
+	
+	//loading image
+	protected boolean la_mainLobby = true;
+	protected boolean la_inGame = false;
 	
 	public FarmCanvas(int resolution) {
 		this.resolution = resolution;
@@ -108,7 +140,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 		
 		if(pa_inGame) {
-			paintInGame();
+			try {
+				paintInGame();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		paintComponents(bufferGraphics);
@@ -130,25 +167,24 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			pa_mainLobbyComponent = false;
 		}
 		
+		if(la_mainLobby) {
+			mainLobbyLoading();
+			la_mainLobby = false;
+		}
+		
 		//배경
-		Image image = null;
-		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_background)));
-		bufferGraphics.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		bufferGraphics.drawImage(mainLobbyImage_background, 0, 0, getWidth(), getHeight(), null);
 		
 		//로고
-		image = null;
-		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo)));
-		bufferGraphics.drawImage(image,
-								 getWidth() / 2 - 500 * resolution / 80 / 2 - 1,
+		bufferGraphics.drawImage(mainLobbyImage_logo[mainLobby_logo_index],
+								 getWidth() / 2 - 600 * resolution / 80 / 2 - 1,
 								 0,
-								 500 * resolution / 80,
-								 260 * resolution / 80,
+								 600 * resolution / 80,
+								 300 * resolution / 80,
 								 null);
 		
 		//치킨
-		image = null;
-		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_chicken)));
-		bufferGraphics.drawImage(image,
+		bufferGraphics.drawImage(mainLobbyImage_chicken,
 								 20 * resolution / 80 - 1,
 								 getHeight() - 275 * resolution / 80,
 								 270 * resolution / 80,
@@ -156,9 +192,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								 null);
 		
 		//싱싱채소
-		image = null;
-		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_singsing)));
-		bufferGraphics.drawImage(image,
+		bufferGraphics.drawImage(mainLobbyImage_singsing,
 								 getWidth() - 280 * resolution / 80 - 1,
 								 getHeight() - 250 * resolution / 80,
 								 250 * resolution / 80,
@@ -166,31 +200,30 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								 null);
 		
 		//구름1
-		image = null;
 		switch(mainLobby_cloud1_stat) {
 			case 0:
 			case 1:
 			case 2:
 			case 3:
 			case 4:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[0])));
+				mainLobby_cloud1_index = 0;
 				break;
 			case 5:
 			case 6:
 			case 7:
 			case 8:
 			case 9:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[1])));
+				mainLobby_cloud1_index = 1;
 				break;
 			case 10:
 			case 11:
 			case 12:
 			case 13:
 			case 14:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[2])));
+				mainLobby_cloud1_index = 2;
 				break;
 		}
-		bufferGraphics.drawImage(image,
+		bufferGraphics.drawImage(mainLobbyImage_cloud1[mainLobby_cloud1_index],
 								 50 * resolution / 80 - 1,
 								 50 * resolution / 80,
 								 240 * resolution / 80,
@@ -198,31 +231,30 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								 null);
 		
 		//구름2
-		image = null;
-		switch(mainLobby_cloud1_stat) {
+		switch(mainLobby_cloud2_stat) {
 			case 0:
 			case 1:
 			case 2:
 			case 3:
 			case 4:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[0])));
+				mainLobby_cloud2_index = 0;
 				break;
 			case 5:
 			case 6:
 			case 7:
 			case 8:
 			case 9:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[1])));
+				mainLobby_cloud2_index = 1;;
 				break;
 			case 10:
 			case 11:
 			case 12:
 			case 13:
 			case 14:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[2])));
+				mainLobby_cloud2_index = 2;
 				break;
 		}
-		bufferGraphics.drawImage(image,
+		bufferGraphics.drawImage(mainLobbyImage_cloud2[mainLobby_cloud2_index],
 								 getWidth() - 300 * resolution / 80 - 1,
 								 65 * resolution / 80,
 								 250 * resolution / 80,
@@ -234,7 +266,23 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 //		bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
 	}
 	
-	private void paintMainLobby_Component() {
+	private void mainLobbyLoading() throws IOException {
+		mainLobbyImage_background = 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_background)));
+//		mainLobbyImage_logo = 				 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo)));
+		mainLobbyImage_chicken = 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_chicken)));
+		mainLobbyImage_singsing = 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_singsing)));
+		mainLobbyImage_logo = new Image[]   {ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo[0]))),
+											 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo[1]))),
+											 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo[2])))};
+		mainLobbyImage_cloud1 = new Image[] {ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[0]))),
+								 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[1]))),
+								 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[2])))};
+		mainLobbyImage_cloud2 = new Image[] {ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[0]))),
+				            	 	 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[1]))),
+				            	 	 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[2])))};
+	}
+	
+	private void paintMainLobby_Component() throws IOException {
 		this.removeAll();
 		this.setLayout(null);
 		
@@ -256,6 +304,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				pa_mainLobby = false;
 				pa_inGame = true;
 				pa_inGameComponent = true;
+				la_inGame = true;
 				mouseClickEffect = 0;
 				mouseClick.x = btnStart.getBounds().x + e.getPoint().x;
 				mouseClick.y = btnStart.getBounds().y + e.getPoint().y;
@@ -350,54 +399,151 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(btnSett);
 	}
 	
-	private void paintInGame() {
+	private void paintInGame() throws IOException {
 		if(pa_inGameComponent) {
 			paintInGame_Component();
 			pa_inGameComponent = false;
 		}
+		if(la_inGame) {
+			inGameLoading();
+			la_inGame = false;
+		}
+		bufferGraphics.drawImage(inGameImage_background, 0, 0, getWidth(), getHeight(), null);
 		
 		//중앙점
 		bufferGraphics.setColor(Color.black);
 		bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
 	}
 	
-	private void paintInGame_Component() {
+	private void paintInGame_Component() throws IOException {
 		this.removeAll();
 		this.setLayout(null);
 		
-		CircleButton btnHelp = new CircleButton("?");
-		btnHelp.addMouseListener(new MouseListener() {
+//		CircleButton btnHelp = new CircleButton("?");
+//		btnHelp.addMouseListener(new MouseListener() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				
+//			}
+//
+//			public void mousePressed(MouseEvent e) {
+//				
+//			}
+//
+//			public void mouseReleased(MouseEvent e) {
+//				mouseClickEffect = 0;
+//				mouseClick.x = btnHelp.getBounds().x + e.getPoint().x;
+//				mouseClick.y = btnHelp.getBounds().y + e.getPoint().y;
+//				repaint();
+//			}
+//
+//			public void mouseEntered(MouseEvent e) {
+//				btnHelp.setBackground(Color.LIGHT_GRAY);
+//			}
+//
+//			public void mouseExited(MouseEvent e) {
+//				btnHelp.setBackground(Color.white);
+//			}
+//		});
+////		btnStart.setFont(font);
+//		btnHelp.setBounds(getWidth() - (25 + 50) * resolution / 80 - 1,
+//						  10 * resolution / 80,
+//						  50 * resolution / 80,
+//						  50 * resolution / 80);
+//		btnHelp.setBackground(Color.white);
+//		add(btnHelp);
+		
+		Image inGameImage_starcoin = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_starcoin)));
+		Image inGameReImage_starcoin = inGameImage_starcoin.getScaledInstance(250 * resolution / 80, 115 * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbStarCoin = new JLabel(new ImageIcon(inGameReImage_starcoin));
+		jlbStarCoin.setBounds(getWidth() - 260 * resolution / 80 - 1,
+							  0,
+							  250 * resolution / 80,
+							  115 * resolution / 80);
+		add(jlbStarCoin);
+		
+		int labelImageSize = 220;
+		int labelImageGap = 20;
+		
+		Image inGameImage_shovel = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shovel)));
+		Image inGameReImage_shovel = inGameImage_shovel.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbShovel = new JLabel(new ImageIcon(inGameReImage_shovel));
+		jlbShovel.setBounds((labelImageGap * 1 + labelImageSize * 0) * resolution / 80 - 1,
+							getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+							labelImageSize * resolution / 80,
+							labelImageSize * resolution / 80);
+		add(jlbShovel);
+		
+		Image inGameImage_sprout = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_sprout)));
+		Image inGameReImage_sprout = inGameImage_sprout.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbSprout = new JLabel(new ImageIcon(inGameReImage_sprout));
+		jlbSprout.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
 				
 			}
 
+			@Override
 			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
 				
 			}
 
+			@Override
 			public void mouseReleased(MouseEvent e) {
-				mouseClickEffect = 0;
-				mouseClick.x = btnHelp.getBounds().x + e.getPoint().x;
-				mouseClick.y = btnHelp.getBounds().y + e.getPoint().y;
-				repaint();
+				// TODO Auto-generated method stub
+				
 			}
 
+			@Override
 			public void mouseEntered(MouseEvent e) {
-				btnHelp.setBackground(Color.LIGHT_GRAY);
+				// TODO Auto-generated method stub
+				
 			}
 
+			@Override
 			public void mouseExited(MouseEvent e) {
-				btnHelp.setBackground(Color.white);
+				// TODO Auto-generated method stub
+				
 			}
 		});
-//		btnStart.setFont(font);
-		btnHelp.setBounds(getWidth() - (25 + 50) * resolution / 80 - 1,
-						  10 * resolution / 80,
-						  50 * resolution / 80,
-						  50 * resolution / 80);
-		btnHelp.setBackground(Color.white);
-		add(btnHelp);
+		jlbSprout.setBounds((labelImageGap * 2 + labelImageSize * 1) * resolution / 80 - 1,
+							getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+							labelImageSize * resolution / 80,
+							labelImageSize * resolution / 80);
+		add(jlbSprout);
+		
+		Image inGameImage_wateringcan = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_wateringcan)));
+		Image inGameReImage_wateringcan = inGameImage_wateringcan.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbWateringCan = new JLabel(new ImageIcon(inGameReImage_wateringcan));
+		jlbWateringCan.setBounds((labelImageGap * 3 + labelImageSize * 2) * resolution / 80 - 1,
+								 getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+								 labelImageSize * resolution / 80,
+								 labelImageSize * resolution / 80);
+		add(jlbWateringCan);
+		
+		Image inGameImage_fertilizer = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizer)));
+		Image inGameReImage_fertilizer = inGameImage_fertilizer.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbFertilizer = new JLabel(new ImageIcon(inGameReImage_fertilizer));
+		jlbFertilizer.setBounds((labelImageGap * 4 + labelImageSize * 3) * resolution / 80 - 1,
+								getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+								labelImageSize * resolution / 80,
+								labelImageSize * resolution / 80);
+		add(jlbFertilizer);
+		
+		Image inGameImage_apple = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_apple)));
+		Image inGameReImage_apple = inGameImage_apple.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH);
+		JLabel jlbApple = new JLabel(new ImageIcon(inGameReImage_apple));
+		jlbApple.setBounds((labelImageGap * 5 + labelImageSize * 4) * resolution / 80 - 1,
+						   getHeight() - (labelImageGap + labelImageSize) * resolution / 80 - 1,
+						   labelImageSize * resolution / 80,
+						   labelImageSize * resolution / 80);
+		add(jlbApple);
+	}
+	
+	private void inGameLoading() throws IOException {
+		inGameImage_background = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background)));
 	}
 	
 	@Override
