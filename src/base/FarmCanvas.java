@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 @SuppressWarnings("serial")
@@ -20,7 +21,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	//그림 관련 변수
 	protected final String   mainLobby_logo 	    = "/resource/mainLobby/logo.png",
 						     mainLobby_background   = "/resource/mainLobby/background.png",
-						   	 mainLobby_chicken 	    = "/resource/mainLobby/chicken.png",
+						     mainLobby_chicken 	    = "/resource/mainLobby/chicken.png",
 						     mainLobby_buttonNormal = "/resource/mainLobby/button_normal.png",
 						     mainLobby_singsing		= "/resource/mainLobby/singsing.png";
 	protected final String[] mainLobby_cloud1 		= {"/resource/mainLobby/cloud1_0.png",
@@ -29,9 +30,18 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 							 mainLobby_cloud2		= {"/resource/mainLobby/cloud2_0.png",
 									 				   "/resource/mainLobby/cloud2_1.png",
 									 				   "/resource/mainLobby/cloud2_2.png"};
+	protected Image mainLobbyImage_logo,
+					mainLobbyImage_background,
+					mainLobbyImage_chicken,
+					mainLobbyImage_singsing;
+	protected Image[] mainLobbyImage_cloud1,
+					  mainLobbyImage_cloud2;
+	
 	//그림 상태
 	protected int mainLobby_cloud1_stat = 0,
-			      mainLobby_cloud2_stat = 0;
+				  mainLobby_cloud1_index = 0,
+			      mainLobby_cloud2_stat = 0,
+			      mainLobby_cloud2_index = 0;
 	
 	protected Thread worker;
 	protected Point mouseClick = new Point();
@@ -54,6 +64,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	//paint component
 	protected boolean pa_mainLobbyComponent = true;
 	protected boolean pa_inGameComponent = false;
+	
+	//loading image
+	protected boolean la_mainLobby = true;
 	
 	public FarmCanvas(int resolution) {
 		this.resolution = resolution;
@@ -130,15 +143,16 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			pa_mainLobbyComponent = false;
 		}
 		
+		if(la_mainLobby) {
+			mainLobbyLoading();
+			la_mainLobby = false;
+		}
+		
 		//배경
-		Image image = null;
-		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_background)));
-		bufferGraphics.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+		bufferGraphics.drawImage(mainLobbyImage_background, 0, 0, getWidth(), getHeight(), null);
 		
 		//로고
-		image = null;
-		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo)));
-		bufferGraphics.drawImage(image,
+		bufferGraphics.drawImage(mainLobbyImage_logo,
 								 getWidth() / 2 - 500 * resolution / 80 / 2 - 1,
 								 0,
 								 500 * resolution / 80,
@@ -146,9 +160,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								 null);
 		
 		//치킨
-		image = null;
-		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_chicken)));
-		bufferGraphics.drawImage(image,
+		bufferGraphics.drawImage(mainLobbyImage_chicken,
 								 20 * resolution / 80 - 1,
 								 getHeight() - 275 * resolution / 80,
 								 270 * resolution / 80,
@@ -156,9 +168,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								 null);
 		
 		//싱싱채소
-		image = null;
-		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_singsing)));
-		bufferGraphics.drawImage(image,
+		bufferGraphics.drawImage(mainLobbyImage_singsing,
 								 getWidth() - 280 * resolution / 80 - 1,
 								 getHeight() - 250 * resolution / 80,
 								 250 * resolution / 80,
@@ -166,31 +176,31 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								 null);
 		
 		//구름1
-		image = null;
+
 		switch(mainLobby_cloud1_stat) {
 			case 0:
 			case 1:
 			case 2:
 			case 3:
 			case 4:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[0])));
+				mainLobby_cloud1_index = 0;
 				break;
 			case 5:
 			case 6:
 			case 7:
 			case 8:
 			case 9:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[1])));
+				mainLobby_cloud1_index = 1;
 				break;
 			case 10:
 			case 11:
 			case 12:
 			case 13:
 			case 14:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[2])));
+				mainLobby_cloud1_index = 2;
 				break;
 		}
-		bufferGraphics.drawImage(image,
+		bufferGraphics.drawImage(mainLobbyImage_cloud1[mainLobby_cloud1_index],
 								 50 * resolution / 80 - 1,
 								 50 * resolution / 80,
 								 240 * resolution / 80,
@@ -198,31 +208,30 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								 null);
 		
 		//구름2
-		image = null;
-		switch(mainLobby_cloud1_stat) {
+		switch(mainLobby_cloud2_stat) {
 			case 0:
 			case 1:
 			case 2:
 			case 3:
 			case 4:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[0])));
+				mainLobby_cloud2_index = 0;
 				break;
 			case 5:
 			case 6:
 			case 7:
 			case 8:
 			case 9:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[1])));
+				mainLobby_cloud2_index = 1;;
 				break;
 			case 10:
 			case 11:
 			case 12:
 			case 13:
 			case 14:
-				image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[2])));
+				mainLobby_cloud2_index = 2;
 				break;
 		}
-		bufferGraphics.drawImage(image,
+		bufferGraphics.drawImage(mainLobbyImage_cloud2[mainLobby_cloud2_index],
 								 getWidth() - 300 * resolution / 80 - 1,
 								 65 * resolution / 80,
 								 250 * resolution / 80,
@@ -234,7 +243,20 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 //		bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
 	}
 	
-	private void paintMainLobby_Component() {
+	private void mainLobbyLoading() throws IOException {
+		mainLobbyImage_background = 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_background)));
+		mainLobbyImage_logo = 				 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo)));
+		mainLobbyImage_chicken = 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_chicken)));
+		mainLobbyImage_singsing = 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_singsing)));
+		mainLobbyImage_cloud1 = new Image[] {ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[0]))),
+								 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[1]))),
+								 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[2])))};
+		mainLobbyImage_cloud2 = new Image[] {ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[0]))),
+				            	 	 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[1]))),
+				            	 	 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[2])))};
+	}
+	
+	private void paintMainLobby_Component() throws IOException {
 		this.removeAll();
 		this.setLayout(null);
 		
