@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.JPanel;
 import javax.swing.border.Border;
@@ -19,26 +20,31 @@ import javax.swing.JButton;
 public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	//그림 관련 변수
-	protected final String   mainLobby_logo 	    = "/resource/mainLobby/logo.png",
+	protected final String   //mainLobby_logo 	    = "/resource/mainLobby/logo.png",
 						     mainLobby_background   = "/resource/mainLobby/background.png",
 						     mainLobby_chicken 	    = "/resource/mainLobby/chicken.png",
 						     mainLobby_buttonNormal = "/resource/mainLobby/button_normal.png",
 						     mainLobby_singsing		= "/resource/mainLobby/singsing.png";
-	protected final String[] mainLobby_cloud1 		= {"/resource/mainLobby/cloud1_0.png",
+	protected final String[] mainLobby_logo			= {"/resource/mainLobby/logo1.png",
+													   "/resource/mainLobby/logo2.png",
+													   "/resource/mainLobby/logo3.png"},
+							 mainLobby_cloud1 		= {"/resource/mainLobby/cloud1_0.png",
 													   "/resource/mainLobby/cloud1_1.png",
 													   "/resource/mainLobby/cloud1_2.png"},
 							 mainLobby_cloud2		= {"/resource/mainLobby/cloud2_0.png",
 									 				   "/resource/mainLobby/cloud2_1.png",
 									 				   "/resource/mainLobby/cloud2_2.png"};
-	protected Image mainLobbyImage_logo,
+	protected Image //mainLobbyImage_logo,
 					mainLobbyImage_background,
 					mainLobbyImage_chicken,
 					mainLobbyImage_singsing;
-	protected Image[] mainLobbyImage_cloud1,
+	protected Image[] mainLobbyImage_logo,
+					  mainLobbyImage_cloud1,
 					  mainLobbyImage_cloud2;
 	
 	//그림 상태
-	protected int mainLobby_cloud1_stat = 0,
+	protected int mainLobby_logo_index = new Random().nextInt(0, 3),
+				  mainLobby_cloud1_stat = 0,
 				  mainLobby_cloud1_index = 0,
 			      mainLobby_cloud2_stat = 0,
 			      mainLobby_cloud2_index = 0;
@@ -152,11 +158,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		bufferGraphics.drawImage(mainLobbyImage_background, 0, 0, getWidth(), getHeight(), null);
 		
 		//로고
-		bufferGraphics.drawImage(mainLobbyImage_logo,
-								 getWidth() / 2 - 500 * resolution / 80 / 2 - 1,
+		bufferGraphics.drawImage(mainLobbyImage_logo[mainLobby_logo_index],
+								 getWidth() / 2 - 600 * resolution / 80 / 2 - 1,
 								 0,
-								 500 * resolution / 80,
-								 260 * resolution / 80,
+								 600 * resolution / 80,
+								 300 * resolution / 80,
 								 null);
 		
 		//치킨
@@ -245,9 +251,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	private void mainLobbyLoading() throws IOException {
 		mainLobbyImage_background = 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_background)));
-		mainLobbyImage_logo = 				 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo)));
+//		mainLobbyImage_logo = 				 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo)));
 		mainLobbyImage_chicken = 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_chicken)));
 		mainLobbyImage_singsing = 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_singsing)));
+		mainLobbyImage_logo = new Image[]   {ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo[0]))),
+											 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo[1]))),
+											 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo[2])))};
 		mainLobbyImage_cloud1 = new Image[] {ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[0]))),
 								 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[1]))),
 								 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud1[2])))};
