@@ -29,7 +29,7 @@ public class MyLauncher extends JFrame {
 	@SuppressWarnings("rawtypes")
 	private JComboBox comboBox;
 	
-	private Font font = createFont();
+	public Font font = createFont();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -49,7 +49,7 @@ public class MyLauncher extends JFrame {
 		addLauncher();
 	}
 	
-	private Font createFont() {
+	public Font createFont() {
 	    try {
 	        Font customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream(mapleFont));
 	        customFont = customFont.deriveFont(12f);
@@ -248,7 +248,7 @@ public class MyLauncher extends JFrame {
 		}
 		setBounds(this.getBounds().x, this.getBounds().y, 16*resolution, 9*resolution);
 
-		FarmCanvas farmCanvas = new FarmCanvas(resolution);
+		FarmCanvas farmCanvas = new FarmCanvas(this, resolution);
 		farmCanvas.setSize(this.getWidth(), this.getHeight());
 		add(farmCanvas);
 		farmCanvas.start();
