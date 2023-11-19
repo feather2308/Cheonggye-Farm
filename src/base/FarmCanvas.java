@@ -924,6 +924,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		jlbBack.setBounds(x + x_back, y_image, jlb_size, jlb_size);
 		jlbBackText.setBounds(x + x_back, y_text, jlb_size, jlb_size);
+		jlbBackClick.setBounds(x + x_back, y_click, jlb_click_x_size, jlb_click_y_size);
 	}
 	
 	/*
