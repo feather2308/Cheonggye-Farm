@@ -1,10 +1,13 @@
 package base;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class FarmData {
-	private Map<String, Integer> crop = new HashMap<>();
+	protected Map<String, Integer> crop = new HashMap<>();
+	protected ArrayList<int[]> field = new ArrayList<>();
+	protected int coin = 0;
 	
 	public FarmData() {
 		setting();
@@ -12,6 +15,8 @@ public class FarmData {
 	}
 	
 	private void setting() {
+		coin = 0;
+		
 		crop.put("Potato", 0);
 		crop.put("Carrot", 0);
 		crop.put("Beetroot", 0);
@@ -33,5 +38,21 @@ public class FarmData {
 	public void setCrop(String name, int count, boolean plus) {
 		if(plus) crop.put(name, crop.get(name) + count);
 		else crop.put(name, crop.get(name) - count);
+	}
+
+	public int[] getField(int i) {
+		return field.get(i);
+	}
+	
+	public void setField(int i) {
+		field.set(i, new int[] {0, 0});
+	}
+	
+	public void putField(int[] value) { //[0 작물번호, 1 성장단계]
+		field.add(value);
+	}
+	
+	public String getCoin() {
+		return coin + "";
 	}
 }

@@ -1,16 +1,20 @@
 package base;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.JPanel;
@@ -27,6 +31,18 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected FarmData farmData = new FarmData();
 	
 	protected Font font;
+	
+	//cursor
+	Map<String, Cursor> cursor = new HashMap<>();
+	protected final String cursor_chicken = "/resource/cursor/cursor_chicken.png",
+						   cursor_potato =	"/resource/cursor/cursor_potato.png",
+						   cursor_carrot =	"/resource/cursor/cursor_carrot.png";
+	protected BufferedImage cursorImage_chicken,
+							cursorImage_potato,
+							cursorImage_carrot;
+	protected Cursor customCursor_chicken,
+					 customCursor_potato,
+					 customCursor_carrot;
 	
 	//mainLobby
 	//그림 관련 변수
@@ -88,6 +104,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	protected Thread worker;
 	protected Point mouseClick = new Point();
+	protected Point mouseCursor = new Point();
 	
 	//더블버퍼링용 변수
 	protected Graphics bufferGraphics = null;
@@ -308,6 +325,15 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		mainLobbyImage_cloud2 = new Image[] {ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[0]))),
 				            	 	 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[1]))),
 				            	 	 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[2])))};
+		cursorImage_chicken = ImageIO.read(getClass().getResourceAsStream(cursor_chicken));
+		cursorImage_potato = ImageIO.read(getClass().getResourceAsStream(cursor_potato));
+		cursorImage_carrot = ImageIO.read(getClass().getResourceAsStream(cursor_carrot));
+		customCursor_chicken = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_chicken, new Point(0, 0), "Custom Cursor");
+		customCursor_potato = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_potato, new Point(0, 0), "Custom Cursor");
+		customCursor_carrot = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_carrot, new Point(0, 0), "Custom Cursor");
+		cursor.put("chicken", customCursor_chicken);
+		cursor.put("potato", customCursor_potato);
+		cursor.put("carrot", customCursor_carrot);
 	}
 	
 	//버튼 프레스 버그 관련 변수. -> 버튼 범위에서 나가면 클릭 안됨.
@@ -318,6 +344,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	private void paintMainLobby_Component() throws IOException {
 		this.removeAll();
 		this.setLayout(null);
+		setCursor("chicken");
 		
 		Point btnSize = new Point();
 		btnSize.x = 250; btnSize.y = 80;
@@ -516,6 +543,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 //		add(btnHelp);
 		
 		addStarCoin();
+		addInGame_Field();
 		
 		int labelImageSize = 200;
 		int labelImageGap = 40;
@@ -711,6 +739,16 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	}
 	
 	private void addStarCoin() {
+		//지갑 숫자
+		JLabel jlbStarCoinValue = new JLabel(farmData.getCoin());
+		jlbStarCoinValue.setFont(font);
+		jlbStarCoinValue.setHorizontalAlignment(SwingConstants.LEFT);
+		jlbStarCoinValue.setBounds(getWidth() - 235 * resolution / 80 - 1,
+								   20 * resolution / 80,
+								   160 * resolution / 80,
+								   50 * resolution / 80);
+		add(jlbStarCoinValue);
+		
 		//지갑
 		JLabel jlbStarCoin = new JLabel(new ImageIcon(inGameImage_starcoin.getScaledInstance(250 * resolution / 80, 115 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbStarCoin.setBounds(getWidth() - 260 * resolution / 80 - 1,
@@ -718,6 +756,53 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 							  250 * resolution / 80,
 							  115 * resolution / 80);
 		add(jlbStarCoin);
+		
+		
+	}
+	
+	private void addInGame_Field() {
+		//필드맵도 카메라 넣고싶음 언젠가 하겠지 백그라운드랑 그런쪽 손보셈 ㅇㅇ.
+		farmData.putField(new int[] {0, 0});
+		farmData.putField(new int[] {0, 1});
+		farmData.putField(new int[] {0, 2});
+		farmData.putField(new int[] {0, 3});
+		farmData.putField(new int[] {0, 4});
+		
+		for(int i = 0; i < farmData.field.size(); i++) {
+			//여기도 작물 선택된거 이름 가져오거나 해당 값 가져오는거 해쉬맵으로 하ㅕㅁㄴ 편할듯??
+			ImageIcon jlbImage = new ImageIcon(cropImage_potato.getSubimage(100 * farmData.getField(i)[1], 0, 100, 100));
+			JLabel jlbTemp = new JLabel(jlbImage);
+			int k = i;
+			if(farmData.getField(i)[1] == 4) {
+				jlbTemp.addMouseListener(new MouseListener() {
+					public void mouseClicked(MouseEvent e) {
+					}
+					public void mousePressed(MouseEvent e) {
+					}
+					public void mouseReleased(MouseEvent e) {
+						//작물 선택된거 확인한근거 가져와야댐 이름으로
+						farmData.setCrop("Potato", 2, true);
+						farmData.setField(k);
+						jlbTemp.setIcon(new ImageIcon());
+						jlbTemp.removeMouseListener(this);
+						//카운트 전부 초기화해야함 아니면 지ㅏ정한거만 초기홯는거골 ㄱㄱ
+						if(jlbPotatoCount != null)
+							jlbPotatoCount.setText("보유개수: " + farmData.getCrop("Potato") + "개");
+						
+						mouseClickEffect = 0;
+						mouseClick.x = jlbTemp.getX() + e.getPoint().x;
+						mouseClick.y = jlbTemp.getY() + e.getPoint().y;
+						repaint();
+					}
+					public void mouseEntered(MouseEvent e) {
+					}
+					public void mouseExited(MouseEvent e) {
+					}
+				});
+			}
+			jlbTemp.setBounds((280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100, 100);
+			add(jlbTemp);
+		}
 	}
 	
 	//기준점
@@ -735,6 +820,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	//크기 변수
 	int jlb_size, jlb_click_x_size, jlb_click_y_size;
 	//버튼 변수
+	boolean jlbPotatoClickPress = false,
+			jlbCarrotClickPress = false,
+			jlbBeetrootClickPress = false;
 	boolean jlbBackClickPress = false;
 	//작물 위치
 	int x_potato,	x_carrot,	x_beetroot;
@@ -780,6 +868,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	private void paintShovel() {
 		this.removeAll();
 		addStarCoin();
+		addInGame_Field();
 		
 		count = 0;
 		
@@ -869,7 +958,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 					try {
 						paintInGame_Component();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -900,6 +988,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	private void paintSprout() {
 		this.removeAll();
 		addStarCoin();
+		addInGame_Field();
 		
 		count = 0;
 		
@@ -929,8 +1018,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
+				jlbPotatoClickPress = true;
 			}
 			public void mouseReleased(MouseEvent e) {
+				if(jlbPotatoClickPress) {
+					setCursor("potato");
+				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbPotatoClick.getX() + e.getPoint().x;
 				mouseClick.y = jlbPotatoClick.getY() + e.getPoint().y;
@@ -939,6 +1032,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseEntered(MouseEvent e) {
 			}
 			public void mouseExited(MouseEvent e) {
+				jlbPotatoClickPress = false;
 			}
 		});
 		jlbPotatoClick.setBounds(x_potato - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
@@ -946,9 +1040,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbPotatoClick);
 		
 		//당근
-//		당근 이거 이미지 가져오기
 		jlbCarrot = new JLabel(new ImageIcon(cropImage_carrot.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
-		
 		jlbCarrot.setBounds(x_carrot, y_image, jlb_size, jlb_size);
 		add(jlbCarrot);
 		
@@ -969,8 +1061,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
+				jlbCarrotClickPress = true;
 			}
 			public void mouseReleased(MouseEvent e) {
+				if(jlbCarrotClickPress) {
+					setCursor("carrot");
+				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbCarrotClick.getX() + e.getPoint().x;
 				mouseClick.y = jlbCarrotClick.getY() + e.getPoint().y;
@@ -979,6 +1075,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseEntered(MouseEvent e) {
 			}
 			public void mouseExited(MouseEvent e) {
+				jlbCarrotClickPress = false;
 			}
 		});
 		jlbCarrotClick.setBounds(x_carrot - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
@@ -1009,8 +1106,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
+				jlbBeetrootClickPress = true;
 			}
 			public void mouseReleased(MouseEvent e) {
+				if(jlbBeetrootClickPress) {
+					
+				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbBeetrootClick.getX() + e.getPoint().x;
 				mouseClick.y = jlbBeetrootClick.getY() + e.getPoint().y;
@@ -1019,6 +1120,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseEntered(MouseEvent e) {
 			}
 			public void mouseExited(MouseEvent e) {
+				jlbBeetrootClickPress = false;
 			}
 		});
 		jlbBeetrootClick.setBounds(x_beetroot - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
@@ -1046,10 +1148,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(jlbBackClickPress) {
+					setCursor("chicken");
 					try {
 						paintInGame_Component();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -1104,7 +1206,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 							   220 * resolution / 80);
 		add(mouseControl);
 	}
-	
+
 	//카메라 무빙~
 	private void setComponentBoundSprout(int[] currentCamera, MouseEvent e) {
 		if(jlbPoint.getX() > 0 || currentCamera[2] + currentCamera[0] > 0) {
@@ -1146,6 +1248,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	/*
 	 새싹 종료
 	 */
+	
+	protected void setCursor(String key) {
+		this.setCursor(cursor.get(key));
+	}
 	
 	public void mouseClicked(MouseEvent e) {
 	}
