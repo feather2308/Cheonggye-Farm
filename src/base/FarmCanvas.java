@@ -707,6 +707,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		inGameImage_apple = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_apple)));
 		
 		cropImage_potato = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_potato)));
+		cropImage_carrot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_carrot)));
 	}
 	
 	private void addStarCoin() {
@@ -946,8 +947,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		//당근
 //		당근 이거 이미지 가져오기
-//		jlbCarrot = new JLabel(new ImageIcon(cropImage_carrot.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
-		jlbCarrot = new JLabel();
+		jlbCarrot = new JLabel(new ImageIcon(cropImage_carrot.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		
 		jlbCarrot.setBounds(x_carrot, y_image, jlb_size, jlb_size);
 		add(jlbCarrot);
 		
