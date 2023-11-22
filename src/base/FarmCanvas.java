@@ -13,6 +13,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -30,19 +31,22 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected MyLauncher myLauncher;
 	protected FarmData farmData = new FarmData();
 	
-	protected Font font;
+	protected Font font, font_count;
 	
 	//cursor
 	Map<String, Cursor> cursor = new HashMap<>();
 	protected final String cursor_chicken = "/resource/cursor/cursor_chicken.png",
 						   cursor_potato =	"/resource/cursor/cursor_potato.png",
-						   cursor_carrot =	"/resource/cursor/cursor_carrot.png";
+						   cursor_carrot =	"/resource/cursor/cursor_carrot.png",
+						   cursor_beetroot = "/resource/cursor/cursor_beetroot.png";
 	protected BufferedImage cursorImage_chicken,
 							cursorImage_potato,
-							cursorImage_carrot;
+							cursorImage_carrot,
+							cursorImage_beetroot;
 	protected Cursor customCursor_chicken,
 					 customCursor_potato,
-					 customCursor_carrot;
+					 customCursor_carrot,
+					 customCursor_beetroot;
 	
 	//mainLobby
 	//그림 관련 변수
@@ -52,7 +56,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 						     mainLobby_singsing		= "/resource/mainLobby/singsing.png",
 							 mainLobby_buttonstart = "/resource/mainLobby/buttonstart.png",
 							 mainLobby_buttondesc = "/resource/mainLobby/buttondesc.png",
-							 mainLobby_buttonsett = "/resource/mainLobby/buttonsett.png";
+							 mainLobby_buttonsett = "/resource/mainLobby/buttonsett.png",
+							 mainLobby_cloud = "/resource/mainLobby/cloud.png";
 	protected final String[] mainLobby_logo			= {"/resource/mainLobby/logo1.png",
 													   "/resource/mainLobby/logo2.png",
 													   "/resource/mainLobby/logo3.png"},
@@ -68,17 +73,15 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 					mainLobbyImage_singsing;
 	protected BufferedImage mainLobbyImage_buttonstart,
 							mainLobbyImage_buttondesc,
-							mainLobbyImage_buttonsett;
+							mainLobbyImage_buttonsett,
+							mainLobbyImage_cloud;
 	protected Image[] mainLobbyImage_logo,
 					  mainLobbyImage_cloud1,
 					  mainLobbyImage_cloud2;
 	
 	//그림 상태
 	protected int mainLobby_logo_index = new Random().nextInt(0, 3),
-				  mainLobby_cloud1_stat = 0,
-				  mainLobby_cloud1_index = 0,
-			      mainLobby_cloud2_stat = 0,
-			      mainLobby_cloud2_index = 0;
+				  mainLobby_cloud_stat = 0, mainLobby_cloud_index = 0;
 	
 	//inGame
 	protected final String inGame_starcoin = 	"/resource/inGame/starcoin.png",
@@ -98,9 +101,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	//crop
 	protected final String crop_potato = "/resource/inGame/crop/potato.png",
-						   crop_carrot = "/resource/inGame/crop/carrot.png";
+						   crop_carrot = "/resource/inGame/crop/carrot.png",
+						   crop_beetroot = "/resource/inGame/crop/beetroot.png";
 	protected BufferedImage cropImage_potato,
-							cropImage_carrot;
+							cropImage_carrot,
+							cropImage_beetroot;
 	
 	protected Thread worker;
 	protected Point mouseClick = new Point();
@@ -136,6 +141,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		//폰트
 		font = myLauncher.font.deriveFont(18f * resolution / 80);
+		font_count = myLauncher.font.deriveFont(15f * resolution / 80);
 	}
 
 	public void start() {
@@ -153,10 +159,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 					mouseClickEffect++;
 				}
 				if(pa_mainLobby) {
-					if(mainLobby_cloud1_stat < 14) mainLobby_cloud1_stat++;
-					else mainLobby_cloud1_stat = 0;
-					if(mainLobby_cloud2_stat < 14) mainLobby_cloud2_stat++;
-					else mainLobby_cloud2_stat = 0;
+					if(mainLobby_cloud_stat < 30) mainLobby_cloud_stat++;
+					else mainLobby_cloud_stat = 0;
 				}
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -205,7 +209,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	private void paintMainLobby() throws IOException {
 		if(la_mainLobby) {
-			mainLobbyLoading();
+			loading_MainLobby();
 			la_mainLobby = false;
 		}
 		
@@ -240,75 +244,49 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								 250 * resolution / 80,
 								 200 * resolution / 80,
 								 null);
-		
-		//구름1
-		switch(mainLobby_cloud1_stat) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-				mainLobby_cloud1_index = 0;
+
+		switch(mainLobby_cloud_stat) {
+			case 0:			case 1:			case 2:			case 3:			case 4:
+				mainLobby_cloud_index = 0;
 				break;
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-				mainLobby_cloud1_index = 1;
+			case 5:			case 6:			case 7:			case 8:			case 9:
+				mainLobby_cloud_index = 1;
 				break;
-			case 10:
-			case 11:
-			case 12:
-			case 13:
-			case 14:
-				mainLobby_cloud1_index = 2;
+			case 10:		case 11:		case 12:		case 13:		case 14:
+				mainLobby_cloud_index = 2;
+				break;
+			case 15:		case 16:		case 17:		case 18:		case 19:
+				mainLobby_cloud_index = 3;
+				break;
+			case 20:		case 21:		case 22:		case 23:		case 24:
+				mainLobby_cloud_index = 4;
+				break;
+			case 25:		case 26:		case 27:		case 28:		case 29:
+				mainLobby_cloud_index = 5;
 				break;
 		}
-		bufferGraphics.drawImage(mainLobbyImage_cloud1[mainLobby_cloud1_index],
-								 50 * resolution / 80 - 1,
-								 50 * resolution / 80,
-								 240 * resolution / 80,
-								 180 * resolution / 80,
-								 null);
+		//구름1
+		bufferGraphics.drawImage(mainLobbyImage_cloud.getSubimage(220 * mainLobby_cloud_index, 0, 220, 130).getScaledInstance(220, 130, Image.SCALE_SMOOTH),
+				 50 * resolution / 80 - 1,
+				 50 * resolution / 80,
+				 220 * resolution / 80,
+				 130 * resolution / 80,
+				 null);
 		
 		//구름2
-		switch(mainLobby_cloud2_stat) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-				mainLobby_cloud2_index = 0;
-				break;
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-				mainLobby_cloud2_index = 1;;
-				break;
-			case 10:
-			case 11:
-			case 12:
-			case 13:
-			case 14:
-				mainLobby_cloud2_index = 2;
-				break;
-		}
-		bufferGraphics.drawImage(mainLobbyImage_cloud2[mainLobby_cloud2_index],
-								 getWidth() - 300 * resolution / 80 - 1,
-								 65 * resolution / 80,
-								 250 * resolution / 80,
-								 190 * resolution / 80,
-								 null);
-		
+		bufferGraphics.drawImage(mainLobbyImage_cloud.getSubimage(230 * mainLobby_cloud_index, 130, 230, 140).getScaledInstance(230, 140, Image.SCALE_SMOOTH),
+				getWidth() - 300 * resolution / 80 - 1,
+				 65 * resolution / 80,
+				 230 * resolution / 80,
+				 140 * resolution / 80,
+				 null);
+
 //		//중앙점
 //		bufferGraphics.setColor(Color.black);
 //		bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
 	}
 	
-	private void mainLobbyLoading() throws IOException {
+	private void loading_MainLobby() throws IOException {
 		mainLobbyImage_background = 		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_background)));
 //		mainLobbyImage_logo = 				 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo)));
 		mainLobbyImage_chicken = 			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_chicken)));
@@ -316,6 +294,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		mainLobbyImage_buttonstart =		 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_buttonstart)));
 		mainLobbyImage_buttondesc =			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_buttondesc)));
 		mainLobbyImage_buttonsett =			 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_buttonsett)));
+		mainLobbyImage_cloud =				 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud)));
 		mainLobbyImage_logo = new Image[]   {ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo[0]))),
 											 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo[1]))),
 											 ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_logo[2])))};
@@ -331,11 +310,47 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		customCursor_chicken = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_chicken, new Point(0, 0), "Custom Cursor");
 		customCursor_potato = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_potato, new Point(0, 0), "Custom Cursor");
 		customCursor_carrot = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_carrot, new Point(0, 0), "Custom Cursor");
+		
 		cursor.put("chicken", customCursor_chicken);
 		cursor.put("potato", customCursor_potato);
 		cursor.put("carrot", customCursor_carrot);
+		cursor.put("beetroot", customCursor_beetroot);
 	}
 	
+	private void loading_InGame() throws IOException {
+		inGameImage_background = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background)));
+		inGameImage_starcoin = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_starcoin)));
+		inGameImage_shovel = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shovel)));
+		inGameImage_sprout = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_sprout)));
+		inGameImage_wateringcan = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_wateringcan)));
+		inGameImage_fertilizer = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizer)));
+		inGameImage_apple = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_apple)));
+		
+		cropImage_potato = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_potato)));
+		cropImage_carrot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_carrot)));
+		cropImage_beetroot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_beetroot)));
+	}
+	
+	private void loading_Field() {
+		//필드맵도 카메라 넣고싶음 언젠가 하겠지 백그라운드랑 그런쪽 손보셈 ㅇㅇ.
+		cropImage = new HashMap<>();
+		cropImage.put(1, cropImage_potato);
+		cropImage.put(2, cropImage_carrot);
+		cropImage.put(3, cropImage_beetroot);
+		
+		jlbCropField = new ArrayList<>();
+		
+		for(int i = 0; i < farmData.field.size(); i++) {
+			ImageIcon jlbImage = null;
+			if(farmData.getField(i)[0] != 0)
+				jlbImage = new ImageIcon(cropImage.get(farmData.getField(i)[0]).getSubimage(100 * farmData.getField(i)[1], 0, 100, 100));
+			JLabel jlbTemp = new JLabel(jlbImage);
+			jlbTemp.setBounds((280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100, 100);
+			add(jlbTemp);
+			jlbCropField.add(jlbTemp);
+		}
+	}
+
 	//버튼 프레스 버그 관련 변수. -> 버튼 범위에서 나가면 클릭 안됨.
 	boolean btnStartPress = false,
 			btnDescPress = false,
@@ -483,7 +498,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		setValue();
 		
 		if(la_inGame) {
-			inGameLoading();
+			loading_InGame();
+			loading_Field();
+			refreshField();
 			la_inGame = false;
 		}
 		if(pa_inGameComponent) {
@@ -543,7 +560,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 //		add(btnHelp);
 		
 		addStarCoin();
-		addInGame_Field();
+		addField();
 		
 		int labelImageSize = 200;
 		int labelImageGap = 40;
@@ -630,7 +647,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(jlbWateringCanPress) {
-			
+					paintWateringCan();
 				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbWateringCan.getX() + e.getPoint().x;
@@ -725,19 +742,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbApple);
 	}
 	
-	private void inGameLoading() throws IOException {
-		inGameImage_background = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background)));
-		inGameImage_starcoin = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_starcoin)));
-		inGameImage_shovel = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shovel)));
-		inGameImage_sprout = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_sprout)));
-		inGameImage_wateringcan = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_wateringcan)));
-		inGameImage_fertilizer = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizer)));
-		inGameImage_apple = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_apple)));
-		
-		cropImage_potato = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_potato)));
-		cropImage_carrot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_carrot)));
-	}
-	
 	private void addStarCoin() {
 		//지갑 숫자
 		JLabel jlbStarCoinValue = new JLabel(farmData.getCoin());
@@ -760,48 +764,76 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 	}
 	
-	private void addInGame_Field() {
-		//필드맵도 카메라 넣고싶음 언젠가 하겠지 백그라운드랑 그런쪽 손보셈 ㅇㅇ.
-		farmData.putField(new int[] {0, 0});
-		farmData.putField(new int[] {0, 1});
-		farmData.putField(new int[] {0, 2});
-		farmData.putField(new int[] {0, 3});
-		farmData.putField(new int[] {0, 4});
-		
-		for(int i = 0; i < farmData.field.size(); i++) {
-			//여기도 작물 선택된거 이름 가져오거나 해당 값 가져오는거 해쉬맵으로 하ㅕㅁㄴ 편할듯??
-			ImageIcon jlbImage = new ImageIcon(cropImage_potato.getSubimage(100 * farmData.getField(i)[1], 0, 100, 100));
-			JLabel jlbTemp = new JLabel(jlbImage);
+	ArrayList<JLabel> jlbCropField;
+	Map<Integer, BufferedImage> cropImage;
+	
+	private void addField() {
+		for(int i = 0; i < jlbCropField.size(); i++) {
+			add(jlbCropField.get(i));
+		}
+	}
+	
+	private void refreshField() {
+		for(int i = 0; i < jlbCropField.size(); i++) {
+			ImageIcon jlbImage = null;
+			if(farmData.getField(i)[0] != 0)
+				jlbImage = new ImageIcon(cropImage.get(farmData.getField(i)[0]).getSubimage(100 * farmData.getField(i)[1], 0, 100, 100));
+			
+			JLabel jlbTemp = jlbCropField.get(i);
+			jlbTemp.setIcon(jlbImage);
 			int k = i;
-			if(farmData.getField(i)[1] == 4) {
-				jlbTemp.addMouseListener(new MouseListener() {
-					public void mouseClicked(MouseEvent e) {
-					}
-					public void mousePressed(MouseEvent e) {
-					}
-					public void mouseReleased(MouseEvent e) {
-						//작물 선택된거 확인한근거 가져와야댐 이름으로
-						farmData.setCrop("Potato", 2, true);
-						farmData.setField(k);
-						jlbTemp.setIcon(new ImageIcon());
-						jlbTemp.removeMouseListener(this);
-						//카운트 전부 초기화해야함 아니면 지ㅏ정한거만 초기홯는거골 ㄱㄱ
-						if(jlbPotatoCount != null)
-							jlbPotatoCount.setText("보유개수: " + farmData.getCrop("Potato") + "개");
-						
-						mouseClickEffect = 0;
-						mouseClick.x = jlbTemp.getX() + e.getPoint().x;
-						mouseClick.y = jlbTemp.getY() + e.getPoint().y;
-						repaint();
-					}
-					public void mouseEntered(MouseEvent e) {
-					}
-					public void mouseExited(MouseEvent e) {
-					}
-				});
+			if(jlbTemp.getMouseListeners().length == 0) {
+				if(farmData.getField(i)[1] == 4 && farmData.getField(i)[0] != 0) {
+					jlbTemp.addMouseListener(new MouseListener() {
+						public void mouseClicked(MouseEvent e) {
+						}
+						public void mousePressed(MouseEvent e) {
+						}
+						public void mouseReleased(MouseEvent e) {
+							farmData.setCrop(getCropName(farmData.getField(k)[0]), 2, true);
+							farmData.setField(k, new int[] {0, 0});
+							refreshCount();
+							refreshField();
+							jlbTemp.removeMouseListener(this);
+							
+							mouseClickEffect = 0;
+							mouseClick.x = jlbTemp.getX() + e.getPoint().x;
+							mouseClick.y = jlbTemp.getY() + e.getPoint().y;
+							repaint();
+						}
+						public void mouseEntered(MouseEvent e) {
+						}
+						public void mouseExited(MouseEvent e) {
+						}
+					});
+				} else if(farmData.getField(i)[0] == 0) {
+					jlbTemp.addMouseListener(new MouseListener() {
+						public void mouseClicked(MouseEvent e) {
+						}
+						public void mousePressed(MouseEvent e) {
+						}
+						public void mouseReleased(MouseEvent e) {
+							if(currentCrop != 0 && farmData.getCrop(getCropName(currentCrop)) > 0) {
+								farmData.setCrop(getCropName(currentCrop), 1, false);
+								System.out.println("씨앗 소모");
+								farmData.setField(k, new int[] {currentCrop, 0});
+								refreshCount();
+								refreshField();
+								jlbTemp.removeMouseListener(this);
+							}
+							
+							mouseClickEffect = 0;
+							mouseClick.x = jlbTemp.getX() + e.getPoint().x;
+							mouseClick.y = jlbTemp.getY() + e.getPoint().y;
+							repaint();
+						}
+						public void mouseEntered(MouseEvent e) {
+						}
+						public void mouseExited(MouseEvent e) {
+						}
+					});
+				}
 			}
-			jlbTemp.setBounds((280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100, 100);
-			add(jlbTemp);
 		}
 	}
 	
@@ -827,6 +859,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	//작물 위치
 	int x_potato,	x_carrot,	x_beetroot;
 	int count, sprout_camera_max;
+	
+	//현재마우스 변수
+	int currentCrop = 0;
 	
 	private void setValue() {
 		//x
@@ -868,7 +903,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	private void paintShovel() {
 		this.removeAll();
 		addStarCoin();
-		addInGame_Field();
+		addField();
 		
 		count = 0;
 		
@@ -988,7 +1023,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	private void paintSprout() {
 		this.removeAll();
 		addStarCoin();
-		addInGame_Field();
+		addField();
 		
 		count = 0;
 		
@@ -1008,7 +1043,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbPotatoText);
 		
 		jlbPotatoCount = new JLabel("보유개수: " + farmData.getCrop("Potato") + "개");
-		jlbPotatoCount.setFont(font);
+		jlbPotatoCount.setFont(font_count);
 		jlbPotatoCount.setHorizontalAlignment(SwingConstants.LEFT);
 		jlbPotatoCount.setBounds(x_potato, y_count, jlb_size, jlb_size);
 		add(jlbPotatoCount);
@@ -1023,6 +1058,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseReleased(MouseEvent e) {
 				if(jlbPotatoClickPress) {
 					setCursor("potato");
+					currentCrop = 1;
 				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbPotatoClick.getX() + e.getPoint().x;
@@ -1051,7 +1087,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbCarrotText);
 		
 		jlbCarrotCount = new JLabel("보유개수: " + farmData.getCrop("Carrot") + "개");
-		jlbCarrotCount.setFont(font);
+		jlbCarrotCount.setFont(font_count);
 		jlbCarrotCount.setHorizontalAlignment(SwingConstants.LEFT);
 		jlbCarrotCount.setBounds(x_carrot, y_count, jlb_size, jlb_size);
 		add(jlbCarrotCount);
@@ -1066,6 +1102,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseReleased(MouseEvent e) {
 				if(jlbCarrotClickPress) {
 					setCursor("carrot");
+					currentCrop = 2;
 				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbCarrotClick.getX() + e.getPoint().x;
@@ -1096,7 +1133,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbBeetrootText);
 		
 		jlbBeetrootCount = new JLabel("보유개수: " + farmData.getCrop("Beetroot") + "개");
-		jlbBeetrootCount.setFont(font);
+		jlbBeetrootCount.setFont(font_count);
 		jlbBeetrootCount.setHorizontalAlignment(SwingConstants.LEFT);
 		jlbBeetrootCount.setBounds(x_beetroot, y_count, jlb_size, jlb_size);
 		add(jlbBeetrootCount);
@@ -1249,8 +1286,73 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	 새싹 종료
 	 */
 	
+	/*
+	 물 뿌리개 시작
+	 */
+	private void paintWateringCan() {
+		this.removeAll();
+		addStarCoin();
+		addField();
+		
+		JLabel jlbWateringCan = new JLabel("뒤로가기");
+		jlbWateringCan.setFont(font);
+		jlbWateringCan.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbWateringCan.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+				jlbWateringCanPress = true;
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(jlbWateringCanPress) {
+					try {
+						paintInGame_Component();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+				mouseClickEffect = 0;
+				mouseClick.x = jlbWateringCan.getX() + e.getPoint().x;
+				mouseClick.y = jlbWateringCan.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+				jlbWateringCanPress = false;
+			}
+		});
+		jlbWateringCan.setBounds(getWidth() / 2 - 50 * resolution / 80 - 1, getHeight() - 160 * resolution / 80, 100, 30);
+		add(jlbWateringCan);
+	}
+	
+	/*
+	 물 뿌리개 종료
+	 */
+	
 	protected void setCursor(String key) {
 		this.setCursor(cursor.get(key));
+	}
+	
+	protected String getCropName(int id) {
+		switch(id) {
+			case 1:
+				return "Potato";
+			case 2:
+				return "Carrot";
+			case 3:
+				return "Beetroot";
+		}
+		return "";
+	}
+	
+	protected void refreshCount() {
+		if(jlbPotatoCount != null) {
+			jlbPotatoCount.setText("보유개수: " + farmData.getCrop("Potato") + "개");
+			jlbCarrotCount.setText("보유개수: " + farmData.getCrop("Carrot") + "개");
+			jlbBeetrootCount.setText("보유개수: " + farmData.getCrop("Beetroot") + "개");
+		}
 	}
 	
 	public void mouseClicked(MouseEvent e) {

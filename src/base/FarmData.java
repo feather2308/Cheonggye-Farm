@@ -20,6 +20,12 @@ public class FarmData {
 		crop.put("Potato", 0);
 		crop.put("Carrot", 0);
 		crop.put("Beetroot", 0);
+		
+		field.add(new int[] {0, 0});
+		field.add(new int[] {0, 0});
+		field.add(new int[] {0, 0});
+		field.add(new int[] {0, 0});
+		field.add(new int[] {0, 0});
 	}
 
 	private void callData() {
@@ -44,11 +50,11 @@ public class FarmData {
 		return field.get(i);
 	}
 	
-	public void setField(int i) {
-		field.set(i, new int[] {0, 0});
+	public void setField(int i, int[] value) { //[0 작물번호, 1 성장단계]
+		field.set(i, value);
 	}
 	
-	public void putField(int[] value) { //[0 작물번호, 1 성장단계]
+	public void putField(int[] value) { 
 		field.add(value);
 	}
 	
