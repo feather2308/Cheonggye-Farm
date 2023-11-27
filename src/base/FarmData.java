@@ -5,27 +5,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FarmData {
-	protected Map<String, Integer> crop = new HashMap<>();
-	protected ArrayList<int[]> field = new ArrayList<>();
-	protected int coin = 0;
+	private FarmCanvas farmCanvas;
 	
-	public FarmData() {
+	private Map<String, Integer> crop = new HashMap<>();
+	private ArrayList<int[]> field = new ArrayList<>();
+	private int coin = 0;
+	
+	public FarmData(FarmCanvas farmCanvas) {
+		this.farmCanvas = farmCanvas;
+		
 		setting();
 		callData();
 	}
 	
 	private void setting() {
-		coin = 0;
+		coin = 500;
 		
 		crop.put("Potato", 0);
+		crop.put("PotatoSeed", 0);
 		crop.put("Carrot", 0);
+		crop.put("CarrotSeed", 0);
 		crop.put("Beetroot", 0);
+		crop.put("BeetrootSeed", 0);
 		
-		field.add(new int[] {0, 0});
-		field.add(new int[] {0, 0});
-		field.add(new int[] {0, 0});
-		field.add(new int[] {0, 0});
-		field.add(new int[] {0, 0});
+		field.add(new int[] {0, 0, 0});
+		field.add(new int[] {0, 0, 0});
+		field.add(new int[] {0, 0, 0});
+		field.add(new int[] {0, 0, 0});
+		field.add(new int[] {0, 0, 0});
 	}
 
 	private void callData() {
@@ -46,6 +53,10 @@ public class FarmData {
 		else crop.put(name, crop.get(name) - count);
 	}
 
+	public ArrayList<int[]> getField() {
+		return field;
+	}
+	
 	public int[] getField(int i) {
 		return field.get(i);
 	}
@@ -58,7 +69,26 @@ public class FarmData {
 		field.add(value);
 	}
 	
-	public String getCoin() {
-		return coin + "";
+	public void checkField(int i) {
+		int[] temp = field.get(i);
+		if(temp[2] >= getCropTime(farmCanvas.getCropName(temp[0], false), temp[1]) && temp[1] != 4) {
+			temp[1]++;
+			temp[2] = 0;
+			field.set(i, temp);
+		}
+		farmCanvas.refreshField();
+	}
+	
+	private int getCropTime(String name, int level) {
+		return 10;
+	}
+	
+	public int getCoin() {
+		return coin;
+	}
+	
+	public void setCoin(int value, boolean plus) {
+		if(plus) coin += value;
+		else coin -= value;
 	}
 }
