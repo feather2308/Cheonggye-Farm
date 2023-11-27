@@ -900,116 +900,149 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	int x_shovel,	x_hoe;
 	
+	boolean jlbShovelBackPress = false;
+	
 	private void paintShovel() {
 		this.removeAll();
 		addStarCoin();
 		addField();
 		
-		count = 0;
-		
-		jlbShovel = new JLabel("");
-		jlbShovel.setBounds(x_shovel, y_image, jlb_size, jlb_size);
-		add(jlbShovel);
-		
-		jlbShovelText = new JLabel("땅 파기");
-		jlbShovelText.setFont(font);
-		jlbShovelText.setHorizontalAlignment(SwingConstants.CENTER);
-		jlbShovelText.setBounds(x_shovel, y_text, jlb_size, jlb_size);
-		add(jlbShovelText);
-		
-		jlbShovelClick = new JLabel();
-		jlbShovelClick.addMouseListener(new MouseListener() {
+		JLabel jlbShovelBack = new JLabel("뒤로가기");
+		jlbShovelBack.setFont(font);
+		jlbShovelBack.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbShovelBack.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
+				jlbShovelBackPress = true;
 			}
 			public void mouseReleased(MouseEvent e) {
-				mouseClickEffect = 0;
-				mouseClick.x = jlbShovelClick.getX() + e.getPoint().x;
-				mouseClick.y = jlbShovelClick.getY() + e.getPoint().y;
-				repaint();
-			}
-			public void mouseEntered(MouseEvent e) {
-			}
-			public void mouseExited(MouseEvent e) {
-			}
-		});
-		jlbShovelClick.setBounds(x_shovel - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
-		jlbShovelClick.setBorder(new LineBorder(Color.black, 1));
-		add(jlbShovelClick);
-		
-		jlbHoe = new JLabel("");
-		jlbHoe.setBounds(x_hoe, y_image, jlb_size, jlb_size);
-		add(jlbHoe);
-		
-		jlbHoeText = new JLabel("밭 갈기");
-		jlbHoeText.setFont(font);
-		jlbHoeText.setHorizontalAlignment(SwingConstants.CENTER);
-		jlbHoeText.setBounds(x_hoe, y_text, jlb_size, jlb_size);
-		add(jlbHoeText);
-		
-		jlbHoeClick = new JLabel();
-		jlbHoeClick.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-			}
-			public void mousePressed(MouseEvent e) {
-			}
-			public void mouseReleased(MouseEvent e) {
-				mouseClickEffect = 0;
-				mouseClick.x = jlbHoeClick.getX() + e.getPoint().x;
-				mouseClick.y = jlbHoeClick.getY() + e.getPoint().y;
-				repaint();
-			}
-			public void mouseEntered(MouseEvent e) {
-			}
-			public void mouseExited(MouseEvent e) {
-			}
-		});
-		jlbHoeClick.setBounds(x_hoe - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
-		jlbHoeClick.setBorder(new LineBorder(Color.black, 1));
-		add(jlbHoeClick);
-		
-		//뒤로가기
-//		jlbBack = new JLabel(new ImageIcon(cropImage_back.getSubimage(0, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
-		jlbBack = new JLabel();
-		jlbBack.setBounds(x_back_sh, y_image, jlb_size, jlb_size);
-		add(jlbBack);
-		
-		jlbBackText = new JLabel("뒤로가기");
-		jlbBackText.setFont(font);
-		jlbBackText.setHorizontalAlignment(SwingConstants.CENTER);
-		jlbBackText.setBounds(x_back_sh, y_text, jlb_size, jlb_size);
-		add(jlbBackText);
-		
-		jlbBackClick = new JLabel();
-		jlbBackClick.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-			}
-			public void mousePressed(MouseEvent e) {
-				jlbBackClickPress = true;
-			}
-			public void mouseReleased(MouseEvent e) {
-				if(jlbBackClickPress) {
+				if(jlbShovelBackPress) {
 					try {
 						paintInGame_Component();
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
 				}
+				
 				mouseClickEffect = 0;
-				mouseClick.x = jlbBackClick.getX() + e.getPoint().x;
-				mouseClick.y = jlbBackClick.getY() + e.getPoint().y;
+				mouseClick.x = jlbShovelBack.getX() + e.getPoint().x;
+				mouseClick.y = jlbShovelBack.getY() + e.getPoint().y;
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
 			}
 			public void mouseExited(MouseEvent e) {
-				jlbBackClickPress = false;
+				jlbShovelBackPress = false;
 			}
 		});
-		jlbBackClick.setBounds(x_back_sh - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
-		jlbBackClick.setBorder(new LineBorder(Color.black, 1));
-		add(jlbBackClick);
+		jlbShovelBack.setBounds(getWidth() / 2 - 50 * resolution / 80 - 1, getHeight() - 160 * resolution / 80, 100, 30);
+		jlbShovelBack.setBorder(new LineBorder(Color.black, 1));
+		add(jlbShovelBack);
+		
+//		jlbShovel = new JLabel("");
+//		jlbShovel.setBounds(x_shovel, y_image, jlb_size, jlb_size);
+//		add(jlbShovel);
+//		
+//		jlbShovelText = new JLabel("땅 파기");
+//		jlbShovelText.setFont(font);
+//		jlbShovelText.setHorizontalAlignment(SwingConstants.CENTER);
+//		jlbShovelText.setBounds(x_shovel, y_text, jlb_size, jlb_size);
+//		add(jlbShovelText);
+//		
+//		jlbShovelClick = new JLabel();
+//		jlbShovelClick.addMouseListener(new MouseListener() {
+//			public void mouseClicked(MouseEvent e) {
+//			}
+//			public void mousePressed(MouseEvent e) {
+//			}
+//			public void mouseReleased(MouseEvent e) {
+//				mouseClickEffect = 0;
+//				mouseClick.x = jlbShovelClick.getX() + e.getPoint().x;
+//				mouseClick.y = jlbShovelClick.getY() + e.getPoint().y;
+//				repaint();
+//			}
+//			public void mouseEntered(MouseEvent e) {
+//			}
+//			public void mouseExited(MouseEvent e) {
+//			}
+//		});
+//		jlbShovelClick.setBounds(x_shovel - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
+//		jlbShovelClick.setBorder(new LineBorder(Color.black, 1));
+//		add(jlbShovelClick);
+//		
+//		jlbHoe = new JLabel("");
+//		jlbHoe.setBounds(x_hoe, y_image, jlb_size, jlb_size);
+//		add(jlbHoe);
+//		
+//		jlbHoeText = new JLabel("밭 갈기");
+//		jlbHoeText.setFont(font);
+//		jlbHoeText.setHorizontalAlignment(SwingConstants.CENTER);
+//		jlbHoeText.setBounds(x_hoe, y_text, jlb_size, jlb_size);
+//		add(jlbHoeText);
+//		
+//		jlbHoeClick = new JLabel();
+//		jlbHoeClick.addMouseListener(new MouseListener() {
+//			public void mouseClicked(MouseEvent e) {
+//			}
+//			public void mousePressed(MouseEvent e) {
+//			}
+//			public void mouseReleased(MouseEvent e) {
+//				mouseClickEffect = 0;
+//				mouseClick.x = jlbHoeClick.getX() + e.getPoint().x;
+//				mouseClick.y = jlbHoeClick.getY() + e.getPoint().y;
+//				repaint();
+//			}
+//			public void mouseEntered(MouseEvent e) {
+//			}
+//			public void mouseExited(MouseEvent e) {
+//			}
+//		});
+//		jlbHoeClick.setBounds(x_hoe - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
+//		jlbHoeClick.setBorder(new LineBorder(Color.black, 1));
+//		add(jlbHoeClick);
+//		
+//		//뒤로가기
+////		jlbBack = new JLabel(new ImageIcon(cropImage_back.getSubimage(0, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+//		jlbBack = new JLabel();
+//		jlbBack.setBounds(x_back_sh, y_image, jlb_size, jlb_size);
+//		add(jlbBack);
+//		
+//		jlbBackText = new JLabel("뒤로가기");
+//		jlbBackText.setFont(font);
+//		jlbBackText.setHorizontalAlignment(SwingConstants.CENTER);
+//		jlbBackText.setBounds(x_back_sh, y_text, jlb_size, jlb_size);
+//		add(jlbBackText);
+//		
+//		jlbBackClick = new JLabel();
+//		jlbBackClick.addMouseListener(new MouseListener() {
+//			public void mouseClicked(MouseEvent e) {
+//			}
+//			public void mousePressed(MouseEvent e) {
+//				jlbBackClickPress = true;
+//			}
+//			public void mouseReleased(MouseEvent e) {
+//				if(jlbBackClickPress) {
+//					try {
+//						paintInGame_Component();
+//					} catch (IOException e1) {
+//						e1.printStackTrace();
+//					}
+//				}
+//				mouseClickEffect = 0;
+//				mouseClick.x = jlbBackClick.getX() + e.getPoint().x;
+//				mouseClick.y = jlbBackClick.getY() + e.getPoint().y;
+//				repaint();
+//			}
+//			public void mouseEntered(MouseEvent e) {
+//			}
+//			public void mouseExited(MouseEvent e) {
+//				jlbBackClickPress = false;
+//			}
+//		});
+//		jlbBackClick.setBounds(x_back_sh - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
+//		jlbBackClick.setBorder(new LineBorder(Color.black, 1));
+//		add(jlbBackClick);
 	}
 	
 	/*
@@ -1024,8 +1057,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		this.removeAll();
 		addStarCoin();
 		addField();
-		
-		count = 0;
 		
 		//이동 제어용 라벨
 		jlbPoint = new JLabel();
@@ -1324,6 +1355,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 		});
 		jlbWateringCan.setBounds(getWidth() / 2 - 50 * resolution / 80 - 1, getHeight() - 160 * resolution / 80, 100, 30);
+		jlbWateringCan.setBorder(new LineBorder(Color.black, 1));
 		add(jlbWateringCan);
 	}
 	
