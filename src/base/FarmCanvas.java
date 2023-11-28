@@ -423,6 +423,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			add(jlbTemp);
 			jlbCropTime.add(jlbTemp);
 		}
+		
+		
 	}
 
 	// 버튼 프레스 버그 관련 변수. -> 버튼 범위에서 나가면 클릭 안됨.
@@ -936,7 +938,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbLorePotato.setBorder(new LineBorder(Color.black, 1));
 		jlbLorePotato.setBounds(60 * resolution / 80, 265, 180, 15);
 		add(jlbLorePotato);
-		jlbLore2Potato = new JLabel("보유개수: !!!");
+		jlbLore2Potato = new JLabel("보유개수: " + farmData.getCrop("Potato") +  "개");
 		jlbLore2Potato.setBorder(new LineBorder(Color.black, 1));
 		jlbLore2Potato.setBounds(60 * resolution / 80, 285, 180, 15);
 		add(jlbLore2Potato);
