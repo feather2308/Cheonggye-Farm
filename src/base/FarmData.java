@@ -5,6 +5,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FarmData {
+	class InGameTime {
+		int day;
+		int hour, minute;
+		
+		public InGameTime() {
+			day = 0;
+			hour = 0;
+			minute = 0;
+		}
+		
+		protected void add(int time) {
+			minute += time;
+			check();
+		}
+		
+		private void check() {
+			if(minute >= 60) {
+				hour += 1;
+				minute = 0;
+			}
+			if(hour >= 24) {
+				day += 1;
+				hour = 0;
+			}
+		}
+	}
+
+	protected InGameTime time;
+	
 	private FarmCanvas farmCanvas;
 	
 	private Map<String, Integer> crop = new HashMap<>();
@@ -13,6 +42,7 @@ public class FarmData {
 	
 	public FarmData(FarmCanvas farmCanvas) {
 		this.farmCanvas = farmCanvas;
+		time = new InGameTime();
 		
 		setting();
 		callData();
@@ -28,11 +58,11 @@ public class FarmData {
 		crop.put("Beetroot", 0);
 		crop.put("BeetrootSeed", 0);
 		
-		field.add(new int[] {0, 0, 0});
-		field.add(new int[] {0, 0, 0});
-		field.add(new int[] {0, 0, 0});
-		field.add(new int[] {0, 0, 0});
-		field.add(new int[] {0, 0, 0});
+		field.add(new int[] {0, 0, 0, 0});
+		field.add(new int[] {0, 0, 0, 0});
+		field.add(new int[] {0, 0, 0, 0});
+		field.add(new int[] {0, 0, 0, 0});
+		field.add(new int[] {0, 0, 0, 0});
 	}
 
 	private void callData() {
@@ -61,7 +91,7 @@ public class FarmData {
 		return field.get(i);
 	}
 	
-	public void setField(int i, int[] value) { //[0 작물번호, 1 성장단계]
+	public void setField(int i, int[] value) { //[0 작물번호, 1 성장단계, 2 성장시간, 3 성장목표시간]
 		field.set(i, value);
 	}
 	
