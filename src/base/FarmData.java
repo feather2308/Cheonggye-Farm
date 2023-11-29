@@ -49,7 +49,7 @@ public class FarmData {
 	}
 	
 	private void setting() {
-		coin = 500;
+		coin = 50;
 		
 		crop.put("Potato", 0);
 		crop.put("PotatoSeed", 0);
@@ -58,11 +58,11 @@ public class FarmData {
 		crop.put("Beetroot", 0);
 		crop.put("BeetrootSeed", 0);
 		
-		field.add(new int[] {0, 0, 0, 0});
-		field.add(new int[] {0, 0, 0, 0});
-		field.add(new int[] {0, 0, 0, 0});
-		field.add(new int[] {0, 0, 0, 0});
-		field.add(new int[] {0, 0, 0, 0});
+		field.add(new int[] {0, 0, 0});
+		field.add(new int[] {0, 0, 0});
+		field.add(new int[] {0, 0, 0});
+		field.add(new int[] {0, 0, 0});
+		field.add(new int[] {0, 0, 0});
 	}
 
 	private void callData() {
@@ -109,7 +109,7 @@ public class FarmData {
 		farmCanvas.refreshField();
 	}
 	
-	private int getCropTime(String name, int level) {
+	public int getCropTime(String name, int level) {
 		return 10;
 	}
 	
