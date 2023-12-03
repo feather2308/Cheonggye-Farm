@@ -94,6 +94,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected Point mouseClick = new Point();
 	protected Point mouseCursor = new Point();
 
+	protected final String inGame_bat = "/resource/inGame/bat.png";
+	protected BufferedImage inGameImage_bat;
+	
 	// 더블버퍼링용 변수
 	protected Graphics bufferGraphics = null;
 	protected Image offscreen;
@@ -155,7 +158,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		};
 
 		// 초기 지연시간, 주기, 시간 단위를 설정하여 타이머 작업을 스케줄합니다.
-		scheduler.scheduleAtFixedRate(task, 0, 1000, TimeUnit.MILLISECONDS);
+		scheduler.scheduleAtFixedRate(task, 0, 500, TimeUnit.MILLISECONDS);
 
 		requestFocus();
 		repaint();
@@ -367,6 +370,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	private void loading_InGame() throws IOException {
 		farmData.time.reset();
+		inGameImage_bat = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_bat)));
 		inGameImage_btn = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_btn)));
 		inGameImage_background = ImageIO
 				.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background)));
@@ -397,7 +401,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbPointField.setBounds(0, 0, 0, 0);
 		int x = jlbPointField.getX();
 		
+		jlbBat = new ArrayList<>();
 		jlbCropField = new ArrayList<>();
+		jlbCropText = new ArrayList<>();
+		jlbCropTime = new ArrayList<>();
 		for (int i = 0; i < farmData.getField().size(); i++) {
 			ImageIcon jlbImage = null;
 			if (farmData.getField(i)[0] != 0)
@@ -405,14 +412,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 						cropImage.get(farmData.getField(i)[0]).getSubimage(100 * farmData.getField(i)[1], 0, 100, 100));
 			JLabel jlbTemp = new JLabel(jlbImage);
 			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
-			jlbTemp.setBorder(new LineBorder(Color.black, 1));
 			add(jlbTemp);
 			jlbCropField.add(jlbTemp);
-		}
-		
-		jlbCropText = new ArrayList<>();
-		for (int i = 0; i < farmData.getField().size(); i++) {
-			JLabel jlbTemp = null;
+			
+			jlbTemp = null;
 			if(farmData.getField(i)[0] != 0)
 				jlbTemp = new JLabel(getCropName(farmData.getField(i)[0], false, true));
 			else jlbTemp = new JLabel("밭");
@@ -421,11 +424,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			jlbTemp.setHorizontalAlignment(SwingConstants.CENTER);
 			add(jlbTemp);
 			jlbCropText.add(jlbTemp);
-		}
-		
-		jlbCropTime = new ArrayList<>();
-		for (int i = 0; i < farmData.getField().size(); i++) {
-			JLabel jlbTemp = null;
+			
+			jlbTemp = null;
 			if(farmData.getField(i)[0] != 0 && farmData.getField(i)[1] != 4)
 				jlbTemp = new JLabel((int)((float) farmData.getField(i)[2] / farmData.getCropTime(getCropName(farmData.getField(i)[0], false, false), farmData.getField(i)[1]) * 100) + "% 성장");
 			else if(farmData.getField(i)[0] == 4) jlbTemp = new JLabel("수확"); else jlbTemp = new JLabel("씨앗 심기");
@@ -434,6 +434,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			jlbTemp.setHorizontalAlignment(SwingConstants.CENTER);
 			add(jlbTemp);
 			jlbCropTime.add(jlbTemp);
+			
+			jlbImage = new ImageIcon(inGameImage_bat.getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH));
+			jlbTemp = new JLabel(jlbImage);
+			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
+			add(jlbTemp);
+			jlbBat.add(jlbTemp);
 		}
 	}
 
@@ -1202,7 +1208,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			jlbLore2Carrot.setText("당근씨앗 " + farmData.getCrop("CarrotSeed") + "개, 당근 " + farmData.getCrop("Carrot") + "개");
 	}
 
-	ArrayList<JLabel> jlbCropField, jlbCropText, jlbCropTime;
+	ArrayList<JLabel> jlbCropField, jlbCropText, jlbCropTime, jlbBat;
 	Map<Integer, BufferedImage> cropImage;
 	JLabel jlbShop;
 
@@ -1250,6 +1256,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			add(jlbCropField.get(i));
 			add(jlbCropText.get(i));
 			add(jlbCropTime.get(i));
+			add(jlbBat.get(i));
 		}
 		
 		// [0 - 마우스 x축 움직인 정도, 1 - 마우스 초기 x좌표, 2 - 컴포넌트 초기 x좌표]
@@ -1288,7 +1295,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 		});
 		mouseControl.setBounds(0, getHeight() / 2 - 130 * resolution / 80, getWidth(), 230 * resolution / 80);
-		mouseControl.setBorder(new LineBorder(Color.black, 1));
 		add(mouseControl);
 	}
 
@@ -1319,6 +1325,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			jlbCropField.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
 			jlbCropText.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 35 * resolution / 80, 100 * resolution / 80, 20 * resolution / 80);
 			jlbCropTime.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 60 * resolution / 80, 100 * resolution / 80, 20 * resolution / 80);
+			jlbBat.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
 		}
 	}
 
