@@ -10,6 +10,10 @@ public class FarmData {
 		int hour, minute;
 		
 		public InGameTime() {
+			reset();
+		}
+		
+		protected void reset() {
 			day = 0;
 			hour = 0;
 			minute = 0;
@@ -37,6 +41,7 @@ public class FarmData {
 	private FarmCanvas farmCanvas;
 	
 	private Map<String, Integer> crop = new HashMap<>();
+	private Map<String, Integer> cropTime = new HashMap<>();
 	private ArrayList<int[]> field = new ArrayList<>();
 	private int coin = 0;
 	
@@ -58,8 +63,22 @@ public class FarmData {
 		crop.put("Beetroot", 0);
 		crop.put("BeetrootSeed", 0);
 		
-		field.add(new int[] {0, 0, 0});
-		field.add(new int[] {0, 0, 0});
+		cropTime.put("Potato0", 10);
+		cropTime.put("Potato1", 10);
+		cropTime.put("Potato2", 20);
+		cropTime.put("Potato3", 30);
+		cropTime.put("Potato4", 40);
+		cropTime.put("Carrot0", 15);
+		cropTime.put("Carrot1", 15);
+		cropTime.put("Carrot2", 30);
+		cropTime.put("Carrot3", 45);
+		cropTime.put("Carrot4", 60);
+		cropTime.put("Beetroot0", 20);
+		cropTime.put("Beetroot1", 20);
+		cropTime.put("Beetroot2", 40);
+		cropTime.put("Beetroot3", 60);
+		cropTime.put("Beetroot4", 80);
+		
 		field.add(new int[] {0, 0, 0});
 		field.add(new int[] {0, 0, 0});
 		field.add(new int[] {0, 0, 0});
@@ -91,7 +110,7 @@ public class FarmData {
 		return field.get(i);
 	}
 	
-	public void setField(int i, int[] value) { //[0 작물번호, 1 성장단계, 2 성장시간, 3 성장목표시간]
+	public void setField(int i, int[] value) { //[0 작물번호, 1 성장단계, 2 성장시간]
 		field.set(i, value);
 	}
 	
@@ -101,7 +120,7 @@ public class FarmData {
 	
 	public void checkField(int i) {
 		int[] temp = field.get(i);
-		if(temp[2] >= getCropTime(farmCanvas.getCropName(temp[0], false), temp[1]) && temp[1] != 4) {
+		if(temp[2] >= getCropTime(farmCanvas.getCropName(temp[0], false, false), temp[1]) && temp[1] != 4) {
 			temp[1]++;
 			temp[2] = 0;
 			field.set(i, temp);
@@ -110,7 +129,11 @@ public class FarmData {
 	}
 	
 	public int getCropTime(String name, int level) {
-		return 10;
+		try {
+		return cropTime.get(name + Integer.toString(level));
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 	
 	public int getCoin() {

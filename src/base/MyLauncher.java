@@ -96,35 +96,6 @@ public class MyLauncher extends JFrame {
 		comboBox.setBackground(Color.white);
 		contentPane.add(comboBox);
 		
-		JButton btnDescription = new JButton("설명");
-		btnDescription.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            	addHelp();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            	btnDescription.setBackground(Color.LIGHT_GRAY);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-            	btnDescription.setBackground(Color.white);
-            }
-        });
-		btnDescription.setFont(font);
-		btnDescription.setBounds(220, 226, 65, 25);
-		btnDescription.setBackground(Color.white);
-		contentPane.add(btnDescription);
-		
 		JButton btnStart = new JButton("시작");
 		btnStart.addMouseListener(new MouseListener() {
             @Override
@@ -186,42 +157,6 @@ public class MyLauncher extends JFrame {
 		contentPane.add(btnExit);
 	}
 	
-	private void addHelp() {
-		this.getContentPane().removeAll();
-		
-		setTitle("청계 농장 - 도움말");
-		setBounds(this.getBounds().x, this.getBounds().y, 300, 500);
-		JButton btnBack = new JButton("뒤로가기");
-		btnBack.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            	addLauncher();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            	btnBack.setBackground(Color.LIGHT_GRAY);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-            	btnBack.setBackground(Color.white);
-            }
-        });
-		btnBack.setFont(font);
-		btnBack.setBounds(this.getWidth()-110, this.getHeight()-80, 80, 25);
-		btnBack.setBackground(Color.white);
-		contentPane.add(btnBack);
-	}
-	
 	private void addMyFarm() {
 		this.getContentPane().removeAll();
 		
@@ -255,3 +190,4 @@ public class MyLauncher extends JFrame {
     	contentPane.add(farmCanvas);
 	}
 }
+
