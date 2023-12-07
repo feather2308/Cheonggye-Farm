@@ -1206,6 +1206,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			jlbLore2Potato.setText("씨감자 " + farmData.getCrop("PotatoSeed") + "개, 감자 " + farmData.getCrop("Potato") + "개");
 		if(jlbLore2Carrot != null)
 			jlbLore2Carrot.setText("당근씨앗 " + farmData.getCrop("CarrotSeed") + "개, 당근 " + farmData.getCrop("Carrot") + "개");
+		if(jlbLore2beetroot != null)
+			jlbLore2beetroot.setText("비트씨앗 " + farmData.getCrop("beetrootSeed") + "개, 캐럿 " + farmData.getCrop("Beetroot") + "개");
 	}
 
 	ArrayList<JLabel> jlbCropField, jlbCropText, jlbCropTime, jlbBat;
@@ -1791,8 +1793,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		// 비트
 //      비트 이거 이미지 가져오기
-//      jlbBeetroot = new JLabel(new ImageIcon(cropImage_beetroot.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
-		jlbBeetroot = new JLabel();
+	
+        jlbBeetroot = new JLabel(new ImageIcon(cropImage_beetroot.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		//jlbBeetroot = new JLabel();
 		jlbBeetroot.setBounds(x_beetroot, y_image, jlb_size, jlb_size);
 		add(jlbBeetroot);
 
