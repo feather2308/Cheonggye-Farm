@@ -8,22 +8,29 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
+
+import java.io.BufferedInputStream;
 import java.io.IOException;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 @SuppressWarnings("serial")
 public class MyLauncher extends JFrame {
 	protected final String mapleFont = "/resource/MAPLESTORY BOLD.TTF",
 						   icon 	 = "/resource/icon32x32.png";
+	protected final String image_path = "/resource/main.png";
+	protected BufferedImage image;
 
 	private JPanel contentPane;
 	@SuppressWarnings("rawtypes")
@@ -46,7 +53,12 @@ public class MyLauncher extends JFrame {
 
 	public MyLauncher() {
 		setBounds(100, 100, 450, 300);
-		addLauncher();
+		try {
+			addLauncher();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Font createFont() {
@@ -61,13 +73,13 @@ public class MyLauncher extends JFrame {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void addLauncher() {
+	private void addLauncher() throws IOException {
 		this.getContentPane().removeAll();
 		
 		setResizable(false);
 		setTitle("청계 농장");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(this.getBounds().x, this.getBounds().y, 450, 300);
+		setBounds(this.getBounds().x, this.getBounds().y, 480, 300);
 		ImageIcon imageIcon = new ImageIcon(getClass().getResource(icon).getPath());
 		setIconImage(imageIcon.getImage());
 		contentPane = new JPanel();
@@ -77,20 +89,21 @@ public class MyLauncher extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblLogo = new JLabel("로고 라벨");
+		image = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(image_path)));
+		
+		JLabel lblLogo = new JLabel(new ImageIcon(image.getScaledInstance(480, 270, Image.SCALE_SMOOTH)));
 		lblLogo.setFont(font);
-		lblLogo.setBounds(12, 10, 52, 15);
-		contentPane.add(lblLogo);
+		lblLogo.setBounds(0, 0, 480, 270);
 		
 		JLabel lblResolution = new JLabel("해상도");
 		lblResolution.setFont(font);
-		lblResolution.setBounds(284, 196, 36, 15);
+		lblResolution.setBounds(325, 205, 36, 15);
 		lblResolution.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblResolution);
 		
 		comboBox = new JComboBox();
 		comboBox.setFont(font);
-		comboBox.setBounds(332, 191, 90, 25);
+		comboBox.setBounds(370, 200, 90, 25);
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"960x540", "1280x720", "1600x900", "1920x1080", "2560x1440"}));
 		comboBox.setSelectedIndex(1);
 		comboBox.setBackground(Color.white);
@@ -122,7 +135,7 @@ public class MyLauncher extends JFrame {
             }
         });
 		btnStart.setFont(font);
-		btnStart.setBounds(290, 226, 65, 25);
+		btnStart.setBounds(325, 230, 65, 25);
 		btnStart.setBackground(Color.white);
 		contentPane.add(btnStart);
 		
@@ -152,9 +165,11 @@ public class MyLauncher extends JFrame {
             }
         });
 		btnExit.setFont(font);
-		btnExit.setBounds(360, 226, 65, 25);
+		btnExit.setBounds(395, 230, 65, 25);
 		btnExit.setBackground(Color.white);
 		contentPane.add(btnExit);
+		
+		contentPane.add(lblLogo);
 	}
 	
 	private void addMyFarm() {
