@@ -79,6 +79,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String crop_potato = "/resource/inGame/crop/potato.png";
 	protected final String crop_carrot = "/resource/inGame/crop/carrot.png";
 	protected final String crop_beetroot = "/resource/inGame/crop/beetroot.png";
+	protected final String poultry_farm = "/resource/inGame/poultry/poultryfarm.png";
+	protected final String poultry_farmfood = "/resource/inGame/poultry/poultryfarmfood.png";
+	protected final String poultry_x = "/resource/inGame/poultry/x.png";
 	
 	protected final String[] mainLobby_logo = {
 			"/resource/mainLobby/logo1.png",
@@ -124,6 +127,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage cropImage_potato;
 	protected BufferedImage cropImage_carrot;
 	protected BufferedImage cropImage_beetroot;
+	protected BufferedImage poultryImage_farm;
+	protected BufferedImage poultryImage_farmfood;
+	protected BufferedImage poultryImage_x;
 	
 	protected Image[] mainLobbyImage_logo;
 	protected Image[] mainLobbyImage_cloud1;
@@ -155,11 +161,13 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected boolean pa_inGame = false;
 	protected boolean pa_bottomInfo = false;
 	protected boolean pa_shop = false;
+	protected boolean pa_poultryFarm = false;
 
 	// paint component
 	protected boolean pa_mainLobbyComponent = true;
 	protected boolean pa_inGameComponent = false;
 	protected boolean pa_shopComponent = false;
+	protected boolean pa_poultryFarmComponent = false;
 
 	// loading image
 	protected boolean la_mainLobby = true;
@@ -295,7 +303,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				e.printStackTrace();
 			}
 		}
-
+		
 		if (pa_inGame) {
 			try {
 				paintInGame();
@@ -307,6 +315,14 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		if (pa_shop) {
 			try {
 				paintShop();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if(pa_poultryFarm) {
+			try {
+				paintPoultryFarm();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -497,6 +513,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		jlbPointField = new JLabel();
 		jlbPointField.setBounds(0, 0, 0, 0);
+		
+		poultryImage_farm = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_farm)));
+		poultryImage_farmfood = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_farmfood)));
+		poultryImage_x = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_x)));
 	}
 
 	private void loading_Field() throws IOException {
@@ -1480,7 +1500,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(press) {
-					
+					pa_poultryFarm = true;
+					pa_poultryFarmComponent = true;
 				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbChickenHouse.getX() + e.getPoint().x;
@@ -2328,7 +2349,71 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	/*
 	 * 물 뿌리개 종료
 	 */
-
+	
+	private void paintPoultryFarm() throws IOException {
+		if(pa_poultryFarmComponent) {
+			paintPoultryFarm_Component();
+			pa_poultryFarmComponent = false;
+		}
+	}
+	
+	private void paintPoultryFarm_Component() throws IOException {
+		JLabel jlbOpaque = new JLabel();
+		jlbOpaque.setBackground(new Color(0, 0, 0, 125));
+		jlbOpaque.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseReleased(MouseEvent e) {
+				mouseClickEffect = 0;
+				mouseClick.x = jlbOpaque.getX() + e.getPoint().x;
+				mouseClick.y = jlbOpaque.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+			}
+		});
+		jlbOpaque.setOpaque(true);
+		jlbOpaque.setBounds(0, 0, getWidth(), getHeight());
+		add(jlbOpaque, 0);
+		
+		JLabel jlbPoultry = new JLabel(new ImageIcon(poultryImage_farm));
+		jlbPoultry.setBounds(getWidth() / 2 - 250 * resolution / 80 - 1, getHeight() / 2 - 250 * resolution / 80 - 1, 500 * resolution / 80, 500 * resolution / 80);
+		jlbPoultry.setBorder(new LineBorder(Color.black, 5));
+		add(jlbPoultry, 0);
+		
+		JLabel jlbX = new JLabel(new ImageIcon(poultryImage_x.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+		jlbX.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+				press = true;
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(press) {
+					pa_poultryFarm = false;
+					pa_inGameComponent = true;
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbX.getX() + e.getPoint().x;
+				mouseClick.y = jlbX.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+				press = false;
+			}
+		});
+		jlbX.setBounds(getWidth() / 2 + 235 * resolution / 80 - 1, getHeight() / 2 - 265 * resolution / 80, 30 * resolution / 80, 30 * resolution / 80);
+		jlbX.setBorder(new LineBorder(Color.black, 2));
+		add(jlbX, 0);
+	}
+	
 	private void setCursor(String key) {
 		this.setCursor(cursor.get(key));
 	}
