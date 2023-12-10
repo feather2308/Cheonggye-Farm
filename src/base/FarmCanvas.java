@@ -67,6 +67,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String inGame_fertilizer = "/resource/inGame/fertilizer.png";
 	protected final String inGame_shovel = "/resource/inGame/shovel.png";
 	protected final String inGame_background = "/resource/inGame/background.png";
+	protected final String inGame_background_dawn = "/resource/inGame/background_dawn.png";
+	protected final String inGame_background_sunset = "/resource/inGame/background_sunset.png";
+	protected final String inGame_background_evening = "/resource/inGame/background_evening.png";
 	protected final String inGame_btn = "/resource/inGame/btn.png";
 	protected final String inGame_shop = "/resource/inGame/shop.png";
 	protected final String inGame_chickenhouse = "/resource/inGame/chickenhouse.png";
@@ -94,6 +97,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected Image mainLobbyImage_chicken;
 	protected Image mainLobbyImage_singsing;
 	protected Image inGameImage_background;
+	protected Image inGameImage_background_dawn;
+	protected Image inGameImage_background_sunset;
+	protected Image inGameImage_background_evening;
 	protected Image inGameImage_starcoin;
 	
 	protected BufferedImage cursorImage_chicken;
@@ -458,6 +464,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		inGameImage_btn = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_btn)));
 		inGameImage_background = ImageIO
 				.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background)));
+		inGameImage_background_dawn = ImageIO
+				.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background_dawn)));
+		inGameImage_background_sunset = ImageIO
+				.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background_sunset)));
+		inGameImage_background_evening = ImageIO
+				.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background_evening)));
 		inGameImage_starcoin = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_starcoin)));
 		inGameImage_shovel = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shovel)));
 		inGameImage_sprout = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_sprout)));
@@ -501,7 +513,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				jlbImage = new ImageIcon(
 						cropImage.get(farmData.getField(i)[0]).getSubimage(100 * farmData.getField(i)[1], 0, 100, 100));
 			JLabel jlbTemp = new JLabel(jlbImage);
-			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
+			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 60 * resolution / 80, 90 * resolution / 80, 90 * resolution / 80);
 			add(jlbTemp);
 			jlbCropField.add(jlbTemp);
 			
@@ -510,7 +522,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				jlbTemp = new JLabel(getCropName(farmData.getField(i)[0], false, true));
 			else jlbTemp = new JLabel("밭");
 			jlbTemp.setFont(font);
-			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 35 * resolution / 80, 100 * resolution / 80, 20 * resolution / 80);
+			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 35 * resolution / 80, 90 * resolution / 80, 20 * resolution / 80);
 			jlbTemp.setHorizontalAlignment(SwingConstants.CENTER);
 			add(jlbTemp);
 			jlbCropText.add(jlbTemp);
@@ -520,14 +532,14 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				jlbTemp = new JLabel((int)((float) farmData.getField(i)[2] / farmData.getCropTime(getCropName(farmData.getField(i)[0], false, false), farmData.getField(i)[1]) * 100) + "% 성장");
 			else if(farmData.getField(i)[0] == 4) jlbTemp = new JLabel("수확"); else jlbTemp = new JLabel("씨앗 심기");
 			jlbTemp.setFont(font);
-			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 60 * resolution / 80, 100 * resolution / 80, 20 * resolution / 80);
+			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 60 * resolution / 80, 90 * resolution / 80, 20 * resolution / 80);
 			jlbTemp.setHorizontalAlignment(SwingConstants.CENTER);
 			add(jlbTemp);
 			jlbCropTime.add(jlbTemp);
 			
-			jlbImage = new ImageIcon(inGameImage_bat.getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH));
+			jlbImage = new ImageIcon(inGameImage_bat.getScaledInstance(95 * resolution / 80, 95 * resolution / 80, Image.SCALE_SMOOTH));
 			jlbTemp = new JLabel(jlbImage);
-			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
+			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 60 * resolution / 80, 90 * resolution / 80, 90 * resolution / 80);
 			add(jlbTemp);
 			jlbBat.add(jlbTemp);
 		}
@@ -703,7 +715,45 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			paintInGame_Component();
 			pa_inGameComponent = false;
 		}
-		bufferGraphics.drawImage(inGameImage_background, 0, 0, getWidth(), getHeight(), null);
+		
+		switch(farmData.time.hour) {
+		case 0:
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 21:
+		case 22:
+		case 23:
+		case 24:
+			bufferGraphics.drawImage(inGameImage_background_dawn, 0, 0, getWidth(), getHeight(), null);
+			break;
+		case 5:
+		case 6:
+		case 17:
+		case 18:
+			bufferGraphics.drawImage(inGameImage_background_sunset, 0, 0, getWidth(), getHeight(), null);
+			break;
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		case 12:
+		case 13:
+		case 14:
+		case 15:
+		case 16:
+			bufferGraphics.drawImage(inGameImage_background, 0, 0, getWidth(), getHeight(), null);
+			break;
+		case 19:
+		case 20:
+			bufferGraphics.drawImage(inGameImage_background_evening, 0, 0, getWidth(), getHeight(), null);
+			break;
+		default:
+			bufferGraphics.drawImage(inGameImage_background, 0, 0, getWidth(), getHeight(), null);
+			break;
+		}
 
 //      //중앙점
 //      bufferGraphics.setColor(Color.black);
@@ -1586,10 +1636,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbShop.setBounds(x + (50) * resolution / 80, (getHeight() - 100) / 2 - 70 * resolution / 80, 200 * resolution / 80, 200 * resolution / 80);
 		setCloud();
 		for (int i = 0; i < jlbCropField.size(); i++) {
-			jlbCropField.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
-			jlbCropText.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 35 * resolution / 80, 100 * resolution / 80, 20 * resolution / 80);
-			jlbCropTime.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 60 * resolution / 80, 100 * resolution / 80, 20 * resolution / 80);
-			jlbBat.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
+			jlbCropField.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 60 * resolution / 80, 90 * resolution / 80, 90 * resolution / 80);
+			jlbCropText.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 35 * resolution / 80, 90 * resolution / 80, 20 * resolution / 80);
+			jlbCropTime.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 60 * resolution / 80, 90 * resolution / 80, 20 * resolution / 80);
+			jlbBat.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 60 * resolution / 80, 90 * resolution / 80, 90 * resolution / 80);
 		}
 	}
 	

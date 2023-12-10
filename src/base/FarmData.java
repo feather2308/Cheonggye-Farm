@@ -15,7 +15,7 @@ public class FarmData {
 		
 		protected void reset() {
 			day = 0;
-			hour = 0;
+			hour = 7;
 			minute = 0;
 		}
 		
