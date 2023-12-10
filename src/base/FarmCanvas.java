@@ -69,7 +69,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String inGame_background = "/resource/inGame/background.png";
 	protected final String inGame_btn = "/resource/inGame/btn.png";
 	protected final String inGame_shop = "/resource/inGame/shop.png";
+	protected final String inGame_chickenhouse = "/resource/inGame/chickenhouse.png";
 	protected final String inGame_back = "/resource/inGame/back.png";
+	protected final String inGame_cloud1 = "/resource/inGame/cloud1.png";
+	protected final String inGame_cloud2 = "/resource/inGame/cloud2.png";
 	protected final String crop_potato = "/resource/inGame/crop/potato.png";
 	protected final String crop_carrot = "/resource/inGame/crop/carrot.png";
 	protected final String crop_beetroot = "/resource/inGame/crop/beetroot.png";
@@ -108,7 +111,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage	inGameImage_shovel;
 	protected BufferedImage inGameImage_btn;
 	protected BufferedImage inGameImage_shop;
+	protected BufferedImage inGameImage_chickenhouse;
 	protected BufferedImage inGameImage_back;
+	protected BufferedImage inGameImage_cloud1;
+	protected BufferedImage inGameImage_cloud2;
 	protected BufferedImage cropImage_potato;
 	protected BufferedImage cropImage_carrot;
 	protected BufferedImage cropImage_beetroot;
@@ -157,6 +163,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	JLabel jlbTimeText;
 	JLabel jlbShop;
 	JLabel jlbShopBack;
+	JLabel jlbChickenHouse;
+	JLabel jlbCloud1, jlbCloud2;
 	JLabel jlbPicturePotato, jlbLorePotato, jlbLore2Potato, jlbLore3Potato, jlbBuyPotato, jlbSellPotato;
 	JLabel jlbPictureCarrot, jlbLoreCarrot, jlbLore2Carrot, jlbLore3Carrot, jlbBuyCarrot, jlbSellCarrot;
 	JLabel jlbPictureBeetroot, jlbLoreBeetroot, jlbLore2Beetroot, jlbLore3Beetroot, jlbBuyBeetroot, jlbSellBeetroot;
@@ -183,6 +191,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	int jlb_size, jlb_click_x_size, jlb_click_y_size;
 	int count, sprout_camera_max, field_camera_max;
 	int currentCrop = 0;
+	int cloud_x = -getWidth();
 
 	public FarmCanvas(MyLauncher myLauncher, int resolution) {
 		this.myLauncher = myLauncher;
@@ -248,6 +257,15 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 						mainLobby_cloud_stat++;
 					else
 						mainLobby_cloud_stat = 0;
+				}
+				if (pa_inGame) {
+					if(jlbPointField != null) {
+						if(getWidth() - cloud_x - jlbPointField.getX() < 0) {
+							cloud_x = -getWidth();
+						}
+					}
+					cloud_x++;
+					setCloud();
 				}
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -418,11 +436,14 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		cursorImage_chicken = ImageIO.read(getClass().getResourceAsStream(cursor_chicken));
 		cursorImage_potato = ImageIO.read(getClass().getResourceAsStream(cursor_potato));
 		cursorImage_carrot = ImageIO.read(getClass().getResourceAsStream(cursor_carrot));
+		cursorImage_beetroot = ImageIO.read(getClass().getResourceAsStream(cursor_beetroot));
 		customCursor_chicken = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_chicken, new Point(0, 0),
 				"Custom Cursor");
 		customCursor_potato = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_potato, new Point(0, 0),
 				"Custom Cursor");
 		customCursor_carrot = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_carrot, new Point(0, 0),
+				"Custom Cursor");
+		customCursor_beetroot = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_beetroot, new Point(0, 0),
 				"Custom Cursor");
 
 		cursor.put("chicken", customCursor_chicken);
@@ -451,7 +472,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		cropImage_beetroot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_beetroot)));
 
 		inGameImage_shop = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shop)));
+		inGameImage_chickenhouse = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_chickenhouse)));
 		inGameImage_back = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_back)));
+		
+		inGameImage_cloud1 = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_cloud1)));
+		inGameImage_cloud2 = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_cloud2)));
 		
 		cropImage = new HashMap<>();
 		cropImage.put(1, cropImage_potato);
@@ -1387,8 +1412,15 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	}
 
 	private void addField() {
-//		JLabel jlbChickenHouse = new JLabel(new ImageIcon(inGameImage_chickenhouse.getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
-		JLabel jlbChickenHouse = new JLabel();
+		jlbCloud1 = new JLabel(new ImageIcon(inGameImage_cloud1.getScaledInstance(225 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbCloud1.setBounds(jlbPointField.getX() + cloud_x, 20 * resolution / 80, 225 * resolution / 80, 100 * resolution / 80);
+		add(jlbCloud1);
+		
+		jlbCloud2 = new JLabel(new ImageIcon(inGameImage_cloud2.getScaledInstance(235 * resolution / 80, 95 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbCloud2.setBounds(jlbPointField.getX() + cloud_x + getWidth() / 2, 100 * resolution / 80, 235 * resolution / 80, 95 * resolution / 80);
+		add(jlbCloud2);
+		
+		jlbChickenHouse = new JLabel(new ImageIcon(inGameImage_chickenhouse.getSubimage(0, 35, 168, 98).getScaledInstance(168 * resolution / 80, 98 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbChickenHouse.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
@@ -1411,8 +1443,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				press = false;
 			}
 		});
-		jlbChickenHouse.setBounds(250 * resolution / 80, getHeight() / 2 - 180 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
-		jlbChickenHouse.setBorder(new LineBorder(Color.black, 1));
+		jlbChickenHouse.setBounds(jlbPointField.getX() + 250 * resolution / 80, getHeight() / 2 - 165 * resolution / 80, 168 * resolution / 80, 98 * resolution / 80);
 		add(jlbChickenHouse);
 		
 		jlbShop = new JLabel(new ImageIcon(inGameImage_shop.getScaledInstance(200 * resolution / 80,
@@ -1551,12 +1582,21 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 		int x = jlbPointField.getX();
 
+		jlbChickenHouse.setBounds(x + 250 * resolution / 80, getHeight() / 2 - 165 * resolution / 80, 168 * resolution / 80, 98 * resolution / 80);
 		jlbShop.setBounds(x + (50) * resolution / 80, (getHeight() - 100) / 2 - 70 * resolution / 80, 200 * resolution / 80, 200 * resolution / 80);
+		setCloud();
 		for (int i = 0; i < jlbCropField.size(); i++) {
 			jlbCropField.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
 			jlbCropText.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 35 * resolution / 80, 100 * resolution / 80, 20 * resolution / 80);
 			jlbCropTime.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 + 60 * resolution / 80, 100 * resolution / 80, 20 * resolution / 80);
 			jlbBat.get(i).setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 70 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
+		}
+	}
+	
+	private void setCloud() {
+		if(jlbPointField != null && jlbCloud1 != null && jlbCloud2 != null) {
+			jlbCloud1.setBounds(jlbPointField.getX() + cloud_x, 20 * resolution / 80, 225 * resolution / 80, 100 * resolution / 80);
+			jlbCloud2.setBounds(jlbPointField.getX() + cloud_x + getWidth() / 2, 100 * resolution / 80, 235 * resolution / 80, 95 * resolution / 80);
 		}
 	}
 
