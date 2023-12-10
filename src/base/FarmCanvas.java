@@ -29,7 +29,6 @@ import javax.imageio.ImageIO;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -44,52 +43,85 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	// cursor
 	Map<String, Cursor> cursor = new HashMap<>();
-	protected final String cursor_chicken = "/resource/cursor/cursor_chicken.png",
-			cursor_potato = "/resource/cursor/cursor_potato.png", cursor_carrot = "/resource/cursor/cursor_carrot.png",
-			cursor_beetroot = "/resource/cursor/cursor_beetroot.png";
-	protected BufferedImage cursorImage_chicken, cursorImage_potato, cursorImage_carrot, cursorImage_beetroot;
-	protected Cursor customCursor_chicken, customCursor_potato, customCursor_carrot, customCursor_beetroot;
+	
+	protected Cursor customCursor_chicken;
+	protected Cursor customCursor_potato;
+	protected Cursor customCursor_carrot;
+	protected Cursor customCursor_beetroot;
 
-	// mainLobby
-	// 그림 관련 변수
-	protected final String // mainLobby_logo = "/resource/mainLobby/logo.png",
-	mainLobby_background = "/resource/mainLobby/background.png", mainLobby_chicken = "/resource/mainLobby/chicken.png",
-			mainLobby_singsing = "/resource/mainLobby/singsing.png",
-			mainLobby_buttonstart = "/resource/mainLobby/buttonstart.png",
-			mainLobby_buttondesc = "/resource/mainLobby/buttondesc.png",
-			mainLobby_buttonsett = "/resource/mainLobby/buttonsett.png",
-			mainLobby_cloud = "/resource/mainLobby/cloud.png";
-	protected final String[] mainLobby_logo = { "/resource/mainLobby/logo1.png", "/resource/mainLobby/logo2.png",
-			"/resource/mainLobby/logo3.png" },
-			mainLobby_cloud1 = { "/resource/mainLobby/cloud1_0.png", "/resource/mainLobby/cloud1_1.png",
-					"/resource/mainLobby/cloud1_2.png" },
-			mainLobby_cloud2 = { "/resource/mainLobby/cloud2_0.png", "/resource/mainLobby/cloud2_1.png",
-					"/resource/mainLobby/cloud2_2.png" };
-	protected Image // mainLobbyImage_logo,
-	mainLobbyImage_background, mainLobbyImage_chicken, mainLobbyImage_singsing;
-	protected BufferedImage mainLobbyImage_buttonstart, mainLobbyImage_buttondesc, mainLobbyImage_buttonsett,
-			mainLobbyImage_cloud;
-	protected Image[] mainLobbyImage_logo, mainLobbyImage_cloud1, mainLobbyImage_cloud2;
+	protected final String cursor_chicken = "/resource/cursor/cursor_chicken.png";
+	protected final String cursor_potato = "/resource/cursor/cursor_potato.png";
+	protected final String cursor_carrot = "/resource/cursor/cursor_carrot.png";
+	protected final String cursor_beetroot = "/resource/cursor/cursor_beetroot.png";
+	protected final String mainLobby_background = "/resource/mainLobby/background.png";
+	protected final String mainLobby_chicken = "/resource/mainLobby/chicken.png";
+	protected final String mainLobby_singsing = "/resource/mainLobby/singsing.png";
+	protected final String mainLobby_buttonstart = "/resource/mainLobby/buttonstart.png";
+	protected final String mainLobby_buttondesc = "/resource/mainLobby/buttondesc.png";
+	protected final String mainLobby_buttonsett = "/resource/mainLobby/buttonsett.png";
+	protected final String mainLobby_cloud = "/resource/mainLobby/cloud.png";
+	protected final String inGame_starcoin = "/resource/inGame/starcoin.png";
+	protected final String inGame_sprout = "/resource/inGame/sprout.png";
+	protected final String inGame_wateringcan = "/resource/inGame/wateringcan.png";
+	protected final String inGame_apple = "/resource/inGame/apple.png";
+	protected final String inGame_fertilizer = "/resource/inGame/fertilizer.png";
+	protected final String inGame_shovel = "/resource/inGame/shovel.png";
+	protected final String inGame_background = "/resource/inGame/background.png";
+	protected final String inGame_btn = "/resource/inGame/btn.png";
+	protected final String inGame_shop = "/resource/inGame/shop.png";
+	protected final String inGame_back = "/resource/inGame/back.png";
+	protected final String crop_potato = "/resource/inGame/crop/potato.png";
+	protected final String crop_carrot = "/resource/inGame/crop/carrot.png";
+	protected final String crop_beetroot = "/resource/inGame/crop/beetroot.png";
+	
+	protected final String[] mainLobby_logo = {
+			"/resource/mainLobby/logo1.png",
+			"/resource/mainLobby/logo2.png",
+			"/resource/mainLobby/logo3.png" };
+	protected final String[] mainLobby_cloud1 = {
+			"/resource/mainLobby/cloud1_0.png",
+			"/resource/mainLobby/cloud1_1.png",
+			"/resource/mainLobby/cloud1_2.png" };
+	protected final String[] mainLobby_cloud2 = {
+			"/resource/mainLobby/cloud2_0.png",
+			"/resource/mainLobby/cloud2_1.png",
+			"/resource/mainLobby/cloud2_2.png" };
+	
+	protected Image mainLobbyImage_background;
+	protected Image mainLobbyImage_chicken;
+	protected Image mainLobbyImage_singsing;
+	protected Image inGameImage_background;
+	protected Image inGameImage_starcoin;
+	
+	protected BufferedImage cursorImage_chicken;
+	protected BufferedImage cursorImage_potato;
+	protected BufferedImage cursorImage_carrot;
+	protected BufferedImage cursorImage_beetroot;
+	protected BufferedImage mainLobbyImage_buttonstart;
+	protected BufferedImage mainLobbyImage_buttondesc;
+	protected BufferedImage mainLobbyImage_buttonsett;
+	protected BufferedImage mainLobbyImage_cloud;
+	protected BufferedImage inGameImage_sprout;
+	protected BufferedImage inGameImage_wateringcan;
+	protected BufferedImage inGameImage_apple;
+	protected BufferedImage inGameImage_fertilizer;
+	protected BufferedImage	inGameImage_shovel;
+	protected BufferedImage inGameImage_btn;
+	protected BufferedImage inGameImage_shop;
+	protected BufferedImage inGameImage_back;
+	protected BufferedImage cropImage_potato;
+	protected BufferedImage cropImage_carrot;
+	protected BufferedImage cropImage_beetroot;
+	
+	protected Image[] mainLobbyImage_logo;
+	protected Image[] mainLobbyImage_cloud1;
+	protected Image[] mainLobbyImage_cloud2;
 
 	// 그림 상태
-	protected int mainLobby_logo_index = new Random().nextInt(0, 3), mainLobby_cloud_stat = 0,
-			mainLobby_cloud_index = 0;
-
-	// inGame
-	protected final String inGame_starcoin = "/resource/inGame/starcoin.png",
-			inGame_sprout = "/resource/inGame/sprout.png", inGame_wateringcan = "/resource/inGame/wateringcan.png",
-			inGame_apple = "/resource/inGame/apple.png", inGame_fertilizer = "/resource/inGame/fertilizer.png",
-			inGame_shovel = "/resource/inGame/shovel.png", inGame_background = "/resource/inGame/background.png",
-			inGame_btn = "/resource/inGame/btn.png", inGame_shop = "/resource/inGame/shop.png";
-	protected Image inGameImage_background, inGameImage_starcoin;
-	protected BufferedImage inGameImage_sprout, inGameImage_wateringcan, inGameImage_apple, inGameImage_fertilizer,
-			inGameImage_shovel, inGameImage_btn, inGameImage_shop;
-
-	// crop
-	protected final String crop_potato = "/resource/inGame/crop/potato.png",
-			crop_carrot = "/resource/inGame/crop/carrot.png", crop_beetroot = "/resource/inGame/crop/beetroot.png";
-	protected BufferedImage cropImage_potato, cropImage_carrot, cropImage_beetroot;
-
+	protected int mainLobby_logo_index = new Random().nextInt(0, 3);
+	protected int mainLobby_cloud_stat = 0;
+	protected int mainLobby_cloud_index = 0;
+	
 	protected Thread worker;
 	protected Point mouseClick = new Point();
 	protected Point mouseCursor = new Point();
@@ -120,6 +152,37 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	// loading image
 	protected boolean la_mainLobby = true;
 	protected boolean la_inGame = false;
+
+	JLabel jlbStarCoinValue;
+	JLabel jlbTimeText;
+	JLabel jlbShop;
+	JLabel jlbShopBack;
+	JLabel jlbPicturePotato, jlbLorePotato, jlbLore2Potato, jlbLore3Potato, jlbBuyPotato, jlbSellPotato;
+	JLabel jlbPictureCarrot, jlbLoreCarrot, jlbLore2Carrot, jlbLore3Carrot, jlbBuyCarrot, jlbSellCarrot;
+	JLabel jlbPictureBeetroot, jlbLoreBeetroot, jlbLore2Beetroot, jlbLore3Beetroot, jlbBuyBeetroot, jlbSellBeetroot;
+	
+	ArrayList<JLabel> jlbCropField, jlbCropText, jlbCropTime, jlbBat;
+	Map<Integer, BufferedImage> cropImage;
+
+	// 기준점
+	JLabel jlbPoint, jlbPointField;
+	// 작물 라벨 - 감자, 당근, 비트
+	JLabel jlbPotato, jlbPotatoText, jlbPotatoCount, jlbPotatoClick;
+	JLabel jlbCarrot, jlbCarrotText, jlbCarrotCount, jlbCarrotClick;
+	JLabel jlbBeetroot, jlbBeetrootText, jlbBeetrootCount, jlbBeetrootClick;
+	// 삽, 호였던 것 -> 수정해야 함
+	JLabel jlbShovel, jlbShovelText, jlbShovelClick;
+	JLabel jlbHoe, jlbHoeText, jlbHoeClick;
+	// 뒤로가기
+	JLabel jlbBack, jlbBackText, jlbBackClick;
+
+	int x_back_sh, x_back_sp;
+	int y_image, y_text, y_count, y_click;
+	int x_potato, x_carrot, x_beetroot;
+	int x_shovel, x_hoe;
+	int jlb_size, jlb_click_x_size, jlb_click_y_size;
+	int count, sprout_camera_max, field_camera_max;
+	int currentCrop = 0;
 
 	public FarmCanvas(MyLauncher myLauncher, int resolution) {
 		this.myLauncher = myLauncher;
@@ -388,17 +451,19 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		cropImage_beetroot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_beetroot)));
 
 		inGameImage_shop = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shop)));
+		inGameImage_back = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_back)));
 		
 		cropImage = new HashMap<>();
 		cropImage.put(1, cropImage_potato);
 		cropImage.put(2, cropImage_carrot);
 		cropImage.put(3, cropImage_beetroot);
+		
+		jlbPointField = new JLabel();
+		jlbPointField.setBounds(0, 0, 0, 0);
 	}
 
 	private void loading_Field() throws IOException {
 		// 이동 제어용 라벨
-		jlbPointField = new JLabel();
-		jlbPointField.setBounds(0, 0, 0, 0);
 		int x = jlbPointField.getX();
 		
 		jlbBat = new ArrayList<>();
@@ -443,9 +508,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 	}
 
-	// 버튼 프레스 버그 관련 변수. -> 버튼 범위에서 나가면 클릭 안됨.
-	boolean btnStartPress = false, btnDescPress = false, btnSettPress = false;
-
 	private void paintMainLobby_Component() throws IOException {
 		this.removeAll();
 		this.setLayout(null);
@@ -458,6 +520,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		JButton btnStart = new JButton(new ImageIcon(mainLobbyImage_buttonstart.getSubimage(0, 0, 352, 112)
 				.getScaledInstance(btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
 		btnStart.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 
 			}
@@ -467,11 +530,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				btnStart.setIcon(
 						new ImageIcon(mainLobbyImage_buttonstart.getSubimage(0, 125 * 2, 352, 112).getScaledInstance(
 								btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
-				btnStartPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (btnStartPress) {
+				if (press) {
 					la_inGame = true;
 					pa_mainLobby = false;
 					pa_inGame = true;
@@ -494,7 +557,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				// 기본 이미지
 				btnStart.setIcon(new ImageIcon(mainLobbyImage_buttonstart.getSubimage(0, 0, 352, 112).getScaledInstance(
 						btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
-				btnStartPress = false;
+				press = false;
 			}
 		});
 //      btnStart.setFont(font);
@@ -508,6 +571,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		JButton btnDesc = new JButton(new ImageIcon(mainLobbyImage_buttondesc.getSubimage(0, 0, 352, 112)
 				.getScaledInstance(btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
 		btnDesc.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 
 			}
@@ -517,11 +581,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				btnDesc.setIcon(
 						new ImageIcon(mainLobbyImage_buttondesc.getSubimage(0, 125 * 2, 352, 112).getScaledInstance(
 								btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
-				btnDescPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (btnDescPress) {
+				if (press) {
 
 				}
 				mouseClickEffect = 0;
@@ -541,7 +605,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				// 기본 이미지
 				btnDesc.setIcon(new ImageIcon(mainLobbyImage_buttondesc.getSubimage(0, 0, 352, 112).getScaledInstance(
 						btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
-				btnDescPress = false;
+				press = false;
 			}
 		});
 //      btnDesc.setFont(font);
@@ -555,6 +619,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		JButton btnSett = new JButton(new ImageIcon(mainLobbyImage_buttonsett.getSubimage(0, 0, 352, 112)
 				.getScaledInstance(btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
 		btnSett.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 
 			}
@@ -564,11 +629,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				btnSett.setIcon(
 						new ImageIcon(mainLobbyImage_buttonsett.getSubimage(0, 125 * 2, 352, 112).getScaledInstance(
 								btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
-				btnSettPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (btnSettPress) {
+				if (press) {
 
 				}
 				mouseClickEffect = 0;
@@ -588,7 +653,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				// 기본 이미지
 				btnSett.setIcon(new ImageIcon(mainLobbyImage_buttonsett.getSubimage(0, 0, 352, 112).getScaledInstance(
 						btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
-				btnSettPress = false;
+				press = false;
 			}
 		});
 //      btnSett.setFont(font);
@@ -619,10 +684,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 //      bufferGraphics.setColor(Color.black);
 //      bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
 	}
-
-	// 버튼 프레스 버그 관련 변수. -> 버튼 범위에서 나가면 클릭 안됨.
-	boolean jlbShovelPress = false, jlbSproutPress = false, jlbWateringCanPress = false, jlbFertilizerPress = false,
-			jlbApplePress = false;
 
 	private void paintInGame_Component() throws IOException {
 		this.removeAll();
@@ -672,6 +733,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		JLabel jlbShovel = new JLabel(new ImageIcon(inGameImage_shovel.getSubimage(0, 0, 236, 236).getScaledInstance(
 				labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbShovel.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
@@ -679,11 +741,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				// 클릭 이미지
 				jlbShovel.setIcon(new ImageIcon(inGameImage_shovel.getSubimage(236 * 2, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbShovelPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbShovelPress) {
+				if (press) {
 					paintShovel();
 				}
 				mouseClickEffect = 0;
@@ -702,7 +764,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				// 기본 이미지
 				jlbShovel.setIcon(new ImageIcon(inGameImage_shovel.getSubimage(0, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbShovelPress = false;
+				press = false;
 			}
 		});
 		jlbShovel.setBounds(
@@ -715,6 +777,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		JLabel jlbSprout = new JLabel(new ImageIcon(inGameImage_sprout.getSubimage(0, 0, 236, 236).getScaledInstance(
 				labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbSprout.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
@@ -722,11 +785,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				// 클릭 이미지
 				jlbSprout.setIcon(new ImageIcon(inGameImage_sprout.getSubimage(236 * 2, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbSproutPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbSproutPress) {
+				if (press) {
 					paintSprout();
 				}
 				mouseClickEffect = 0;
@@ -745,7 +808,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				// 기본 이미지
 				jlbSprout.setIcon(new ImageIcon(inGameImage_sprout.getSubimage(0, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbSproutPress = false;
+				press = false;
 			}
 		});
 		jlbSprout.setBounds(
@@ -759,6 +822,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				new ImageIcon(inGameImage_wateringcan.getSubimage(0, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbWateringCan.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
@@ -767,11 +831,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				jlbWateringCan.setIcon(new ImageIcon(inGameImage_wateringcan.getSubimage(236 * 2, 0, 236, 236)
 						.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80,
 								Image.SCALE_SMOOTH)));
-				jlbWateringCanPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbWateringCanPress) {
+				if (press) {
 					paintWateringCan();
 				}
 				mouseClickEffect = 0;
@@ -792,7 +856,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				jlbWateringCan.setIcon(new ImageIcon(inGameImage_wateringcan.getSubimage(0, 0, 236, 236)
 						.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80,
 								Image.SCALE_SMOOTH)));
-				jlbWateringCanPress = false;
+				press = false;
 			}
 		});
 		jlbWateringCan.setBounds(getWidth() / 2 - (labelImageSize / 2) * resolution / 80 - 1,
@@ -805,6 +869,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				new ImageIcon(inGameImage_fertilizer.getSubimage(0, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbFertilizer.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
@@ -813,11 +878,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				jlbFertilizer.setIcon(new ImageIcon(inGameImage_fertilizer.getSubimage(236 * 2, 0, 236, 236)
 						.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80,
 								Image.SCALE_SMOOTH)));
-				jlbFertilizerPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbFertilizerPress) {
+				if (press) {
 
 				}
 				mouseClickEffect = 0;
@@ -838,7 +903,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				jlbFertilizer.setIcon(new ImageIcon(inGameImage_fertilizer.getSubimage(0, 0, 236, 236)
 						.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80,
 								Image.SCALE_SMOOTH)));
-				jlbFertilizerPress = false;
+				press = false;
 			}
 		});
 		jlbFertilizer.setBounds(getWidth() / 2 + (labelImageSize / 2 + labelImageGap * 1) * resolution / 80 - 1,
@@ -850,6 +915,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		JLabel jlbApple = new JLabel(new ImageIcon(inGameImage_apple.getSubimage(0, 0, 236, 236).getScaledInstance(
 				labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbApple.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
@@ -857,11 +923,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				// 클릭 이미지
 				jlbApple.setIcon(new ImageIcon(inGameImage_apple.getSubimage(236 * 2, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbApplePress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbApplePress) {
+				if (press) {
 
 				}
 				mouseClickEffect = 0;
@@ -880,7 +946,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				// 기본 이미지
 				jlbApple.setIcon(new ImageIcon(inGameImage_apple.getSubimage(0, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbApplePress = false;
+				press = false;
 			}
 
 		});
@@ -899,29 +965,24 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	}
 
-	JLabel jlbShopBack;
-	JLabel jlbPicturePotato, jlbLorePotato, jlbLore2Potato, jlbLore3Potato, jlbBuyPotato, jlbSellPotato;
-	JLabel jlbPictureCarrot, jlbLoreCarrot, jlbLore2Carrot, jlbLore3Carrot, jlbBuyCarrot, jlbSellCarrot;
-	boolean jlbShopBackPress = false, jlbBuyPotatoPress = false, jlbSellPotatoPress = false;
-	boolean jlbBuyCarrotPress = false, jlbSellCarrotPress = false;
-
 	private void paintShop_Component() throws IOException {
 		this.removeAll();
 		this.setLayout(null);
 
 		addStarCoin();
 
-		jlbShopBack = new JLabel("뒤로가기");
+		jlbShopBack = new JLabel(new ImageIcon(inGameImage_back.getScaledInstance(75 * resolution / 80, 75 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbShopBack.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
-				jlbShopBackPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbShopBackPress) {
+				if (press) {
 					pa_shop = false;
 					pa_inGame = true;
 					pa_inGameComponent = true;
@@ -936,7 +997,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseExited(MouseEvent e) {
-				jlbShopBackPress = false;
+				press = false;
 			}
 		});
 		jlbShopBack.setBorder(new LineBorder(Color.black, 1));
@@ -976,16 +1037,17 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		jlbBuyPotato = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBuyPotato.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
 				jlbBuyPotato.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbBuyPotatoPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbBuyPotatoPress) {
+				if (press) {
 					jlbBuyPotato.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
 					if(farmData.getCoin() >= 10) {
 						farmData.setCrop("PotatoSeed", 1, true);
@@ -1005,7 +1067,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mouseExited(MouseEvent e) {
 				jlbBuyPotato.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbBuyPotatoPress = false;
+				press = false;
 			}
 		});
 		jlbBuyPotato.setBounds(60 * resolution / 80, 470 * resolution / 80, 140 * resolution / 80, 20 * resolution / 80);
@@ -1019,16 +1081,17 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		jlbSellPotato = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbSellPotato.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
 				jlbSellPotato.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbSellPotatoPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbSellPotatoPress) {
+				if (press) {
 					jlbSellPotato.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
 					if(farmData.getCrop("Potato") > 0) {
 						farmData.setCrop("Potato", 1, false);
@@ -1048,7 +1111,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mouseExited(MouseEvent e) {
 				jlbSellPotato.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbSellPotatoPress = false;
+				press = false;
 			}
 		});
 		jlbSellPotato.setBounds(220 * resolution / 80, 470 * resolution / 80, 140 * resolution / 80, 20 * resolution / 80);
@@ -1087,16 +1150,17 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		jlbBuyCarrot = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBuyCarrot.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
 				jlbBuyCarrot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbBuyCarrotPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbBuyCarrotPress) {
+				if (press) {
 					jlbBuyCarrot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
 					if(farmData.getCoin() >= 20) {
 						farmData.setCrop("CarrotSeed", 1, true);
@@ -1116,7 +1180,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mouseExited(MouseEvent e) {
 				jlbBuyCarrot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbBuyCarrotPress = false;
+				press = false;
 			}
 		});
 		jlbBuyCarrot.setBounds(400 * resolution / 80, 470 * resolution / 80, 140 * resolution / 80, 20 * resolution / 80);
@@ -1130,16 +1194,17 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		jlbSellCarrot = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbSellCarrot.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
 				jlbSellCarrot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbSellCarrotPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbSellCarrotPress) {
+				if (press) {
 					jlbSellCarrot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
 					if(farmData.getCrop("Carrot") > 0) {
 						farmData.setCrop("Carrot", 1, false);
@@ -1159,16 +1224,127 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mouseExited(MouseEvent e) {
 				jlbSellCarrot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
-				jlbSellCarrotPress = false;
+				press = false;
 			}
 		});
 		jlbSellCarrot.setBounds(560 * resolution / 80, 470 * resolution / 80, 140 * resolution / 80, 20 * resolution / 80);
 		add(jlbSellCarrot);
 		
 		add(jlbCarrot);
-	}
+		
+		jlbBeetroot = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 0, 400, 400).getScaledInstance(320 * resolution / 80, 440 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbBeetroot.setBounds(730 * resolution / 80, 60 * resolution / 80, 320 * resolution / 80, 440 * resolution / 80);
 
-	JLabel jlbStarCoinValue, jlbTimeText;
+		jlbPictureBeetroot = new JLabel(new ImageIcon(cropImage_beetroot.getSubimage(500, 0, 100, 100)
+				.getScaledInstance(200 * resolution / 80, 200 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbPictureBeetroot.setBounds(740 * resolution / 80, 70 * resolution / 80, 300 * resolution / 80, 300 * resolution / 80);
+		add(jlbPictureBeetroot);
+		jlbLoreBeetroot = new JLabel("비트");
+		jlbLoreBeetroot.setFont(font);
+		jlbLoreBeetroot.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbLoreBeetroot.setBounds(740 * resolution / 80, 380 * resolution / 80, 300 * resolution / 80, 20 * resolution / 80);
+		add(jlbLoreBeetroot);
+		jlbLore2Beetroot = new JLabel("비트씨앗 " + farmData.getCrop("BeetrootSeed") + "개, 비트 " + farmData.getCrop("Beetroot") + "개");
+		jlbLore2Beetroot.setFont(font);
+		jlbLore2Beetroot.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbLore2Beetroot.setBounds(740 * resolution / 80, 410 * resolution / 80, 300 * resolution / 80, 20 * resolution / 80);
+		add(jlbLore2Beetroot);
+		jlbLore3Beetroot = new JLabel("구입가: 40G          판매가: 35G");
+		jlbLore3Beetroot.setFont(font);
+		jlbLore3Beetroot.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbLore3Beetroot.setBounds(740 * resolution / 80, 440 * resolution / 80, 300 * resolution / 80, 20 * resolution / 80);
+		add(jlbLore3Beetroot);
+
+		JLabel jlbBuyBeetrootText = new JLabel("비트씨앗 구매");
+		jlbBuyBeetrootText.setFont(font);
+		jlbBuyBeetrootText.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbBuyBeetrootText.setBounds(740 * resolution / 80, 470 * resolution / 80, 140 * resolution / 80, 20 * resolution / 80);
+		add(jlbBuyBeetrootText);
+		
+		jlbBuyBeetroot = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbBuyBeetroot.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				jlbBuyBeetroot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+				press = true;
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (press) {
+					jlbBuyBeetroot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+					if(farmData.getCoin() >= 40) {
+						farmData.setCrop("BeetrootSeed", 1, true);
+						farmData.setCoin(40, false);
+						refreshCoin();
+					}
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbBuyBeetroot.getX() + e.getPoint().x;
+				mouseClick.y = jlbBuyBeetroot.getY() + e.getPoint().y;
+				repaint();
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				jlbBuyBeetroot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				jlbBuyBeetroot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+				press = false;
+			}
+		});
+		jlbBuyBeetroot.setBounds(740 * resolution / 80, 470 * resolution / 80, 140 * resolution / 80, 20 * resolution / 80);
+		add(jlbBuyBeetroot);
+
+		JLabel jlbSellBeetrootText = new JLabel("비트 판매");
+		jlbSellBeetrootText.setFont(font);
+		jlbSellBeetrootText.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbSellBeetrootText.setBounds(900 * resolution / 80, 470 * resolution / 80, 140 * resolution / 80, 20 * resolution / 80);
+		add(jlbSellBeetrootText);
+		
+		jlbSellBeetroot = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbSellBeetroot.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				jlbSellBeetroot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+				press = true;
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (press) {
+					jlbSellBeetroot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+					if(farmData.getCrop("Beetroot") > 0) {
+						farmData.setCrop("Beetroot", 1, false);
+						farmData.setCoin(35, true);
+						refreshCoin();
+					}
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbSellBeetroot.getX() + e.getPoint().x;
+				mouseClick.y = jlbSellBeetroot.getY() + e.getPoint().y;
+				repaint();
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				jlbSellBeetroot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				jlbSellBeetroot.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 100, 400, 200).getScaledInstance(140 * resolution / 80, 20 * resolution / 80, Image.SCALE_SMOOTH)));
+				press = false;
+			}
+		});
+		jlbSellBeetroot.setBounds(900 * resolution / 80, 470 * resolution / 80, 140 * resolution / 80, 20 * resolution / 80);
+		add(jlbSellBeetroot);
+		
+		add(jlbBeetroot);
+	}
 
 	private void addStarCoin() {
 		// 지갑 숫자
@@ -1206,29 +1382,52 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			jlbLore2Potato.setText("씨감자 " + farmData.getCrop("PotatoSeed") + "개, 감자 " + farmData.getCrop("Potato") + "개");
 		if(jlbLore2Carrot != null)
 			jlbLore2Carrot.setText("당근씨앗 " + farmData.getCrop("CarrotSeed") + "개, 당근 " + farmData.getCrop("Carrot") + "개");
-		if(jlbLore2beetroot != null)
-			jlbLore2beetroot.setText("비트씨앗 " + farmData.getCrop("beetrootSeed") + "개, 캐럿 " + farmData.getCrop("Beetroot") + "개");
+		if(jlbLore2Beetroot != null)
+			jlbLore2Beetroot.setText("비트씨앗 " + farmData.getCrop("BeetrootSeed") + "개, 비트 " + farmData.getCrop("Beetroot") + "개");
 	}
 
-	ArrayList<JLabel> jlbCropField, jlbCropText, jlbCropTime, jlbBat;
-	Map<Integer, BufferedImage> cropImage;
-	JLabel jlbShop;
-
-	boolean jlbShopPress = false;
-
 	private void addField() {
+//		JLabel jlbChickenHouse = new JLabel(new ImageIcon(inGameImage_chickenhouse.getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		JLabel jlbChickenHouse = new JLabel();
+		jlbChickenHouse.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+				press = true;
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(press) {
+					
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbChickenHouse.getX() + e.getPoint().x;
+				mouseClick.y = jlbChickenHouse.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+				press = false;
+			}
+		});
+		jlbChickenHouse.setBounds(250 * resolution / 80, getHeight() / 2 - 180 * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
+		jlbChickenHouse.setBorder(new LineBorder(Color.black, 1));
+		add(jlbChickenHouse);
+		
 		jlbShop = new JLabel(new ImageIcon(inGameImage_shop.getScaledInstance(200 * resolution / 80,
 				200 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbShop.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
-				jlbShopPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbShopPress) {
+				if (press) {
 					setCursor("chicken");
 					currentCrop = 0;
 					pa_inGame = false;
@@ -1247,7 +1446,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseExited(MouseEvent e) {
-				jlbShopPress = false;
+				press = false;
 			}
 		});
 		jlbShop.setBounds(jlbPointField.getX() + (50) * resolution / 80, (getHeight() - 100) / 2 - 70 * resolution / 80, 200 * resolution / 80, 200 * resolution / 80);
@@ -1298,28 +1497,58 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		});
 		mouseControl.setBounds(0, getHeight() / 2 - 130 * resolution / 80, getWidth(), 230 * resolution / 80);
 		add(mouseControl);
+		
+		JLabel jlbCameraReset = new JLabel("<");
+		jlbCameraReset.addMouseListener(new MouseListener(){
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+				press = true;
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(press) {
+					jlbPointField.setBounds(0, 0, 0, 0);
+					setComponentBoundField(new int[] {0, 0, 0}, null);
+				}
+				
+				mouseClickEffect = 0;
+				mouseClick.x = jlbCameraReset.getX() + e.getPoint().x;
+				mouseClick.y = jlbCameraReset.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+				press = false;
+			}
+			});
+		jlbCameraReset.setBounds(getWidth() - 100 * resolution / 80, getHeight() / 2 - 160 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
+		jlbCameraReset.setBorder(new LineBorder(Color.black, 1));
+		add(jlbCameraReset);
 	}
 
 	// 카메라 무빙~
 	private void setComponentBoundField(int[] currentCamera, MouseEvent e) {
-		if (jlbPointField.getX() > 0 || currentCamera[2] + currentCamera[0] > 0) {
-			jlbPointField.setBounds(0, 0, 0, 0);
-			currentCamera[1] = e.getX();
-			currentCamera[2] = 0;
-		} else if (jlbPointField.getX() < field_camera_max || currentCamera[2] + currentCamera[0] < field_camera_max) {
-			if (field_camera_max > 0) {
+		if(e != null) {
+			if (jlbPointField.getX() > 0 || currentCamera[2] + currentCamera[0] > 0) {
 				jlbPointField.setBounds(0, 0, 0, 0);
 				currentCamera[1] = e.getX();
 				currentCamera[2] = 0;
+			} else if (jlbPointField.getX() < field_camera_max || currentCamera[2] + currentCamera[0] < field_camera_max) {
+				if (field_camera_max > 0) {
+					jlbPointField.setBounds(0, 0, 0, 0);
+					currentCamera[1] = e.getX();
+					currentCamera[2] = 0;
+				} else {
+					jlbPointField.setBounds(field_camera_max, 0, 0, 0);
+					currentCamera[1] = e.getX();
+					currentCamera[2] = field_camera_max;
+				}
 			} else {
-				jlbPointField.setBounds(field_camera_max, 0, 0, 0);
-				currentCamera[1] = e.getX();
-				currentCamera[2] = field_camera_max;
+				jlbPointField.setBounds(currentCamera[2] + currentCamera[0], 0, 0, 0);
 			}
-		} else {
-			jlbPointField.setBounds(currentCamera[2] + currentCamera[0], 0, 0, 0);
 		}
-
 		int x = jlbPointField.getX();
 
 		jlbShop.setBounds(x + (50) * resolution / 80, (getHeight() - 100) / 2 - 70 * resolution / 80, 200 * resolution / 80, 200 * resolution / 80);
@@ -1333,84 +1562,93 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	public void refreshField() {
 		for (int i = 0; i < jlbCropField.size(); i++) {
-			ImageIcon jlbImage = null;
-			if (farmData.getField(i)[0] != 0)
-				jlbImage = new ImageIcon(
-						cropImage.get(farmData.getField(i)[0]).getSubimage(100 * farmData.getField(i)[1], 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH));
-
-			JLabel jlbTemp = jlbCropField.get(i);
-			jlbTemp.setIcon(jlbImage);
-			int k = i;
-			if (jlbTemp.getMouseListeners().length == 0) {
-				if (farmData.getField(i)[1] == 4 && farmData.getField(i)[0] != 0) {
-					jlbTemp.addMouseListener(new MouseListener() {
-						public void mouseClicked(MouseEvent e) {
-						}
-
-						public void mousePressed(MouseEvent e) {
-						}
-
-						public void mouseReleased(MouseEvent e) {
-							farmData.setCrop(getCropName(farmData.getField(k)[0], false, false), 2, true);
-							farmData.setField(k, new int[] { 0, 0, 0, 0 });
-							refreshCount();
-							refreshField();
-							jlbTemp.removeMouseListener(this);
-
-							mouseClickEffect = 0;
-							mouseClick.x = jlbTemp.getX() + e.getPoint().x;
-							mouseClick.y = jlbTemp.getY() + e.getPoint().y;
-							repaint();
-						}
-
-						public void mouseEntered(MouseEvent e) {
-						}
-
-						public void mouseExited(MouseEvent e) {
-						}
-					});
-				} else if (farmData.getField(i)[0] == 0) {
-					jlbTemp.addMouseListener(new MouseListener() {
-						public void mouseClicked(MouseEvent e) {
-						}
-
-						public void mousePressed(MouseEvent e) {
-						}
-
-						public void mouseReleased(MouseEvent e) {
-							if (currentCrop != 0 && farmData.getCrop(getCropName(currentCrop, true, false)) > 0) {
-								farmData.setCrop(getCropName(currentCrop, true, false), 1, false);
-								System.out.println("씨앗 소모");
-								farmData.setField(k, new int[] { currentCrop, 0, 0, 0 });
-								refreshCount();
-								refreshField();
-								jlbTemp.removeMouseListener(this);
-							}
-
-							mouseClickEffect = 0;
-							mouseClick.x = jlbTemp.getX() + e.getPoint().x;
-							mouseClick.y = jlbTemp.getY() + e.getPoint().y;
-							repaint();
-						}
-
-						public void mouseEntered(MouseEvent e) {
-						}
-
-						public void mouseExited(MouseEvent e) {
-						}
-					});
-				}
-			}
-			JLabel jlbTextTemp = jlbCropText.get(i);
-			if(farmData.getField(i)[0] != 0)
-				jlbTextTemp.setText(getCropName(farmData.getField(i)[0], false, true));
-			else jlbTextTemp.setText("밭");
-
-			JLabel jlbTimeTemp = jlbCropTime.get(i);			
-			if(farmData.getField(i)[0] != 0 && farmData.getField(i)[1] != 4)
-				jlbTimeTemp.setText((int)((float) farmData.getField(i)[2] / farmData.getCropTime(getCropName(farmData.getField(i)[0], false, false), farmData.getField(i)[1]) * 100) + "% 성장");
-			else if(farmData.getField(i)[1] == 4) jlbTimeTemp.setText("수확"); else jlbTimeTemp.setText("씨앗 심기");
+	        int[] fieldData = farmData.getField(i);
+	        ImageIcon jlbImage = null;
+	
+	        if (fieldData[0] != 0) {
+	            jlbImage = new ImageIcon(
+	            		cropImage.get(fieldData[0]).getSubimage(100 * fieldData[1], 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH));
+	        }
+	
+	        JLabel jlbTemp = jlbCropField.get(i);
+	        jlbTemp.setIcon(jlbImage);
+	
+	        if (jlbTemp.getMouseListeners().length == 0) {
+	            jlbTemp.addMouseListener(new FieldMouseListener(i));
+	        }
+	
+	        JLabel jlbTextTemp = jlbCropText.get(i);
+	        jlbTextTemp.setText(getCropName(fieldData[0], false, true));
+	
+	        JLabel jlbTimeTemp = jlbCropTime.get(i);
+	        updateTimeLabel(jlbTimeTemp, fieldData);
 		}	
+	}
+	
+	private void updateTimeLabel(JLabel jlbTimeTemp, int[] fieldData) {
+	    if (fieldData[0] != 0 && fieldData[1] != 4) {
+	        int growthPercentage = (int) ((float) fieldData[2] / farmData.getCropTime(getCropName(fieldData[0], false, false), fieldData[1]) * 100);
+	        jlbTimeTemp.setText(growthPercentage + "% 성장");
+	    } else if (fieldData[1] == 4) {
+	        jlbTimeTemp.setText("수확");
+	    } else {
+	        jlbTimeTemp.setText("씨앗 심기");
+	    }
+	}
+	
+	private class FieldMouseListener implements MouseListener {
+	    private final int index;
+	    boolean press = false;
+
+	    public FieldMouseListener(int index) {
+	        this.index = index;
+	    }
+	    
+		public void mouseClicked(MouseEvent e) {
+		}
+		public void mousePressed(MouseEvent e) {
+			press = true;
+		}
+	    public void mouseReleased(MouseEvent e) {
+	    	if(press) {
+		        int[] fieldData = farmData.getField(index);
+	
+		        if (fieldData[1] == 4 && fieldData[0] != 0) {
+		            harvestCrop(index);
+		        } else if (fieldData[0] == 0) {
+		            plantCrop(index);
+		        }
+	
+		        mouseClickEffect = 0;
+		        mouseClick.x = jlbCropField.get(index).getX() + e.getPoint().x;
+		        mouseClick.y = jlbCropField.get(index).getY() + e.getPoint().y;
+		        repaint();
+	    	}
+	    }
+		public void mouseEntered(MouseEvent e) {
+		}
+		public void mouseExited(MouseEvent e) {
+			press = false;
+		}
+	    
+	    private void harvestCrop(int index) {
+	        farmData.setCrop(getCropName(farmData.getField(index)[0], false, false), 2, true);
+	        farmData.setField(index, new int[]{0, 0, 0, 0});
+	        refreshCount();
+	        refreshField();
+	        jlbCropField.get(index).removeMouseListener(this);
+	    }
+
+	    private void plantCrop(int index) {
+	        if (currentCrop != 0 && farmData.getCrop(getCropName(currentCrop, true, false)) > 0) {
+	            farmData.setCrop(getCropName(currentCrop, true, false), 1, false);
+	            System.out.println("씨앗 소모");
+	            farmData.setField(index, new int[]{currentCrop, 0, 0, 0});
+	            refreshCount();
+	            refreshField();
+	            jlbCropField.get(index).removeMouseListener(this);
+	        }
+	    }
 	}
 
 	public void refreshTime() {
@@ -1418,28 +1656,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			jlbTimeText.setText(farmData.time.hour + "시 " + farmData.time.minute + "분");
 		}
 	}
-	
-	// 기준점
-	JLabel jlbPoint, jlbPointField;
-	// 작물 라벨 - 감자, 당근, 비트
-	JLabel jlbPotato, jlbPotatoText, jlbPotatoCount, jlbPotatoClick, jlbCarrot, jlbCarrotText, jlbCarrotCount,
-			jlbCarrotClick, jlbBeetroot, jlbBeetrootText, jlbBeetrootCount, jlbBeetrootClick;
-	// 뒤로가기
-	JLabel jlbBack, jlbBackText, jlbBackClick;
-
-	// 위치
-	int x_back_sh, x_back_sp, y_image, y_text, y_count, y_click;
-	// 크기 변수
-	int jlb_size, jlb_click_x_size, jlb_click_y_size;
-	// 버튼 변수
-	boolean jlbPotatoClickPress = false, jlbCarrotClickPress = false, jlbBeetrootClickPress = false;
-	boolean jlbBackClickPress = false;
-	// 작물 위치
-	int x_potato, x_carrot, x_beetroot;
-	int count, sprout_camera_max, field_camera_max;
-
-	// 현재마우스 변수
-	int currentCrop = 0;
 
 	private void setValue() {
 		// x
@@ -1479,12 +1695,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	 * 삽 시작
 	 */
 
-	JLabel jlbShovel, jlbShovelText, jlbShovelClick, jlbHoe, jlbHoeText, jlbHoeClick;
-
-	int x_shovel, x_hoe;
-
-	boolean jlbShovelBackPress = false, jlbBatPress = false;
-
 	private void paintShovel() {
 		this.removeAll();
 		addStarCoin();
@@ -1494,20 +1704,20 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbBat.setFont(font);
 		jlbBat.setHorizontalAlignment(SwingConstants.CENTER);
 		jlbBat.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
-				jlbBatPress = true;
+				press = true;
 			}
 			public void mouseReleased(MouseEvent e) {
-				if (jlbBatPress) {
+				if (press) {
 					farmData.putField(new int[] {0, 0, 0});
 					try {
 						loading_Field();
-						paintShovel();
 						refreshField();
+						paintShovel();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}
@@ -1520,7 +1730,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseEntered(MouseEvent e) {
 			}
 			public void mouseExited(MouseEvent e) {
-				jlbBatPress = false;
+				press = false;
 			}
 		});
 		jlbBat.setBounds(10 * resolution / 80, getHeight() - 160 * resolution / 80, 100 * resolution / 80, 30 * resolution / 80);
@@ -1531,15 +1741,16 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbShovelBack.setFont(font);
 		jlbShovelBack.setHorizontalAlignment(SwingConstants.CENTER);
 		jlbShovelBack.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
-				jlbShovelBackPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbShovelBackPress) {
+				if (press) {
 					try {
 						paintInGame_Component();
 					} catch (IOException e1) {
@@ -1557,7 +1768,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseExited(MouseEvent e) {
-				jlbShovelBackPress = false;
+				press = false;
 			}
 		});
 		jlbShovelBack.setBounds(getWidth() / 2 - 50 * resolution / 80 - 1, getHeight() - 160 * resolution / 80, 100 * resolution / 80,
@@ -1707,16 +1918,17 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		jlbPotatoClick = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
 		jlbPotatoClick.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
 				jlbPotatoClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
-				jlbPotatoClickPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbPotatoClickPress) {
+				if (press) {
 					jlbPotatoClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
 					setCursor("potato");
 					currentCrop = 1;
@@ -1733,7 +1945,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mouseExited(MouseEvent e) {
 				jlbPotatoClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
-				jlbPotatoClickPress = false;
+				press = false;
 			}
 		});
 		jlbPotatoClick.setBounds(x_potato - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
@@ -1759,16 +1971,17 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		jlbCarrotClick = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
 		jlbCarrotClick.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
 				jlbCarrotClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
-				jlbCarrotClickPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbCarrotClickPress) {
+				if (press) {
 					jlbCarrotClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
 					setCursor("carrot");
 					currentCrop = 2;
@@ -1785,17 +1998,14 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mouseExited(MouseEvent e) {
 				jlbCarrotClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
-				jlbCarrotClickPress = false;
+				press = false;
 			}
 		});
 		jlbCarrotClick.setBounds(x_carrot - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
 		add(jlbCarrotClick);
 
 		// 비트
-//      비트 이거 이미지 가져오기
-	
-        jlbBeetroot = new JLabel(new ImageIcon(cropImage_beetroot.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
-		//jlbBeetroot = new JLabel();
+		jlbBeetroot = new JLabel(new ImageIcon(cropImage_beetroot.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBeetroot.setBounds(x_beetroot, y_image, jlb_size, jlb_size);
 		add(jlbBeetroot);
 
@@ -1813,16 +2023,17 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		jlbBeetrootClick = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
 		jlbBeetrootClick.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
 				jlbBeetrootClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
-				jlbBeetrootClickPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbBeetrootClickPress) {
+				if (press) {
 					jlbBeetrootClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(400, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
 					setCursor("beetroot");
 					currentCrop = 3;
@@ -1839,15 +2050,14 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mouseExited(MouseEvent e) {
 				jlbBeetrootClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
-				jlbBeetrootClickPress = false;
+				press = false;
 			}
 		});
 		jlbBeetrootClick.setBounds(x_beetroot - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
 		add(jlbBeetrootClick);
 
 		// 뒤로가기
-//      jlbBack = new JLabel(new ImageIcon(cropImage_back.getSubimage(0, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
-		jlbBack = new JLabel();
+		jlbBack = new JLabel(new ImageIcon(inGameImage_back.getScaledInstance(75 * resolution / 80, 75 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBack.setBounds(x_back_sp, y_image, jlb_size, jlb_size);
 		add(jlbBack);
 
@@ -1859,16 +2069,17 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		jlbBackClick = new JLabel(new ImageIcon(inGameImage_btn.getSubimage(0, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
 		jlbBackClick.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
 				jlbBackClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(800, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
-				jlbBackClickPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbBackClickPress) {
+				if (press) {
 					setCursor("chicken");
 					currentCrop = 0;
 					try {
@@ -1889,7 +2100,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mouseExited(MouseEvent e) {
 				jlbBackClick.setIcon(new ImageIcon(inGameImage_btn.getSubimage(0, 0, 400, 400).getScaledInstance(jlb_click_x_size, jlb_click_y_size, Image.SCALE_SMOOTH)));
-				jlbBackClickPress = false;
+				press = false;
 			}
 		});
 		jlbBackClick.setBounds(x_back_sp - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
@@ -1988,15 +2199,16 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbWateringCan.setFont(font);
 		jlbWateringCan.setHorizontalAlignment(SwingConstants.CENTER);
 		jlbWateringCan.addMouseListener(new MouseListener() {
+			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 
 			public void mousePressed(MouseEvent e) {
-				jlbWateringCanPress = true;
+				press = true;
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				if (jlbWateringCanPress) {
+				if (press) {
 					try {
 						paintInGame_Component();
 					} catch (IOException e1) {
@@ -2014,7 +2226,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseExited(MouseEvent e) {
-				jlbWateringCanPress = false;
+				press = false;
 			}
 		});
 		jlbWateringCan.setBounds(getWidth() / 2 - 50 * resolution / 80 - 1, getHeight() - 160 * resolution / 80, 100,
@@ -2034,6 +2246,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	public String getCropName(int id, boolean seed, boolean kor) {
 		if (kor) {
 			switch (id) {
+			case 0:
+				return "밭";
 			case 1:
 				return "감자";
 			case 2:
@@ -2053,6 +2267,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 		}
 		switch (id) {
+		case 0:
+			return "Bat";
 		case 1:
 			return "Potato";
 		case 2:
