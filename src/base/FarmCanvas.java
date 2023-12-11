@@ -83,6 +83,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String poultry_farmfood = "/resource/inGame/poultry/poultryfarmfood.png";
 	protected final String poultry_x = "/resource/inGame/poultry/x.png";
 	protected final String poultry_btn = "/resource/inGame/poultry/btn.png";
+	protected final String poultry_egg = "/resource/inGame/poultry/egg.png";
+	protected final String poultry_chicken = "/resource/inGame/poultry/chicken.png";
 	
 	protected final String[] mainLobby_logo = {
 			"/resource/mainLobby/logo1.png",
@@ -132,6 +134,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage poultryImage_farmfood;
 	protected BufferedImage poultryImage_x;
 	protected BufferedImage poultryImage_btn;
+	protected BufferedImage poultryImage_egg;
+	protected BufferedImage poultryImage_chicken;
 	
 	protected Image[] mainLobbyImage_logo;
 	protected Image[] mainLobbyImage_cloud1;
@@ -400,6 +404,15 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		cursor.put("potato", customCursor_potato);
 		cursor.put("carrot", customCursor_carrot);
 		cursor.put("beetroot", customCursor_beetroot);
+		
+		inGameImage_shovel = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shovel)));
+
+		cropImage_potato = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_potato)));
+		cropImage_carrot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_carrot)));
+		cropImage_beetroot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_beetroot)));
+		
+		poultryImage_x = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_x)));
+		poultryImage_egg = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_egg)));
 	}
 
 	private void loading_InGame() throws IOException {
@@ -414,17 +427,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		inGameImage_background_evening = ImageIO
 				.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_background_evening)));
 		inGameImage_starcoin = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_starcoin)));
-		inGameImage_shovel = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shovel)));
 		inGameImage_sprout = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_sprout)));
 		inGameImage_wateringcan = ImageIO
 				.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_wateringcan)));
 		inGameImage_fertilizer = ImageIO
 				.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizer)));
 		inGameImage_apple = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_apple)));
-
-		cropImage_potato = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_potato)));
-		cropImage_carrot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_carrot)));
-		cropImage_beetroot = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(crop_beetroot)));
 
 		inGameImage_shop = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shop)));
 		inGameImage_chickenhouse = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_chickenhouse)));
@@ -443,8 +451,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		poultryImage_farm = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_farm)));
 		poultryImage_farmfood = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_farmfood)));
-		poultryImage_x = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_x)));
 		poultryImage_btn = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_btn)));
+		poultryImage_chicken = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_chicken)));
 	}
 
 	private void loading_Field() throws IOException {
@@ -747,29 +755,92 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	}
 	
 	private void paintGameDesc_Component() {
+		JLabel jlbBack = new JLabel();
 		JLabel jlbPanel = new JLabel();
-		JLabel jlbBackBtn = new JLabel();
-		JLabel[] jlbText = new JLabel[] {null, null, null, null, null};
+		JLabel jlbBackBtn = new JLabel(new ImageIcon(poultryImage_x.getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		JLabel[] jlbText = new JLabel[] {null, null, null, null, null, null};
 		JLabel[] jlbImage = new JLabel[] {null, null, null, null, null};
+		
+		jlbBack.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseReleased(MouseEvent e) {
+				mouseClickEffect = 0;
+				mouseClick.x = jlbBack.getX() + e.getPoint().x;
+				mouseClick.y = jlbBack.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+			}
+		});
+		
+		jlbBackBtn.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+				press = true;
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(press) {
+					pa_gameDesc = false;
+					pa_mainLobbyComponent = true;
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbBackBtn.getX() + e.getPoint().x;
+				mouseClick.y = jlbBackBtn.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+				press = false;
+			}
+		});
+
+		jlbBack.setBounds(0, 0, getWidth(), getHeight());
+		add(jlbBack, 0);
 		
 		jlbPanel.setBackground(Color.white);
 		jlbPanel.setOpaque(true);
 		jlbPanel.setBorder(new LineBorder(Color.black, 3));
-		jlbPanel.setBounds(100, 100, 800, 400);
+		jlbPanel.setBounds(90 * resolution / 80, 50 * resolution / 80, 1100 * resolution / 80, 620 * resolution / 80);
 		add(jlbPanel, 0);
 		
 		jlbBackBtn.setBorder(new LineBorder(Color.black, 3));
-		jlbBackBtn.setBounds(500, 100, 50, 50);
+		jlbBackBtn.setBounds(getWidth() - 116 * resolution / 80, 26 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
 		add(jlbBackBtn, 0);
 		
-		for(int i = 0; i < jlbText.length; i++) {
-			jlbText[i].setBorder(new LineBorder(Color.black, 3));
-			add(jlbText[i]);
+		jlbText[0] = new JLabel("청계 농장 게임설명");
+		jlbText[0].setHorizontalAlignment(SwingConstants.CENTER);
+		jlbText[0].setFont(font);
+		jlbText[0].setBounds(100 * resolution / 80, 80 * resolution / 80, 1080 * resolution / 80, 30 * resolution / 80);
+		add(jlbText[0], 0);
+		jlbText[1] = new JLabel("밭을 추가하려면 삽 버튼을 누른 후 밭 갈기 버튼을 누르면 밭을 추가할 수 있습니다.");
+		jlbText[2] = new JLabel("상점에서 감자 씨앗을 사서 씨앗 버튼을 누른 후 밭을 클릭하면 감자를 심을 수 있습니다.");
+		jlbText[3] = new JLabel("상점에서 당근 씨앗을 사서 씨앗 버튼을 누른 후 밭을 클릭하면 당근을 심을 수 있습니다.");
+		jlbText[4] = new JLabel("상점에서 비트 씨앗을 사서 씨앗 버튼을 누른 후 밭을 클릭하면 비트를 심을 수 있습니다.");
+		jlbText[5] = new JLabel("상점에서 알을 구매하고 양계장에서 알을 부화시켜 병아리를 키울 수 있습니다.");
+		
+		jlbImage[0] = new JLabel(new ImageIcon(inGameImage_shovel.getSubimage(0, 0, 236, 236).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbImage[1] = new JLabel(new ImageIcon(cropImage_potato.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbImage[2] = new JLabel(new ImageIcon(cropImage_carrot.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbImage[3] = new JLabel(new ImageIcon(cropImage_beetroot.getSubimage(500, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbImage[4] = new JLabel(new ImageIcon(poultryImage_egg.getSubimage(200, 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		
+		for(int i = 1; i < jlbText.length; i++) {
+			jlbText[i].setFont(font);
+			jlbText[i].setBounds(210 * resolution / 80, 25 * resolution / 80 + 110 * i * resolution / 80, 860 * resolution / 80, 30 * resolution / 80);
+			add(jlbText[i], 0);
 		}
 		
 		for(int i = 0; i < jlbImage.length; i++) {
-			jlbImage[i].setBorder(new LineBorder(Color.black, 3));
-			add(jlbImage[i]);
+			jlbImage[i].setBounds(100 * resolution / 80, 100 * resolution / 80 + 110 * i * resolution / 80, 100 * resolution / 80, 100 * resolution / 80);
+			add(jlbImage[i], 0);
 		}
 	}
 	
