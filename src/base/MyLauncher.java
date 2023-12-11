@@ -205,4 +205,3 @@ public class MyLauncher extends JFrame {
     	contentPane.add(farmCanvas);
 	}
 }
-
