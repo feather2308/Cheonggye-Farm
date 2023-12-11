@@ -1,5 +1,11 @@
 package base;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +54,7 @@ public class FarmData {
 	public FarmData(FarmCanvas farmCanvas) {
 		this.farmCanvas = farmCanvas;
 		time = new InGameTime();
-		
+
 		setting();
 		callData();
 	}
@@ -85,9 +91,58 @@ public class FarmData {
 	}
 
 	private void callData() {
-		// TODO Auto-generated method stub
-		
+	    // TODO Auto-generated method stub
+	    // 데이터를 불러올 파일의 경로 및 파일 객체 생성
+	    String filePath = "farm_data.dat";
+	    File file = new File(filePath);
+
+	    // 파일이 존재하지 않으면 기본 설정으로 돌아감
+	    if (!file.exists()) {
+	        return;
+	    }
+
+	    try {
+	        // 파일 읽기
+	        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+
+	        // 저장된 데이터 읽기
+	        crop = (HashMap<String, Integer>) ois.readObject();
+	        field = (ArrayList<int[]>) ois.readObject();
+	        time.day = ois.readInt();
+	        time.hour = ois.readInt();
+	        time.minute = ois.readInt();
+	        coin = ois.readInt();
+
+	        ois.close();
+	    } catch (IOException | ClassNotFoundException e) {
+	        e.printStackTrace();
+	    }
 	}
+	
+	public void saveData() {
+	    // TODO Auto-generated method stub
+	    // 데이터를 저장할 파일의 경로 및 파일 객체 생성
+	    String filePath = "farm_data.dat";
+	    File file = new File(filePath);
+
+	    try {
+	        // 파일 쓰기
+	        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+
+	        // 저장할 데이터 쓰기
+	        oos.writeObject(crop);
+	        oos.writeObject(field);
+	        oos.writeInt(time.day);
+	        oos.writeInt(time.hour);
+	        oos.writeInt(time.minute);
+	        oos.writeInt(coin);
+
+	        oos.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 	
 	public int getCrop(String name) {
 		return crop.get(name);

@@ -228,18 +228,26 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		// 타이머 작업을 정의합니다.
 		Runnable task = new Runnable() {
+			
 			public void run() {
-				for (int i = 0; i < farmData.getField().size(); i++) {
-					int[] temp = farmData.getField(i);
-					if (temp[0] != 0) {
-						temp[2]++;
-						farmData.setField(i, temp);
-						farmData.checkField(i);
+				if(pa_inGame) {
+					try {
+						for (int i = 0; i < farmData.getField().size(); i++) {
+							int[] temp = farmData.getField(i);
+							if (temp[0] != 0) {
+								temp[2]++;
+								farmData.setField(i, temp);
+								farmData.checkField(i);
+							}
+						}
+						farmData.time.add(1);
+						refreshTime();
+						System.out.println(LocalTime.now());
+						}
+					catch(Exception e) {
+						System.out.println(e);
 					}
 				}
-				farmData.time.add(1);
-				refreshTime();
-				System.out.println(LocalTime.now());
 			}
 		};
 
@@ -475,7 +483,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	}
 
 	private void loading_InGame() throws IOException {
-		farmData.time.reset();
 		inGameImage_bat = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_bat)));
 		inGameImage_btn = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_btn)));
 		inGameImage_background = ImageIO
@@ -2397,6 +2404,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				if(press) {
 					pa_poultryFarm = false;
 					pa_inGameComponent = true;
+					farmData.saveData();
 				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbX.getX() + e.getPoint().x;
