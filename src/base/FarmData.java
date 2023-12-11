@@ -50,6 +50,7 @@ public class FarmData {
 	private Map<String, Integer> cropTime = new HashMap<>();
 	private ArrayList<int[]> field = new ArrayList<>();
 	private int coin = 0;
+	private int food = 0;
 	
 	public FarmData(FarmCanvas farmCanvas) {
 		this.farmCanvas = farmCanvas;
@@ -198,5 +199,14 @@ public class FarmData {
 	public void setCoin(int value, boolean plus) {
 		if(plus) coin += value;
 		else coin -= value;
+	}
+	
+	public int getFood() {
+		return food;
+	}
+	
+	public void setFood(int value, boolean plus) {
+		if(plus) food += value;
+		else food -= value;
 	}
 }

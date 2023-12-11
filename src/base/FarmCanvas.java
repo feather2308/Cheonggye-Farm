@@ -82,6 +82,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String poultry_farm = "/resource/inGame/poultry/poultryfarm.png";
 	protected final String poultry_farmfood = "/resource/inGame/poultry/poultryfarmfood.png";
 	protected final String poultry_x = "/resource/inGame/poultry/x.png";
+	protected final String poultry_btn = "/resource/inGame/poultry/btn.png";
 	
 	protected final String[] mainLobby_logo = {
 			"/resource/mainLobby/logo1.png",
@@ -130,6 +131,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage poultryImage_farm;
 	protected BufferedImage poultryImage_farmfood;
 	protected BufferedImage poultryImage_x;
+	protected BufferedImage poultryImage_btn;
 	
 	protected Image[] mainLobbyImage_logo;
 	protected Image[] mainLobbyImage_cloud1;
@@ -524,6 +526,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		poultryImage_farm = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_farm)));
 		poultryImage_farmfood = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_farmfood)));
 		poultryImage_x = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_x)));
+		poultryImage_btn = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_btn)));
 	}
 
 	private void loading_Field() throws IOException {
@@ -2364,7 +2367,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 	}
 	
-	private void paintPoultryFarm_Component() throws IOException {
+	private void paintPoultryFarm_Component() throws IOException {		
 		JLabel jlbOpaque = new JLabel();
 		jlbOpaque.setBackground(new Color(0, 0, 0, 125));
 		jlbOpaque.addMouseListener(new MouseListener() {
@@ -2387,12 +2390,87 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbOpaque.setBounds(0, 0, getWidth(), getHeight());
 		add(jlbOpaque, 0);
 		
-		JLabel jlbPoultry = new JLabel(new ImageIcon(poultryImage_farm));
+		JLabel jlbPoultry = new JLabel(new ImageIcon(poultryImage_farm.getScaledInstance(500 * resolution / 80, 500 * resolution / 80, Image.SCALE_SMOOTH)));
+		if(farmData.getFood() > 0) jlbPoultry.setIcon(new ImageIcon(poultryImage_farmfood.getScaledInstance(500 * resolution / 80, 500 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbPoultry.setBounds(getWidth() / 2 - 250 * resolution / 80 - 1, getHeight() / 2 - 250 * resolution / 80 - 1, 500 * resolution / 80, 500 * resolution / 80);
 		jlbPoultry.setBorder(new LineBorder(Color.black, 5));
 		add(jlbPoultry, 0);
 		
-		JLabel jlbX = new JLabel(new ImageIcon(poultryImage_x.getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+		JLabel jlbEggBackground = new JLabel(new ImageIcon(poultryImage_btn.getSubimage(0, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbEggBackground.setBounds(100 * resolution / 80, getHeight() / 2 - 250 * resolution / 80, 250 * resolution / 80, 100 * resolution / 80);
+		add(jlbEggBackground, 0);
+		
+		JLabel jlbEgg = new JLabel("알 놓기");
+		jlbEgg.setFont(font);
+		jlbEgg.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbEgg.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+				jlbEggBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(500, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+				press = true;
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(press) {
+					jlbEggBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(250, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbEgg.getX() + e.getPoint().x;
+				mouseClick.y = jlbEgg.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+				jlbEggBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(250, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+			}
+			public void mouseExited(MouseEvent e) {
+				jlbEggBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(0, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+				press = false;
+			}
+		});
+		jlbEgg.setBounds(100 * resolution / 80, getHeight() / 2 - 250 * resolution / 80, 250 * resolution / 80, 100 * resolution / 80);
+		add(jlbEgg, 0);
+		
+		JLabel jlbFoodBackground = new JLabel(new ImageIcon(poultryImage_btn.getSubimage(0, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbFoodBackground.setBounds(100 * resolution / 80, getHeight() / 2 - 130 * resolution / 80, 250 * resolution / 80, 100 * resolution / 80);
+		add(jlbFoodBackground, 0);
+		
+		JLabel jlbFood = new JLabel("밥 주기");
+		jlbFood.setFont(font);
+		jlbFood.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbFood.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+				jlbFoodBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(500, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+				press = true;
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(press) {
+					if(farmData.getFood() == 0) {
+						jlbPoultry.setIcon(new ImageIcon(poultryImage_farmfood.getScaledInstance(500 * resolution / 80, 500 * resolution / 80, Image.SCALE_SMOOTH)));
+					}
+					farmData.setFood(10, true);
+					jlbFoodBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(250, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbFood.getX() + e.getPoint().x;
+				mouseClick.y = jlbFood.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+				jlbFoodBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(250, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+			}
+			public void mouseExited(MouseEvent e) {
+				jlbFoodBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(0, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+				press = false;
+			}
+		});
+		jlbFood.setBounds(100 * resolution / 80, getHeight() / 2 - 130 * resolution / 80, 250 * resolution / 80, 100 * resolution / 80);
+		add(jlbFood, 0);
+		
+		JLabel jlbX = new JLabel(new ImageIcon(poultryImage_x.getScaledInstance(30 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbX.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
