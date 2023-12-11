@@ -160,6 +160,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	// paint able
 	protected boolean pa_mainLobby = true;
+	protected boolean pa_gameDesc = false;
 	protected boolean pa_inGame = false;
 	protected boolean pa_bottomInfo = false;
 	protected boolean pa_shop = false;
@@ -167,6 +168,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	// paint component
 	protected boolean pa_mainLobbyComponent = true;
+	protected boolean pa_gameDescComponent = false;
 	protected boolean pa_inGameComponent = false;
 	protected boolean pa_shopComponent = false;
 	protected boolean pa_poultryFarmComponent = false;
@@ -314,6 +316,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 		}
 		
+		if (pa_gameDesc) {
+			paintGameDesc();
+		}
+		
 		if (pa_inGame) {
 			try {
 				paintInGame();
@@ -330,7 +336,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 		}
 		
-		if(pa_poultryFarm) {
+		if (pa_poultryFarm) {
 			try {
 				paintPoultryFarm();
 			} catch (IOException e) {
@@ -348,94 +354,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 					mouseClickEffectSize[mouseClickEffect]);
 
 		g.drawImage(offscreen, 0, 0, null);
-	}
-
-	private void paintMainLobby() throws IOException {
-		if (la_mainLobby) {
-			loading_MainLobby();
-			la_mainLobby = false;
-		}
-
-		if (pa_mainLobbyComponent) {
-			paintMainLobby_Component();
-			pa_mainLobbyComponent = false;
-		}
-
-		// 배경
-		bufferGraphics.drawImage(mainLobbyImage_background, 0, 0, getWidth(), getHeight(), null);
-
-		// 로고
-		bufferGraphics.drawImage(mainLobbyImage_logo[mainLobby_logo_index],
-				getWidth() / 2 - 600 * resolution / 80 / 2 - 1, 0, 600 * resolution / 80, 300 * resolution / 80, null);
-
-		// 치킨
-		bufferGraphics.drawImage(mainLobbyImage_chicken, 20 * resolution / 80 - 1, getHeight() - 275 * resolution / 80,
-				270 * resolution / 80, 240 * resolution / 80, null);
-
-		// 싱싱채소
-		bufferGraphics.drawImage(mainLobbyImage_singsing, getWidth() - 280 * resolution / 80 - 1,
-				getHeight() - 250 * resolution / 80, 250 * resolution / 80, 200 * resolution / 80, null);
-
-		switch (mainLobby_cloud_stat) {
-		case 0:
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-			mainLobby_cloud_index = 0;
-			break;
-		case 5:
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-			mainLobby_cloud_index = 1;
-			break;
-		case 10:
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-			mainLobby_cloud_index = 2;
-			break;
-		case 15:
-		case 16:
-		case 17:
-		case 18:
-		case 19:
-			mainLobby_cloud_index = 3;
-			break;
-		case 20:
-		case 21:
-		case 22:
-		case 23:
-		case 24:
-			mainLobby_cloud_index = 4;
-			break;
-		case 25:
-		case 26:
-		case 27:
-		case 28:
-		case 29:
-			mainLobby_cloud_index = 5;
-			break;
-		}
-		// 구름1
-		bufferGraphics.drawImage(
-				mainLobbyImage_cloud.getSubimage(220 * mainLobby_cloud_index, 0, 220, 130).getScaledInstance(220, 130,
-						Image.SCALE_SMOOTH),
-				50 * resolution / 80 - 1, 50 * resolution / 80, 220 * resolution / 80, 130 * resolution / 80, null);
-
-		// 구름2
-		bufferGraphics.drawImage(
-				mainLobbyImage_cloud.getSubimage(230 * mainLobby_cloud_index, 130, 230, 140).getScaledInstance(230, 140,
-						Image.SCALE_SMOOTH),
-				getWidth() - 300 * resolution / 80 - 1, 65 * resolution / 80, 230 * resolution / 80,
-				140 * resolution / 80, null);
-
-//      //중앙점
-//      bufferGraphics.setColor(Color.black);
-//      bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
 	}
 
 	private void loading_MainLobby() throws IOException {
@@ -575,6 +493,94 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 	}
 
+	private void paintMainLobby() throws IOException {
+			if (la_mainLobby) {
+				loading_MainLobby();
+				la_mainLobby = false;
+			}
+	
+			if (pa_mainLobbyComponent) {
+				paintMainLobby_Component();
+				pa_mainLobbyComponent = false;
+			}
+	
+			// 배경
+			bufferGraphics.drawImage(mainLobbyImage_background, 0, 0, getWidth(), getHeight(), null);
+	
+			// 로고
+			bufferGraphics.drawImage(mainLobbyImage_logo[mainLobby_logo_index],
+					getWidth() / 2 - 600 * resolution / 80 / 2 - 1, 0, 600 * resolution / 80, 300 * resolution / 80, null);
+	
+			// 치킨
+			bufferGraphics.drawImage(mainLobbyImage_chicken, 20 * resolution / 80 - 1, getHeight() - 275 * resolution / 80,
+					270 * resolution / 80, 240 * resolution / 80, null);
+	
+			// 싱싱채소
+			bufferGraphics.drawImage(mainLobbyImage_singsing, getWidth() - 280 * resolution / 80 - 1,
+					getHeight() - 250 * resolution / 80, 250 * resolution / 80, 200 * resolution / 80, null);
+	
+			switch (mainLobby_cloud_stat) {
+			case 0:
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				mainLobby_cloud_index = 0;
+				break;
+			case 5:
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				mainLobby_cloud_index = 1;
+				break;
+			case 10:
+			case 11:
+			case 12:
+			case 13:
+			case 14:
+				mainLobby_cloud_index = 2;
+				break;
+			case 15:
+			case 16:
+			case 17:
+			case 18:
+			case 19:
+				mainLobby_cloud_index = 3;
+				break;
+			case 20:
+			case 21:
+			case 22:
+			case 23:
+			case 24:
+				mainLobby_cloud_index = 4;
+				break;
+			case 25:
+			case 26:
+			case 27:
+			case 28:
+			case 29:
+				mainLobby_cloud_index = 5;
+				break;
+			}
+			// 구름1
+			bufferGraphics.drawImage(
+					mainLobbyImage_cloud.getSubimage(220 * mainLobby_cloud_index, 0, 220, 130).getScaledInstance(220, 130,
+							Image.SCALE_SMOOTH),
+					50 * resolution / 80 - 1, 50 * resolution / 80, 220 * resolution / 80, 130 * resolution / 80, null);
+	
+			// 구름2
+			bufferGraphics.drawImage(
+					mainLobbyImage_cloud.getSubimage(230 * mainLobby_cloud_index, 130, 230, 140).getScaledInstance(230, 140,
+							Image.SCALE_SMOOTH),
+					getWidth() - 300 * resolution / 80 - 1, 65 * resolution / 80, 230 * resolution / 80,
+					140 * resolution / 80, null);
+	
+	//      //중앙점
+	//      bufferGraphics.setColor(Color.black);
+	//      bufferGraphics.drawRect(getWidth() / 2, getHeight() / 2, 1, 1);
+		}
+
 	private void paintMainLobby_Component() throws IOException {
 		this.removeAll();
 		this.setLayout(null);
@@ -653,7 +659,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mouseReleased(MouseEvent e) {
 				if (press) {
-
+					pa_gameDesc = true;
+					pa_gameDescComponent = true;
 				}
 				mouseClickEffect = 0;
 				mouseClick.x = btnDesc.getX() + e.getPoint().x;
@@ -732,6 +739,40 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(btnSett);
 	}
 
+	private void paintGameDesc() {
+		if(pa_gameDescComponent) {
+			paintGameDesc_Component();
+			pa_gameDescComponent = false;
+		}
+	}
+	
+	private void paintGameDesc_Component() {
+		JLabel jlbPanel = new JLabel();
+		JLabel jlbBackBtn = new JLabel();
+		JLabel[] jlbText = new JLabel[] {null, null, null, null, null};
+		JLabel[] jlbImage = new JLabel[] {null, null, null, null, null};
+		
+		jlbPanel.setBackground(Color.white);
+		jlbPanel.setOpaque(true);
+		jlbPanel.setBorder(new LineBorder(Color.black, 3));
+		jlbPanel.setBounds(100, 100, 800, 400);
+		add(jlbPanel, 0);
+		
+		jlbBackBtn.setBorder(new LineBorder(Color.black, 3));
+		jlbBackBtn.setBounds(500, 100, 50, 50);
+		add(jlbBackBtn, 0);
+		
+		for(int i = 0; i < jlbText.length; i++) {
+			jlbText[i].setBorder(new LineBorder(Color.black, 3));
+			add(jlbText[i]);
+		}
+		
+		for(int i = 0; i < jlbImage.length; i++) {
+			jlbImage[i].setBorder(new LineBorder(Color.black, 3));
+			add(jlbImage[i]);
+		}
+	}
+	
 	private void paintInGame() throws IOException {
 		setValue();
 
