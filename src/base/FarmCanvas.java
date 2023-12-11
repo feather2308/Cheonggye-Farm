@@ -1470,7 +1470,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		JLabel jlbTime = new JLabel();
 		jlbTime.setBounds(10 * resolution / 80, 10 * resolution / 80, 100 * resolution / 80, 40 * resolution / 80);
 		jlbTime.setBorder(new LineBorder(Color.black, 1));
-		add(jlbTime);
+		jlbTime.setBackground(new Color(255, 255, 255, 120));
+		jlbTime.setOpaque(true);
 		
 		// 시간 텍스트
 		jlbTimeText = new JLabel(farmData.time.hour + "시 " + farmData.time.minute + "분");
@@ -1479,6 +1480,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbTimeText.setHorizontalAlignment(SwingConstants.CENTER);
 		jlbTimeText.setBorder(new LineBorder(Color.black, 1));
 		add(jlbTimeText);
+		add(jlbTime);
 	}
 
 	private void refreshCoin() {
