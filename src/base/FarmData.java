@@ -74,25 +74,25 @@ public class FarmData {
 		cropTime.put("Potato1", 10);
 		cropTime.put("Potato2", 20);
 		cropTime.put("Potato3", 30);
-		cropTime.put("Potato4", 40);
+		cropTime.put("Potato", 70);
 		cropTime.put("Carrot0", 15);
 		cropTime.put("Carrot1", 15);
 		cropTime.put("Carrot2", 30);
 		cropTime.put("Carrot3", 45);
-		cropTime.put("Carrot4", 60);
+		cropTime.put("Carrot", 105);
 		cropTime.put("Beetroot0", 20);
 		cropTime.put("Beetroot1", 20);
 		cropTime.put("Beetroot2", 40);
 		cropTime.put("Beetroot3", 60);
-		cropTime.put("Beetroot4", 80);
+		cropTime.put("Beetroot", 140);
 		
-		field.add(new int[] {0, 0, 0});
-		field.add(new int[] {0, 0, 0});
-		field.add(new int[] {0, 0, 0});
+		addField();
+		addField();
+		addField();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void callData() {
-	    // TODO Auto-generated method stub
 	    // 데이터를 불러올 파일의 경로 및 파일 객체 생성
 	    String filePath = "farm_data.dat";
 	    File file = new File(filePath);
@@ -121,7 +121,6 @@ public class FarmData {
 	}
 	
 	public void saveData() {
-	    // TODO Auto-generated method stub
 	    // 데이터를 저장할 파일의 경로 및 파일 객체 생성
 	    String filePath = "farm_data.dat";
 	    File file = new File(filePath);
@@ -158,6 +157,10 @@ public class FarmData {
 		else crop.put(name, crop.get(name) - count);
 	}
 
+	public void addField() {
+		field.add(new int[] {0, 0, 0, 0, 0});
+	}
+	
 	public ArrayList<int[]> getField() {
 		return field;
 	}
@@ -166,17 +169,17 @@ public class FarmData {
 		return field.get(i);
 	}
 	
-	public void setField(int i, int[] value) { //[0 작물번호, 1 성장단계, 2 성장시간]
+	public void setField(int i, int[] value) { //[0 작물번호, 1 성장단계, 2 성장시간, 3 물시간, 4 비료여부]
 		field.set(i, value);
 	}
 	
-	public void putField(int[] value) { 
-		field.add(value);
+	public void setField(int i) {
+		field.set(i, new int[] {0, 0, 0, 0, 0});
 	}
 	
 	public void checkField(int i) {
 		int[] temp = field.get(i);
-		if(temp[2] >= getCropTime(farmCanvas.getCropName(temp[0], false, false), temp[1]) && temp[1] != 4) {
+		if(temp[2] >= getCropLeftTime(farmCanvas.getCropName(temp[0], false, false), temp[1]) && temp[1] != 4) {
 			temp[1]++;
 			temp[2] = 0;
 			field.set(i, temp);
@@ -184,12 +187,28 @@ public class FarmData {
 		farmCanvas.refreshField();
 	}
 	
-	public int getCropTime(String name, int level) {
+	public int getCropLeftTime(String name, int level) {
 		try {
-		return cropTime.get(name + Integer.toString(level));
+			return cropTime.get(name + Integer.toString(level));
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+	
+	public int getCropLeftTime(String name) {
+		try {
+			return cropTime.get(name);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public int getCropTime(String name, int level) {
+		int sum = 0;
+		for(int i = 0; i < level; i++) {
+			sum += cropTime.get(name + Integer.toString(i));
+		}
+		return sum;
 	}
 	
 	public int getCoin() {
