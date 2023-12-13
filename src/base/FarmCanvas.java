@@ -264,6 +264,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 								farmData.checkField(i);
 							}
 						}
+						farmData.egg.addTime();
 						farmData.time.add(1);
 						refreshTime();
 						System.out.println(LocalTime.now());
@@ -2644,7 +2645,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			public void mouseReleased(MouseEvent e) {
 				if(press) {
 					jlbEggBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(250, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
-					jlbTamago.setIcon(new ImageIcon(poultryImage_egg.getSubimage(0, 0, 100, 100).getScaledInstance(120 * resolution / 80, 120 * resolution / 80, Image.SCALE_SMOOTH)));
+					farmData.egg.setEgg();
 				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbEgg.getX() + e.getPoint().x;

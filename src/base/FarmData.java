@@ -1,5 +1,8 @@
 package base;
 
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,6 +12,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.ImageIcon;
 
 public class FarmData {
 	class InGameTime {
@@ -42,7 +47,102 @@ public class FarmData {
 		}
 	}
 
+	class Egg {
+		FarmCanvas farmCanvas;
+		FarmData farmData;
+		
+		TamagoMouseListener tamagoMouseListener;
+		
+		int time, level;
+		boolean isPlace, chick;
+		
+		public Egg(FarmCanvas farmCanvas, FarmData farmData) {
+			this.farmCanvas = farmCanvas;
+			this.farmData = farmData;
+			
+			tamagoMouseListener = new TamagoMouseListener();
+			
+			time = 0;
+			level = -1;
+			isPlace = false;
+			chick = false;
+		}
+		
+		void setEgg() {
+			if(!isPlace && !chick) {
+				if(farmData.getCrop("Egg") >= 1) {
+					farmData.setCrop("Egg", 1, false);
+					isPlace = true;
+					
+					farmCanvas.jlbTamago.setIcon(new ImageIcon(farmCanvas.poultryImage_egg.getSubimage(0, 0, 100, 100).getScaledInstance(120 * farmCanvas.resolution / 80, 120 * farmCanvas.resolution / 80, Image.SCALE_SMOOTH)));
+				}
+			}
+		}
+		
+		void addTime() {
+			if(isPlace) {
+				time++;
+				check();
+			}
+		}
+		
+		void check() {
+			if(time >= 100 && level < 1) {
+				farmCanvas.jlbTamago.setIcon(new ImageIcon(farmCanvas.poultryImage_egg.getSubimage(100, 0, 100, 100).getScaledInstance(120 * farmCanvas.resolution / 80, 120 * farmCanvas.resolution / 80, Image.SCALE_SMOOTH)));
+				level = 1;
+			} else if(time >= 200 && level < 2) {
+				farmCanvas.jlbTamago.setIcon(new ImageIcon(farmCanvas.poultryImage_egg.getSubimage(200, 0, 100, 100).getScaledInstance(120 * farmCanvas.resolution / 80, 120 * farmCanvas.resolution / 80, Image.SCALE_SMOOTH)));
+				level = 2;
+			}
+			
+			if(time >= 200) {
+				farmCanvas.jlbTamago.addMouseListener(tamagoMouseListener);
+				isPlace = false;
+				chick = true;
+			}
+		}
+		
+		void getChick() {
+			if(chick) {
+				farmCanvas.jlbTamago.removeMouseListener(tamagoMouseListener);
+				
+				time = 0;
+				level = 0;
+				isPlace = false;
+				chick = false;
+				
+				farmData.setCrop("Chick", 1, true);
+			}
+		}
+		
+		class TamagoMouseListener implements MouseListener {
+			boolean press = false;
+			
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+				press = true;
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(press) {
+					farmCanvas.jlbTamago.setIcon(null);
+					getChick();
+				}
+				farmCanvas.mouseClickEffect = 0;
+				farmCanvas.mouseClick.x = farmCanvas.jlbTamago.getX() + e.getPoint().x;
+				farmCanvas.mouseClick.y = farmCanvas.jlbTamago.getY() + e.getPoint().y;
+				farmCanvas.repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+				press = false;
+			}
+		}
+	}
+	
 	protected InGameTime time;
+	protected Egg egg;
 	
 	private FarmCanvas farmCanvas;
 	
@@ -55,6 +155,7 @@ public class FarmData {
 	public FarmData(FarmCanvas farmCanvas) {
 		this.farmCanvas = farmCanvas;
 		time = new InGameTime();
+		egg = new Egg(farmCanvas, this);
 
 		setting();
 		callData();
@@ -69,6 +170,9 @@ public class FarmData {
 		crop.put("CarrotSeed", 0);
 		crop.put("Beetroot", 0);
 		crop.put("BeetrootSeed", 0);
+		crop.put("Egg", 5);
+		crop.put("Chick", 0);
+		crop.put("Chicken", 0);
 		
 		cropTime.put("Potato0", 10);
 		cropTime.put("Potato1", 10);
@@ -109,9 +213,16 @@ public class FarmData {
 	        // 저장된 데이터 읽기
 	        crop = (HashMap<String, Integer>) ois.readObject();
 	        field = (ArrayList<int[]>) ois.readObject();
+	        
 	        time.day = ois.readInt();
 	        time.hour = ois.readInt();
 	        time.minute = ois.readInt();
+	        
+	        egg.time = ois.readInt();
+	        egg.level = ois.readInt();
+	        egg.isPlace = ois.readBoolean();
+	        egg.chick = ois.readBoolean();
+	        
 	        coin = ois.readInt();
 
 	        ois.close();
