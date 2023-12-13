@@ -70,11 +70,12 @@ public class FarmData {
 		
 		void setEgg() {
 			if(!isPlace && !chick) {
-				if(farmData.getCrop("Egg") >= 1) {
-					farmData.setCrop("Egg", 1, false);
+				if(farmData.getCrop("FertilizedEgg") >= 1) {
+					farmData.setCrop("FertilizedEgg", 1, false);
 					isPlace = true;
 					
 					farmCanvas.jlbTamago.setIcon(new ImageIcon(farmCanvas.poultryImage_egg.getSubimage(0, 0, 100, 100).getScaledInstance(120 * farmCanvas.resolution / 80, 120 * farmCanvas.resolution / 80, Image.SCALE_SMOOTH)));
+					level = 0;
 				}
 			}
 		}
@@ -107,7 +108,7 @@ public class FarmData {
 				farmCanvas.jlbTamago.removeMouseListener(tamagoMouseListener);
 				
 				time = 0;
-				level = 0;
+				level = -1;
 				isPlace = false;
 				chick = false;
 				
@@ -170,7 +171,13 @@ public class FarmData {
 		crop.put("CarrotSeed", 0);
 		crop.put("Beetroot", 0);
 		crop.put("BeetrootSeed", 0);
-		crop.put("Egg", 5);
+		crop.put("SweetPotato", 0);
+		crop.put("SweetPotatoSeed", 0);
+		crop.put("Daikon", 0);
+		crop.put("DaikonSeed", 0);
+		
+		crop.put("FertilizedEgg", 0);
+		crop.put("UnfertilizedEgg", 0);
 		crop.put("Chick", 0);
 		crop.put("Chicken", 0);
 		
@@ -189,6 +196,16 @@ public class FarmData {
 		cropTime.put("Beetroot2", 40);
 		cropTime.put("Beetroot3", 60);
 		cropTime.put("Beetroot", 140);
+		cropTime.put("SweetPotato0", 30);
+		cropTime.put("SweetPotato1", 30);
+		cropTime.put("SweetPotato2", 60);
+		cropTime.put("SweetPotato3", 90);
+		cropTime.put("SweetPotato", 210);
+		cropTime.put("Daikon0", 40);
+		cropTime.put("Daikon1", 40);
+		cropTime.put("Daikon2", 60);
+		cropTime.put("Daikon3", 80);
+		cropTime.put("Daikon", 220);
 		
 		addField();
 		addField();
@@ -243,9 +260,16 @@ public class FarmData {
 	        // 저장할 데이터 쓰기
 	        oos.writeObject(crop);
 	        oos.writeObject(field);
+	        
 	        oos.writeInt(time.day);
 	        oos.writeInt(time.hour);
 	        oos.writeInt(time.minute);
+	        
+	        oos.writeInt(egg.time);
+	        oos.writeInt(egg.level);
+	        oos.writeBoolean(egg.isPlace);
+	        oos.writeBoolean(egg.chick);
+	        
 	        oos.writeInt(coin);
 
 	        oos.close();
