@@ -31,7 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
@@ -693,7 +692,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		btnSize.x = 250;
 		btnSize.y = 80;
 
-		JButton btnStart = new JButton(new ImageIcon(mainLobbyImage_buttonstart.getSubimage(0, 0, 352, 112)
+		JLabel btnStart = new JLabel(new ImageIcon(mainLobbyImage_buttonstart.getSubimage(0, 0, 352, 112)
 				.getScaledInstance(btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
 		btnStart.addMouseListener(new MouseListener() {
 			boolean press = false;
@@ -740,11 +739,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		btnStart.setBounds(getWidth() / 2 - btnSize.x * resolution / 80 / 2 - 1,
 				getHeight() / 2 + (btnSize.y - 65) * resolution / 80, btnSize.x * resolution / 80,
 				btnSize.y * resolution / 80);
-		btnStart.setBorderPainted(false);
-		btnStart.setContentAreaFilled(false);
 		add(btnStart);
 
-		JButton btnDesc = new JButton(new ImageIcon(mainLobbyImage_buttondesc.getSubimage(0, 0, 352, 112)
+		JLabel btnDesc = new JLabel(new ImageIcon(mainLobbyImage_buttondesc.getSubimage(0, 0, 352, 112)
 				.getScaledInstance(btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
 		btnDesc.addMouseListener(new MouseListener() {
 			boolean press = false;
@@ -788,11 +785,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		btnDesc.setBounds(getWidth() / 2 - btnSize.x * resolution / 80 / 2 - 1,
 				getHeight() / 2 + (btnSize.y + 35) * resolution / 80, btnSize.x * resolution / 80,
 				btnSize.y * resolution / 80);
-		btnDesc.setBorderPainted(false);
-		btnDesc.setContentAreaFilled(false);
 		add(btnDesc);
 
-		JButton btnSett = new JButton(new ImageIcon(mainLobbyImage_buttonsett.getSubimage(0, 0, 352, 112)
+		JLabel btnSett = new JLabel(new ImageIcon(mainLobbyImage_buttonsett.getSubimage(0, 0, 352, 112)
 				.getScaledInstance(btnSize.x * resolution / 80, btnSize.y * resolution / 80, Image.SCALE_SMOOTH)));
 		btnSett.addMouseListener(new MouseListener() {
 			boolean press = false;
@@ -836,8 +831,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		btnSett.setBounds(getWidth() / 2 - btnSize.x * resolution / 80 / 2 - 1,
 				getHeight() / 2 + (btnSize.y + 135) * resolution / 80, btnSize.x * resolution / 80,
 				btnSize.y * resolution / 80);
-		btnSett.setBorderPainted(false);
-		btnSett.setContentAreaFilled(false);
 		add(btnSett);
 	}
 	private void paintGameDescComponent() {
