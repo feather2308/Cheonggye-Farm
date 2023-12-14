@@ -75,6 +75,7 @@ public class FarmData {
 					isPlace = true;
 					
 					farmCanvas.jlbTamago.setIcon(new ImageIcon(farmCanvas.poultryImage_egg.getSubimage(0, 0, 100, 100).getScaledInstance(120 * farmCanvas.resolution / 80, 120 * farmCanvas.resolution / 80, Image.SCALE_SMOOTH)));
+					farmCanvas.jlbPoultryText2.setText("유정란: " + farmData.getCrop("FertilizedEgg"));
 					level = 0;
 				}
 			}
@@ -113,6 +114,7 @@ public class FarmData {
 				chick = false;
 				
 				farmData.setCrop("Chick", 1, true);
+				farmCanvas.jlbPoultryText4.setText("병아리: " + farmData.getCrop("Chick"));
 			}
 		}
 		
@@ -241,6 +243,7 @@ public class FarmData {
 	        egg.chick = ois.readBoolean();
 	        
 	        coin = ois.readInt();
+	        food = ois.readInt();
 
 	        ois.close();
 	    } catch (IOException | ClassNotFoundException e) {
@@ -271,6 +274,7 @@ public class FarmData {
 	        oos.writeBoolean(egg.chick);
 	        
 	        oos.writeInt(coin);
+	        oos.writeInt(food);
 
 	        oos.close();
 	    } catch (IOException e) {
@@ -362,5 +366,9 @@ public class FarmData {
 	public void setFood(int value, boolean plus) {
 		if(plus) food += value;
 		else food -= value;
+	}
+	
+	public void setFood(int value) {
+		food = value;
 	}
 }

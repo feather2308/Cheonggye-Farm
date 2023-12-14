@@ -255,13 +255,22 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	JLabel jlbPremiumFertilizerImage, jlbPremiumFertilizerText, jlbPremiumFertilizerCost, jlbPremiumFertilizerClick;
 	JLabel jlbFertilizerBack, jlbFertilizerBackText, jlbFertilizerBackClick;
 
-	JLabel jlbTamago;
+	// 양계장
+	JLabel jlbTamago, jlbPoultryText2, jlbPoultryText3, jlbPoultryText4, jlbPoultryText5, jlbFoodGauge;
 	
-	int x_back_sh, x_back_sp, x_back_fe;
+	int x_back_sh, x_back_sp, x_back_fe, x_back_ap;
 	int y_image, y_text, y_count, y_click;
 	int x_potato, x_carrot, x_beetroot, x_sweetpotato, x_daikon;
 	int x_shovel, x_hoe;
 	int x_cheap, x_normal, x_advanced, x_premium;
+	int x_storage, x_save, x_saveImage, x_exit, x_exitImage, x_reset, x_resetImage;
+	int x_head1, x_head2, x_head3;
+	int x_item1, x_item2, x_item3, x_item4, x_item5, x_itemPoultry1, x_itemPoultry2;
+	int y_head, y_headt1, y_headt2, y_itemText1, y_itemText2, y_itemImage1, y_itemImage2;
+	int y_image1_ap, y_image2_ap, y_text1_ap, y_text2_ap;
+	int y_time1_ap, y_time2_ap, y_gold1_ap, y_gold2_ap, y_click2_ap;
+	int size_storage_x, size_text_y, size_image_small, size_exit_x_ap, size_click_y_ap;
+	
 	int jlb_size, jlb_click_x_size, jlb_click_y_size;
 	int count, sprout_camera_max, shovel_camera_max, fertilizer_camera_max, field_camera_max;
 	int currentCrop = 0;
@@ -278,6 +287,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	int size_shop_x, size_shop_item_y, size_shop_image, size_shop_lore_y;
 	int size_shop_btn_x, size_shop_btn_y;
+	
+	int poultryGauge;
 
 	public FarmCanvas(MyLauncher myLauncher, int resolution) {
 		this.myLauncher = myLauncher;
@@ -2311,6 +2322,374 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		this.removeAll();
 		paintStarCoinComponent();
 		paintFieldComponent();
+		
+		JPanel jplStorage = new JPanel();
+		jplStorage.setBounds(x_storage, y_click, size_storage_x, jlb_click_y_size);
+		jplStorage.setBorder(new LineBorder(Color.black, 1));
+		jplStorage.setLayout(null);
+		add(jplStorage);
+		
+		JLabel jlbHead1 = new JLabel("창고");
+		jlbHead1.setFont(font);
+		jlbHead1.setBounds(x_head1, y_head, size_image_small, size_text_y);
+		jplStorage.add(jlbHead1);
+		
+		JLabel jlbHead1t1 = new JLabel("씨앗");
+		jlbHead1t1.setFont(font_count);
+		jlbHead1t1.setHorizontalAlignment(SwingConstants.RIGHT);
+		jlbHead1t1.setBounds(x_head1, y_headt1, size_image_small, size_text_y);
+		jplStorage.add(jlbHead1t1);
+		
+		JLabel jlbHead1t2 = new JLabel("작물");
+		jlbHead1t2.setFont(font_count);
+		jlbHead1t2.setHorizontalAlignment(SwingConstants.RIGHT);
+		jlbHead1t2.setBounds(x_head1, y_headt2, size_image_small, size_text_y);
+		jplStorage.add(jlbHead1t2);
+		
+		JLabel jlbHead2 = new JLabel("양계장");
+		jlbHead2.setFont(font);
+		jlbHead2.setBounds(x_head2, y_head, size_image_small, size_text_y);
+		jplStorage.add(jlbHead2);
+		
+		JLabel jlbHead2t1 = new JLabel("유정란");
+		jlbHead2t1.setFont(font_count);
+		jlbHead2t1.setHorizontalAlignment(SwingConstants.RIGHT);
+		jlbHead2t1.setBounds(x_head2, y_headt1, size_image_small, size_text_y);
+		jplStorage.add(jlbHead2t1);
+		
+		JLabel jlbHead2t2 = new JLabel("무정란");
+		jlbHead2t2.setFont(font_count);
+		jlbHead2t2.setHorizontalAlignment(SwingConstants.RIGHT);
+		jlbHead2t2.setBounds(x_head2, y_headt2, size_image_small, size_text_y);
+		jplStorage.add(jlbHead2t2);
+		
+		JLabel jlbHead3t1 = new JLabel("병아리");
+		jlbHead3t1.setFont(font_count);
+		jlbHead3t1.setHorizontalAlignment(SwingConstants.RIGHT);
+		jlbHead3t1.setBounds(x_head3, y_headt1, size_image_small, size_text_y);
+		jplStorage.add(jlbHead3t1);
+		
+		JLabel jlbHead3t2 = new JLabel("닭");
+		jlbHead3t2.setFont(font_count);
+		jlbHead3t2.setHorizontalAlignment(SwingConstants.RIGHT);
+		jlbHead3t2.setBounds(x_head3, y_headt2, size_image_small, size_text_y);
+		jplStorage.add(jlbHead3t2);
+		
+		JLabel jlbItem1_name = new JLabel("감자");
+		JLabel jlbItem1up_image = new JLabel(new ImageIcon(cropImage_potato.getSubimage(0, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem1up_text = new JLabel(farmData.getCrop("PotatoSeed") + " 개");
+		JLabel jlbItem1down_image = new JLabel(new ImageIcon(cropImage_potato.getSubimage(500, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem1down_text = new JLabel(farmData.getCrop("Potato") + " 개");
+		jlbItem1_name.setFont(font_count);
+		jlbItem1up_text.setFont(font_count);
+		jlbItem1down_text.setFont(font_count);
+		jlbItem1_name.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem1up_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem1down_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem1_name.setBounds(x_item1, y_head, size_image_small, size_text_y);
+		jlbItem1up_image.setBounds(x_item1, y_itemImage1, size_image_small, size_image_small);
+		jlbItem1up_text.setBounds(x_item1, y_itemText1, size_image_small, size_text_y);
+		jlbItem1down_image.setBounds(x_item1, y_itemImage2, size_image_small, size_image_small);
+		jlbItem1down_text.setBounds(x_item1, y_itemText2, size_image_small, size_text_y);
+		jplStorage.add(jlbItem1_name);
+		jplStorage.add(jlbItem1up_image);
+		jplStorage.add(jlbItem1up_text);
+		jplStorage.add(jlbItem1down_image);
+		jplStorage.add(jlbItem1down_text);
+		
+		JLabel jlbItem2_name = new JLabel("당근");
+		JLabel jlbItem2up_image = new JLabel(new ImageIcon(cropImage_carrot.getSubimage(0, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem2up_text = new JLabel(farmData.getCrop("CarrotSeed") + " 개");
+		JLabel jlbItem2down_image = new JLabel(new ImageIcon(cropImage_carrot.getSubimage(500, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem2down_text = new JLabel(farmData.getCrop("Carrot") + " 개");
+		jlbItem2_name.setFont(font_count);
+		jlbItem2up_text.setFont(font_count);
+		jlbItem2down_text.setFont(font_count);
+		jlbItem2_name.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem2up_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem2down_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem2_name.setBounds(x_item2, y_head, size_image_small, size_text_y);
+		jlbItem2up_image.setBounds(x_item2, y_itemImage1, size_image_small, size_image_small);
+		jlbItem2up_text.setBounds(x_item2, y_itemText1, size_image_small, size_text_y);
+		jlbItem2down_image.setBounds(x_item2, y_itemImage2, size_image_small, size_image_small);
+		jlbItem2down_text.setBounds(x_item2, y_itemText2, size_image_small, size_text_y);
+		jplStorage.add(jlbItem2_name);
+		jplStorage.add(jlbItem2up_image);
+		jplStorage.add(jlbItem2up_text);
+		jplStorage.add(jlbItem2down_image);
+		jplStorage.add(jlbItem2down_text);
+		
+		JLabel jlbItem3_name = new JLabel("비트");
+		JLabel jlbItem3up_image = new JLabel(new ImageIcon(cropImage_beetroot.getSubimage(0, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem3up_text = new JLabel(farmData.getCrop("BeetrootSeed") + " 개");
+		JLabel jlbItem3down_image = new JLabel(new ImageIcon(cropImage_beetroot.getSubimage(500, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem3down_text = new JLabel(farmData.getCrop("Beetroot") + " 개");
+		jlbItem3_name.setFont(font_count);
+		jlbItem3up_text.setFont(font_count);
+		jlbItem3down_text.setFont(font_count);
+		jlbItem3_name.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem3up_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem3down_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem3_name.setBounds(x_item3, y_head, size_image_small, size_text_y);
+		jlbItem3up_image.setBounds(x_item3, y_itemImage1, size_image_small, size_image_small);
+		jlbItem3up_text.setBounds(x_item3, y_itemText1, size_image_small, size_text_y);
+		jlbItem3down_image.setBounds(x_item3, y_itemImage2, size_image_small, size_image_small);
+		jlbItem3down_text.setBounds(x_item3, y_itemText2, size_image_small, size_text_y);
+		jplStorage.add(jlbItem3_name);
+		jplStorage.add(jlbItem3up_image);
+		jplStorage.add(jlbItem3up_text);
+		jplStorage.add(jlbItem3down_image);
+		jplStorage.add(jlbItem3down_text);
+		
+		JLabel jlbItem4_name = new JLabel("고구마");
+		JLabel jlbItem4up_image = new JLabel(new ImageIcon(cropImage_sweetpotato.getSubimage(0, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem4up_text = new JLabel(farmData.getCrop("SweetPotatoSeed") + " 개");
+		JLabel jlbItem4down_image = new JLabel(new ImageIcon(cropImage_sweetpotato.getSubimage(500, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem4down_text = new JLabel(farmData.getCrop("SweetPotato") + " 개");
+		jlbItem4_name.setFont(font_count);
+		jlbItem4up_text.setFont(font_count);
+		jlbItem4down_text.setFont(font_count);
+		jlbItem4_name.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem4up_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem4down_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem4_name.setBounds(x_item4, y_head, size_image_small, size_text_y);
+		jlbItem4up_image.setBounds(x_item4, y_itemImage1, size_image_small, size_image_small);
+		jlbItem4up_text.setBounds(x_item4, y_itemText1, size_image_small, size_text_y);
+		jlbItem4down_image.setBounds(x_item4, y_itemImage2, size_image_small, size_image_small);
+		jlbItem4down_text.setBounds(x_item4, y_itemText2, size_image_small, size_text_y);
+		jplStorage.add(jlbItem4_name);
+		jplStorage.add(jlbItem4up_image);
+		jplStorage.add(jlbItem4up_text);
+		jplStorage.add(jlbItem4down_image);
+		jplStorage.add(jlbItem4down_text);
+		
+		JLabel jlbItem5_name = new JLabel("무");
+		JLabel jlbItem5up_image = new JLabel(new ImageIcon(cropImage_daikon.getSubimage(0, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem5up_text = new JLabel(farmData.getCrop("DaikonSeed") + " 개");
+		JLabel jlbItem5down_image = new JLabel(new ImageIcon(cropImage_daikon.getSubimage(500, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItem5down_text = new JLabel(farmData.getCrop("Daikon") + " 개");
+		jlbItem5_name.setFont(font_count);
+		jlbItem5up_text.setFont(font_count);
+		jlbItem5down_text.setFont(font_count);
+		jlbItem5_name.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem5up_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem5down_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItem5_name.setBounds(x_item5, y_head, size_image_small, size_text_y);
+		jlbItem5up_image.setBounds(x_item5, y_itemImage1, size_image_small, size_image_small);
+		jlbItem5up_text.setBounds(x_item5, y_itemText1, size_image_small, size_text_y);
+		jlbItem5down_image.setBounds(x_item5, y_itemImage2, size_image_small, size_image_small);
+		jlbItem5down_text.setBounds(x_item5, y_itemText2, size_image_small, size_text_y);
+		jplStorage.add(jlbItem5_name);
+		jplStorage.add(jlbItem5up_image);
+		jplStorage.add(jlbItem5up_text);
+		jplStorage.add(jlbItem5down_image);
+		jplStorage.add(jlbItem5down_text);
+		
+		JLabel jlbItemPoultry1up_image = new JLabel(new ImageIcon(poultryImage_egg.getSubimage(200, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItemPoultry1up_text = new JLabel(farmData.getCrop("FertilizedEgg") + " 개");
+		JLabel jlbItemPoultry1down_image = new JLabel(new ImageIcon(poultryImage_egg.getSubimage(0, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItemPoultry1down_text = new JLabel(farmData.getCrop("UnfertilizedEgg") + " 개");
+		jlbItemPoultry1up_text.setFont(font_count);
+		jlbItemPoultry1down_text.setFont(font_count);
+		jlbItemPoultry1up_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItemPoultry1down_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItemPoultry1up_image.setBounds(x_itemPoultry1, y_itemImage1, size_image_small, size_image_small);
+		jlbItemPoultry1up_text.setBounds(x_itemPoultry1, y_itemText1, size_image_small, size_text_y);
+		jlbItemPoultry1down_image.setBounds(x_itemPoultry1, y_itemImage2, size_image_small, size_image_small);
+		jlbItemPoultry1down_text.setBounds(x_itemPoultry1, y_itemText2, size_image_small, size_text_y);
+		jplStorage.add(jlbItemPoultry1up_image);
+		jplStorage.add(jlbItemPoultry1up_text);
+		jplStorage.add(jlbItemPoultry1down_image);
+		jplStorage.add(jlbItemPoultry1down_text);
+		
+		JLabel jlbItemPoultry2up_image = new JLabel(new ImageIcon(poultryImage_chicken.getSubimage(400, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItemPoultry2up_text = new JLabel(farmData.getCrop("Chick") + " 마리");
+		JLabel jlbItemPoultry2down_image = new JLabel(new ImageIcon(poultryImage_chicken.getSubimage(0, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItemPoultry2down_text = new JLabel(farmData.getCrop("Chicken") + " 마리");
+		jlbItemPoultry2up_text.setFont(font_count);
+		jlbItemPoultry2down_text.setFont(font_count);
+		jlbItemPoultry2up_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItemPoultry2down_text.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbItemPoultry2up_image.setBounds(x_itemPoultry2, y_itemImage1, size_image_small, size_image_small);
+		jlbItemPoultry2up_text.setBounds(x_itemPoultry2, y_itemText1, size_image_small, size_text_y);
+		jlbItemPoultry2down_image.setBounds(x_itemPoultry2, y_itemImage2, size_image_small, size_image_small);
+		jlbItemPoultry2down_text.setBounds(x_itemPoultry2, y_itemText2, size_image_small, size_text_y);
+		jplStorage.add(jlbItemPoultry2up_image);
+		jplStorage.add(jlbItemPoultry2up_text);
+		jplStorage.add(jlbItemPoultry2down_image);
+		jplStorage.add(jlbItemPoultry2down_text);
+		
+		JLabel jlbAppleBack = new JLabel(new ImageIcon(inGameImage_back.getScaledInstance(75 * resolution / 80, 75 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbAppleBack.setBounds(x_back_ap, y_image, jlb_size, jlb_size);
+		add(jlbAppleBack);
+	
+		JLabel jlbAppleBackText = new JLabel("뒤로가기");
+		jlbAppleBackText.setFont(font);
+		jlbAppleBackText.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbAppleBackText.setBounds(x_back_ap, y_text, jlb_size, jlb_size);
+		add(jlbAppleBackText);
+	
+		JLabel jlbAppleBackClick = new JLabel(inGameImageIcon_btn_normal);
+		jlbAppleBackClick.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				jlbAppleBackClick.setIcon(inGameImageIcon_btn_pressed);
+				press = true;
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (press) {
+					setCursor("chicken");
+					currentCrop = 0;
+					try {
+						paintInGameComponent();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbAppleBackClick.getX() + e.getPoint().x;
+				mouseClick.y = jlbAppleBackClick.getY() + e.getPoint().y;
+				repaint();
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				jlbAppleBackClick.setIcon(inGameImageIcon_btn_overlap);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				jlbAppleBackClick.setIcon(inGameImageIcon_btn_normal);
+				press = false;
+			}
+		});
+		jlbAppleBackClick.setBounds(x_back_ap - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
+		add(jlbAppleBackClick);
+		
+		JLabel jlbSaveImage = new JLabel();
+		JLabel jlbSaveText = new JLabel("저장하기");
+		JLabel jlbSaveClick = new JLabel();
+		jlbSaveClick.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				press = true;
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (press) {
+					
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbSaveClick.getX() + e.getPoint().x;
+				mouseClick.y = jlbSaveClick.getY() + e.getPoint().y;
+				repaint();
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+				press = false;
+			}
+		});
+		jlbSaveImage.setBounds(x_saveImage, y_image1_ap, size_image_small, size_image_small);
+		jlbSaveText.setBounds(x_save, y_text1_ap, jlb_click_x_size * 2, size_text_y);
+		jlbSaveClick.setBounds(x_save, y_click, jlb_click_x_size * 2, size_click_y_ap);
+		jlbSaveText.setFont(font);
+		jlbSaveText.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbSaveImage.setBorder(new LineBorder(Color.black, 1));
+		jlbSaveText.setBorder(new LineBorder(Color.black, 1));
+		jlbSaveClick.setBorder(new LineBorder(Color.black, 1));
+		add(jlbSaveImage);
+		add(jlbSaveText);
+		add(jlbSaveClick);
+		
+		JLabel jlbExitImage = new JLabel();
+		JLabel jlbExitText = new JLabel("종료하기");
+		JLabel jlbExitClick = new JLabel();
+		jlbExitClick.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				press = true;
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (press) {
+					
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbExitClick.getX() + e.getPoint().x;
+				mouseClick.y = jlbExitClick.getY() + e.getPoint().y;
+				repaint();
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+				press = false;
+			}
+		});
+		jlbExitImage.setBounds(x_exitImage, y_image2_ap, size_image_small, size_image_small);
+		jlbExitText.setBounds(x_exit, y_text2_ap, size_exit_x_ap, size_text_y);
+		jlbExitClick.setBounds(x_exit, y_click2_ap, size_exit_x_ap, size_click_y_ap);
+		jlbExitText.setFont(font);
+		jlbExitText.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbExitImage.setBorder(new LineBorder(Color.black, 1));
+		jlbExitText.setBorder(new LineBorder(Color.black, 1));
+		jlbExitClick.setBorder(new LineBorder(Color.black, 1));
+		add(jlbExitImage);
+		add(jlbExitText);
+		add(jlbExitClick);
+		
+		JLabel jlbResetImage = new JLabel();
+		JLabel jlbResetText = new JLabel("!초기화!");
+		JLabel jlbResetClick = new JLabel();
+		jlbResetClick.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+				press = true;
+			}
+
+			public void mouseReleased(MouseEvent e) {
+				if (press) {
+					
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbResetClick.getX() + e.getPoint().x;
+				mouseClick.y = jlbResetClick.getY() + e.getPoint().y;
+				repaint();
+			}
+
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			public void mouseExited(MouseEvent e) {
+				press = false;
+			}
+		});
+		jlbResetImage.setBounds(x_resetImage, y_image1_ap, size_image_small, size_image_small);
+		jlbResetText.setBounds(x_reset, y_text1_ap, jlb_click_x_size, size_text_y);
+		jlbResetClick.setBounds(x_reset, y_click, jlb_click_x_size, size_click_y_ap);
+		jlbResetText.setFont(font);
+		jlbResetText.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbResetImage.setBorder(new LineBorder(Color.black, 1));
+		jlbResetText.setBorder(new LineBorder(Color.black, 1));
+		jlbResetClick.setBorder(new LineBorder(Color.black, 1));
+		add(jlbResetImage);
+		add(jlbResetText);
+		add(jlbResetClick);
 	}
 	
 	private void paintShop() throws IOException {
@@ -3111,7 +3490,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbFoodBackground.setBounds(100 * resolution / 80, getHeight() / 2 - 130 * resolution / 80, 250 * resolution / 80, 100 * resolution / 80);
 		add(jlbFoodBackground, 0);
 		
-		JLabel jlbFood = new JLabel("밥 주기");
+		JLabel jlbFood = new JLabel("밥 주기 (10G 소모)");
 		jlbFood.setFont(font);
 		jlbFood.setHorizontalAlignment(SwingConstants.CENTER);
 		jlbFood.addMouseListener(new MouseListener() {
@@ -3124,11 +3503,18 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(press) {
-					if(farmData.getFood() == 0) {
-						jlbPoultry.setIcon(new ImageIcon(poultryImage_farmfood.getScaledInstance(500 * resolution / 80, 500 * resolution / 80, Image.SCALE_SMOOTH)));
-					}
-					farmData.setFood(10, true);
 					jlbFoodBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(250, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
+					if(farmData.getCoin() >= 10 && farmData.getFood() != 50) {
+						if(farmData.getFood() >= 40) {
+							farmData.setFood(50);
+						} else {
+							farmData.setFood(10, true);
+						}
+						jlbPoultry.setIcon(new ImageIcon(poultryImage_farmfood.getScaledInstance(500 * resolution / 80, 500 * resolution / 80, Image.SCALE_SMOOTH)));
+						
+						farmData.setCoin(10, false);
+						refreshCoin();
+					}
 				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbFood.getX() + e.getPoint().x;
@@ -3165,6 +3551,66 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 		jlbTamago.setBounds(165 * resolution / 80, getHeight() / 2 + 85 * resolution / 80, 120 * resolution / 80, 120 * resolution / 80);
 		add(jlbTamago, 0);
+		
+		JLabel jlbPoultryTextBox = new JLabel();
+		JLabel jlbPoultryText1 = new JLabel("보유");
+		jlbPoultryText2 = new JLabel("유정란: " + farmData.getCrop("FertilizedEgg"));
+		jlbPoultryText3 = new JLabel("무정란: " + farmData.getCrop("UnfertilizedEgg"));
+		jlbPoultryText4 = new JLabel("병아리: " + farmData.getCrop("Chick"));
+		jlbPoultryText5 = new JLabel("닭: " + farmData.getCrop("Chicken"));
+		
+		jlbPoultryText1.setFont(font);
+		jlbPoultryText1.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbPoultryText2.setFont(font);
+		jlbPoultryText3.setFont(font);
+		jlbPoultryText4.setFont(font);
+		jlbPoultryText5.setFont(font);
+		
+		jlbPoultryTextBox.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 250 * resolution / 80, 180 * resolution / 80, 150 * resolution / 80);
+		jlbPoultryText1.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 250 * resolution / 80, 180 * resolution / 80, 30 * resolution / 80);
+		jlbPoultryText2.setBounds(getWidth() - 325 * resolution / 80, getHeight() / 2 - 220 * resolution / 80, 170 * resolution / 80, 30 * resolution / 80);
+		jlbPoultryText3.setBounds(getWidth() - 325 * resolution / 80, getHeight() / 2 - 190 * resolution / 80, 170 * resolution / 80, 30 * resolution / 80);
+		jlbPoultryText4.setBounds(getWidth() - 325 * resolution / 80, getHeight() / 2 - 160 * resolution / 80, 170 * resolution / 80, 30 * resolution / 80);
+		jlbPoultryText5.setBounds(getWidth() - 325 * resolution / 80, getHeight() / 2 - 130 * resolution / 80, 170 * resolution / 80, 30 * resolution / 80);
+		
+		jlbPoultryTextBox.setBackground(Color.pink);
+		jlbPoultryTextBox.setOpaque(true);
+		jlbPoultryTextBox.setBorder(new LineBorder(Color.black, 1));
+		
+		add(jlbPoultryTextBox, 0);
+		add(jlbPoultryText1, 0);
+		add(jlbPoultryText2, 0);
+		add(jlbPoultryText3, 0);
+		add(jlbPoultryText4, 0);
+		add(jlbPoultryText5, 0);
+		
+		JLabel jlbFoodBar = new JLabel();
+		jlbFoodGauge = new JLabel();
+		JLabel jlbFoodText1 = new JLabel("50");
+		JLabel jlbFoodText2 = new JLabel("밥");
+		
+		jlbFoodBar.setBorder(new LineBorder(Color.black, 1));
+		jlbFoodGauge.setBackground(Color.pink);
+		jlbFoodGauge.setOpaque(true);
+		
+		jlbFoodText1.setFont(font);
+		jlbFoodText1.setHorizontalAlignment(SwingConstants.CENTER);
+		jlbFoodText2.setFont(font);
+		jlbFoodText2.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		jlbFoodText1.setBorder(new LineBorder(Color.black, 1));
+		jlbFoodText2.setBorder(new LineBorder(Color.black, 1));
+		
+		jlbFoodBar.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 80, 50 * resolution / 80, 320 * resolution / 80);
+		jlbFoodGauge.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 80 * resolution / 80 + 320 * resolution / 80 - poultryGauge, 50 * resolution / 80, poultryGauge);
+		jlbFoodText1.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 80, 50 * resolution / 80, 30 * resolution / 80);
+		jlbFoodText2.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 + 210, 50 * resolution / 80, 30 * resolution / 80);
+		
+		add(jlbFoodGauge, 0);
+		add(jlbFoodBar, 0);
+		add(jlbFoodText1, 0);
+		add(jlbFoodText2, 0);
+
 		
 		JLabel jlbX = new JLabel(new ImageIcon(poultryImage_x.getScaledInstance(30 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbX.addMouseListener(new MouseListener() {
@@ -3210,6 +3656,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			jlbLore2Daikon.setText("무씨앗 " + farmData.getCrop("DaikonSeed") + "개, 무 " + farmData.getCrop("Daikon") + "개");
 		if(jlbLore2Egg != null)
 			jlbLore2Egg.setText("유정란 " + farmData.getCrop("FertilizedEgg") + "개, 무정란 " + farmData.getCrop("UnfertilizedEgg") + "개");
+		if(jlbFoodGauge != null) {
+			poultryGauge = (int) ((farmData.getFood() / 50f) * (320 * resolution / 80));
+			jlbFoodGauge.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 80 * resolution / 80 + 320 * resolution / 80 - poultryGauge, 50 * resolution / 80, poultryGauge);
+		}
 	}
 
 	public void refreshField() {
@@ -3349,6 +3799,64 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		x_back_fe = (50 + 125 * count) * resolution / 80;
 		fertilizer_camera_max = (1280 - (50 * 2 + 125 * count + 100)) * resolution / 80;
 		
+		// 애플
+		//저장소, 뒤, 저장, 종료, 초기화
+		x_storage = 25 * resolution / 80;
+		x_back_ap = 750 * resolution / 80;
+		x_save = 875 * resolution / 80;
+		x_saveImage = 970 * resolution / 80;
+		x_exit = 875 * resolution / 80;
+		x_exitImage = 1030 * resolution / 80;
+		x_reset = 1125 * resolution / 80;
+		x_resetImage = 1160 * resolution / 80;
+		//저장소 텍스트
+		count = 0;
+		x_head1 = (10 + 60 * count) * resolution / 80;
+		count++;
+		x_item1 = (10 + 60 * count) * resolution / 80;
+		count++;
+		x_item2 = (10 + 60 * count) * resolution / 80;
+		count++;
+		x_item3 = (10 + 60 * count) * resolution / 80;
+		count++;
+		x_item4 = (10 + 60 * count) * resolution / 80;
+		count++;
+		x_item5 = (10 + 60 * count) * resolution / 80;
+		count++;
+		x_head2 = (10 + 60 * count) * resolution / 80;
+		count++;
+		x_itemPoultry1 = (10 + 60 * count) * resolution / 80;
+		count++;
+		x_head3 = (10 + 60 * count) * resolution / 80;
+		count++;
+		x_itemPoultry2 = (10 + 60 * count) * resolution / 80;
+		count++;
+		
+		y_head = 5 * resolution / 80;
+		y_headt1 = 50 * resolution / 80;
+		y_headt2 = 120 * resolution / 80;
+		y_itemImage1 = 35 * resolution / 80;
+		y_itemText1 = 80 * resolution / 80;
+		y_itemImage2 = 105 * resolution / 80;
+		y_itemText2 = 150 * resolution / 80;
+		//저장소, 양계장
+		y_image1_ap = getHeight() / 2 + 130 * resolution / 80;
+		y_image2_ap = getHeight() / 2 + 225 * resolution / 80;
+		y_text1_ap = getHeight() / 2 + 180 * resolution / 80;
+		y_text2_ap = getHeight() / 2 + 275 * resolution / 80;
+		//날짜, 골드
+		y_time1_ap =
+		y_time2_ap =
+		y_gold1_ap =
+		y_gold2_ap =
+		y_click2_ap = getHeight() / 2 + 225 * resolution / 80;
+		
+		size_storage_x = 700 * resolution / 80;
+		size_text_y = 30 * resolution / 80;
+		size_image_small = 50 * resolution / 80;
+		size_exit_x_ap = 370 * resolution / 80;
+		size_click_y_ap = 85 * resolution / 80;
+		
 		// 필드 카메라
 		field_camera_max = (1280 - (300 + 110 * (farmData.getField().size()))) * resolution / 80;
 		
@@ -3362,6 +3870,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlb_size = 100 * resolution / 80;
 		jlb_click_x_size = 120 * resolution / 80;
 		jlb_click_y_size = 180 * resolution / 80;
+		
+		//양계장
+		poultryGauge = (int) ((farmData.getFood() / 50f) * (320 * resolution / 80));
 	}
 	
 	private void setCloud() {
