@@ -12,8 +12,10 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class FarmData {
 	class InGameTime {
@@ -116,6 +118,20 @@ public class FarmData {
 				
 				farmData.setCrop("Chick", 1, true);
 				farmCanvas.jlbPoultryText4.setText("병아리: " + farmData.getCrop("Chick"));
+				
+				int index = farmData.chick.size();
+				farmData.chick.add(new Chick(index, true));
+				JLabel jlbTemp = new JLabel();
+				int x = farmData.chick.get(index).x;
+				int y = farmData.chick.get(index).y;
+				if(farmData.chick.get(index).getPosition()) {
+					jlbTemp.setBounds((400 + 80 + x - y / 2) * farmCanvas.resolution / 80, (435 + y) * farmCanvas.resolution / 80, farmCanvas.size_chick, farmCanvas.size_chick);
+				} else {
+					jlbTemp.setBounds((680 + x + y / 8) * farmCanvas.resolution / 80, (435 + y) * farmCanvas.resolution / 80, farmCanvas.size_chick, farmCanvas.size_chick);
+				}
+				farmCanvas.jlbChick.add(jlbTemp);
+				farmData.chick.get(index).worker.start();
+				farmCanvas.add(jlbTemp, 0);
 			}
 		}
 		
@@ -145,6 +161,247 @@ public class FarmData {
 		}
 	}
 	
+	class Chick implements Runnable{
+		Thread worker;
+		Random rand = new Random();
+		
+		int index;
+		int x, y, position;
+		int vx, vy;
+		int action;
+		int growthTime;
+		int demandGrowthTime;
+		
+		boolean reachedFood;
+		boolean isChick;
+		
+		public void run() {
+			while(farmCanvas.run) {
+				try {
+					move();
+					if(action == 1 && getFood() > 0) {
+						if(!reachedFood) {
+							if(position == 0) {
+								vx = 1;
+							} else {
+								vx = -1;
+							}
+							x += vx;
+							check();
+							farmCanvas.refreshChick(index, isChick);
+							Thread.sleep(100);
+						} else {
+							vx = 0;
+							Thread.sleep(500);
+							action++;
+							farmCanvas.refreshChick(index, isChick);
+							checkGrow();
+							if(worker == null)
+								return;
+							Thread.sleep(500);
+							action = 0;
+							farmCanvas.refreshChick(index, isChick);
+							Thread.sleep(100);
+						}
+					} else if (action == 1) {
+						action = 0;
+						vx = 0;
+						vy = 0;
+					}
+					
+					x += vx;
+					y += vy;
+					
+					check();
+					
+					farmCanvas.refreshChick(index, isChick);
+					
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		Chick(int index, boolean isChick) {
+			position = rand.nextInt(2);
+			if(position == 0) {
+				x = 45;
+				y = 75;
+			} else {
+				x = 30;
+				y = 75;
+			}
+			action = 0;
+			growthTime = 0;
+			demandGrowthTime = 5;
+			reachedFood = false;
+			
+			this.index = index;
+			this.isChick = isChick;
+			
+			worker = new Thread(this);
+		}
+		
+		Chick(int index, boolean isChick, int[] temp) {
+			position = temp[0];
+			x = temp[1];
+			y = temp[2];
+			action = temp[3];
+			growthTime = 0;
+			demandGrowthTime = 5;
+			reachedFood = false;
+			
+			this.index = index;
+			this.isChick = isChick;
+			
+			worker = new Thread(this);
+		}
+
+		void check() {
+			reachedFood = false;
+			
+			if (x <= 0) {
+				x = 0;
+				vx = 1;
+				if (position == 1)
+					reachedFood = true;
+			} else if (position == 0) {
+				if (x >= 90) {
+					x = 90;
+					vx = -1;
+					reachedFood = true;
+				}
+			} else if (position == 1) {
+				if (x >= 60) {
+					x = 60;
+					vx = -1;
+				}
+			}
+			
+			if (y <= 0) {
+				y = 0;
+				vy = 1;
+			} else if (y >= 155) {
+				y = 155;
+				vy = -1;
+			}
+		}
+		
+		void checkGrow() {
+			if(reachedFood && getFood() > 0) {
+				setFood(1, false);
+				growthTime++;
+				farmCanvas.refreshCoin();
+				if(growthTime >= demandGrowthTime) {
+					if(isChick) {
+						setCrop("Chick", 1, false);
+						farmCanvas.jlbPoultryText4.setText("병아리: " + getCrop("Chick"));
+						farmCanvas.remove(farmCanvas.jlbChick.get(index));
+						farmCanvas.jlbChick.remove(index);
+						
+						int[] temp = new int[] {position, x, y, action}; 
+						
+						chick.remove(index);
+						for(int i = 0; i < chick.size(); i++) {
+							chick.get(i).setIndex(i);
+						}
+
+						index = chicken.size();
+						setCrop("Chicken", 1, true);
+						farmCanvas.jlbPoultryText5.setText("닭: " + getCrop("Chicken"));
+						createChicken(index, temp);
+						JLabel jlbTemp = new JLabel(farmCanvas.poultryImageIcon_chicken_normal);
+						int x = chicken.get(index).x;
+						int y = chicken.get(index).y;
+						if(chicken.get(index).getPosition()) {
+							jlbTemp.setBounds((470 + x - y / 2) * farmCanvas.resolution / 80, (350 + y) * farmCanvas.resolution / 80, farmCanvas.size_chicken, farmCanvas.size_chicken);
+						} else {
+							jlbTemp.setBounds((645 + x + y / 8) * farmCanvas.resolution / 80, (350 + y) * farmCanvas.resolution / 80, farmCanvas.size_chicken, farmCanvas.size_chicken);
+						}
+						farmCanvas.jlbChicken.add(jlbTemp);
+						chicken.get(index).worker.start();
+						farmCanvas.add(jlbTemp, 0);
+						
+						worker = null;
+					} else {
+						setCrop("UnfertilizedEgg", 1, true);
+						farmCanvas.jlbPoultryText3.setText("무정란: " + getCrop("UnfertilizedEgg"));
+						growthTime = 0;
+					}
+				}
+			}
+		}
+		
+		private void setIndex(int i) {
+			index = i;
+		}
+
+		void move() {
+			int i = rand.nextInt(9);
+			switch(i) {
+			case 0:
+				if(vx == -1)
+					vx = 0;
+				else {
+					vx = 1;
+					action = 4;
+				}
+				break;
+			case 1:
+				if(vx == 1)
+					vx = 0;
+				else {
+					vx = -1;
+					action = 3;
+				} 
+				break;
+			case 2:
+				if(vy == -1)
+					vy = 0;
+				vy = 1;
+				break;
+			case 3:
+				if(vy == 1)
+					vy = 0;
+				vy = -1;
+				break;
+			case 4:
+				vx = 0;
+				vy = 0;
+				break;
+			case 5:
+				vx = 0;
+				break;
+			case 6:
+				vy = 0;
+				break;
+			case 7:
+				vx = 0;
+				vy = 0;
+				action = 1;
+				break;
+			case 8:
+				if(vx == 0 && vy == 0)
+					action = 1;
+				break;
+			default:
+				vx = 0;
+				vy = 0;
+				action = 0;
+				break;
+			}
+		}
+		
+		boolean getPosition() {
+			if(position == 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	
 	protected InGameTime time;
 	protected Egg egg;
 	
@@ -153,6 +410,8 @@ public class FarmData {
 	private Map<String, Integer> crop = new HashMap<>();
 	private Map<String, Integer> cropTime = new HashMap<>();
 	private ArrayList<int[]> field;
+	protected ArrayList<Chick> chick = new ArrayList<>();
+	protected ArrayList<Chick> chicken = new ArrayList<>();
 	private int coin = 0;
 	private int food = 0;
 	
@@ -367,10 +626,28 @@ public class FarmData {
 	
 	public void setFood(int value, boolean plus) {
 		if(plus) food += value;
-		else food -= value;
+		else {
+			food -= value;
+			if (food <= 0) {
+				if(farmCanvas.jlbPoultry != null)
+					farmCanvas.jlbPoultry.setIcon(new ImageIcon(farmCanvas.poultryImage_farm.getScaledInstance(500 * farmCanvas.resolution / 80, 500 * farmCanvas.resolution / 80, Image.SCALE_SMOOTH)));
+			}
+		}
 	}
 	
 	public void setFood(int value) {
 		food = value;
+	}
+	
+	public void createChick(int index) {
+		chick.add(new Chick(index, true));
+	}
+	
+	public void createChicken(int index) {
+		chicken.add(new Chick(index, false));
+	}
+	
+	public void createChicken(int index, int[] temp) {
+		chicken.add(new Chick(index, false, temp));
 	}
 }

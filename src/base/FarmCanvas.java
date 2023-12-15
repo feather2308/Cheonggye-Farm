@@ -176,6 +176,20 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected ImageIcon inGameImageIcon_btn_normal;
 	protected ImageIcon inGameImageIcon_btn_overlap;
 	protected ImageIcon inGameImageIcon_btn_pressed;
+	protected ImageIcon poultryImageIcon_chick_normal;
+	protected ImageIcon poultryImageIcon_chick_left;
+	protected ImageIcon poultryImageIcon_chick_leftfood1;
+	protected ImageIcon poultryImageIcon_chick_leftfood2;
+	protected ImageIcon poultryImageIcon_chick_right;
+	protected ImageIcon poultryImageIcon_chick_rightfood1;
+	protected ImageIcon poultryImageIcon_chick_rightfood2;
+	protected ImageIcon poultryImageIcon_chicken_normal;
+	protected ImageIcon poultryImageIcon_chicken_left;
+	protected ImageIcon poultryImageIcon_chicken_leftfood1;
+	protected ImageIcon poultryImageIcon_chicken_leftfood2;
+	protected ImageIcon poultryImageIcon_chicken_right;
+	protected ImageIcon poultryImageIcon_chicken_rightfood1;
+	protected ImageIcon poultryImageIcon_chicken_rightfood2;
 	protected ImageIcon shopImageIcon_item;
 	protected ImageIcon shopImageIcon_btnbuy_normal;
 	protected ImageIcon shopImageIcon_btnbuy_overlap;
@@ -222,6 +236,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	// loading image
 	protected boolean la_mainLobby = true;
 	protected boolean la_inGame = false;
+	protected boolean la_chick = true;
 
 	JLabel jlbStarCoinValue;
 	JLabel jlbTimeText;
@@ -239,6 +254,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	ArrayList<JLabel> jlbCropField, jlbCropText, jlbCropTime, jlbBat;
 	Map<Integer, BufferedImage> cropImage;
+	
+	ArrayList<JLabel> jlbChick, jlbChicken;
 
 	// 기준점
 	JLabel jlbPoint, jlbPointField;
@@ -266,7 +283,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	JLabel jlbDay2;
 	
 	// 양계장
-	JLabel jlbTamago, jlbPoultryText2, jlbPoultryText3, jlbPoultryText4, jlbPoultryText5, jlbFoodGauge;
+	JLabel jlbPoultry, jlbTamago, jlbPoultryText2, jlbPoultryText3, jlbPoultryText4, jlbPoultryText5, jlbFoodGauge;
 
 	int x_back_sh, x_back_sp, x_back_fe, x_back_ap;
 	int y_image, y_text, y_count, y_click;
@@ -299,6 +316,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	int size_shop_btn_x, size_shop_btn_y;
 	
 	int poultryGauge;
+	int size_chick, size_chicken;
 
 	public FarmCanvas(MyLauncher myLauncher, int resolution) {
 		this.myLauncher = myLauncher;
@@ -562,8 +580,22 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		inGameImageIcon_btn_overlap = new ImageIcon(inGameImage_btn.getSubimage(120, 0, 120, 180).getScaledInstance(120 * resolution / 80, 180 * resolution / 80, Image.SCALE_SMOOTH));
 		inGameImageIcon_btn_pressed = new ImageIcon(inGameImage_btn.getSubimage(240, 0, 120, 180).getScaledInstance(120 * resolution / 80, 180 * resolution / 80, Image.SCALE_SMOOTH));
 		
-		shopImageIcon_item = new ImageIcon(shopImage_item.getScaledInstance(160 * resolution / 80, 220 * resolution / 80, Image.SCALE_SMOOTH));
+		poultryImageIcon_chick_normal = new ImageIcon(poultryImage_chicken.getSubimage(0, 100, 100, 100).getScaledInstance(size_chick, size_chick, Image.SCALE_SMOOTH));
+		poultryImageIcon_chick_rightfood1 = new ImageIcon(poultryImage_chicken.getSubimage(100, 100, 100, 100).getScaledInstance(size_chick, size_chick, Image.SCALE_SMOOTH));
+		poultryImageIcon_chick_rightfood2 = new ImageIcon(poultryImage_chicken.getSubimage(200, 100, 100, 100).getScaledInstance(size_chick, size_chick, Image.SCALE_SMOOTH));
+		poultryImageIcon_chick_right = new ImageIcon(poultryImage_chicken.getSubimage(300, 100, 100, 100).getScaledInstance(size_chick, size_chick, Image.SCALE_SMOOTH));
+		poultryImageIcon_chick_leftfood1 = new ImageIcon(poultryImage_chicken.getSubimage(400, 100, 100, 100).getScaledInstance(size_chick, size_chick, Image.SCALE_SMOOTH));
+		poultryImageIcon_chick_leftfood2 = new ImageIcon(poultryImage_chicken.getSubimage(500, 100, 100, 100).getScaledInstance(size_chick, size_chick, Image.SCALE_SMOOTH));
+		poultryImageIcon_chick_left = new ImageIcon(poultryImage_chicken.getSubimage(600, 100, 100, 100).getScaledInstance(size_chick, size_chick, Image.SCALE_SMOOTH));
+		poultryImageIcon_chicken_normal = new ImageIcon(poultryImage_chicken.getSubimage(0, 0, 100, 100).getScaledInstance(size_chicken, size_chicken, Image.SCALE_SMOOTH));
+		poultryImageIcon_chicken_rightfood1 = new ImageIcon(poultryImage_chicken.getSubimage(100, 0, 100, 100).getScaledInstance(size_chicken, size_chicken, Image.SCALE_SMOOTH));
+		poultryImageIcon_chicken_rightfood2 = new ImageIcon(poultryImage_chicken.getSubimage(200, 0, 100, 100).getScaledInstance(size_chicken, size_chicken, Image.SCALE_SMOOTH));
+		poultryImageIcon_chicken_right = new ImageIcon(poultryImage_chicken.getSubimage(300, 0, 100, 100).getScaledInstance(size_chicken, size_chicken, Image.SCALE_SMOOTH));
+		poultryImageIcon_chicken_leftfood1 = new ImageIcon(poultryImage_chicken.getSubimage(400, 0, 100, 100).getScaledInstance(size_chicken, size_chicken, Image.SCALE_SMOOTH));
+		poultryImageIcon_chicken_leftfood2 = new ImageIcon(poultryImage_chicken.getSubimage(500, 0, 100, 100).getScaledInstance(size_chicken, size_chicken, Image.SCALE_SMOOTH));
+		poultryImageIcon_chicken_left = new ImageIcon(poultryImage_chicken.getSubimage(600, 0, 100, 100).getScaledInstance(size_chicken, size_chicken, Image.SCALE_SMOOTH));
 		
+		shopImageIcon_item = new ImageIcon(shopImage_item.getScaledInstance(160 * resolution / 80, 220 * resolution / 80, Image.SCALE_SMOOTH));
 		shopImageIcon_btnbuy_normal = new ImageIcon(shopImage_btnbuy.getSubimage(0, 0, 220, 100).getScaledInstance(110 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH));
 		shopImageIcon_btnbuy_overlap = new ImageIcon(shopImage_btnbuy.getSubimage(220, 0, 220, 100).getScaledInstance(110 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH));
 		shopImageIcon_btnbuy_pressed = new ImageIcon(shopImage_btnbuy.getSubimage(440, 0, 220, 100).getScaledInstance(110 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH));
@@ -618,6 +650,37 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 	}
 
+	private void loadingChick() {
+		jlbChick = new ArrayList<>();
+		for(int i = 0; i < farmData.getCrop("Chick"); i++) {
+			farmData.createChick(i);
+			JLabel jlbTemp = new JLabel(poultryImageIcon_chick_normal);
+			int x = farmData.chick.get(i).x;
+			int y = farmData.chick.get(i).y;
+			if(farmData.chick.get(i).getPosition()) {
+				jlbTemp.setBounds((490 + x - y / 2) * resolution / 80, (375 + y) * resolution / 80, size_chick, size_chick);
+			} else {
+				jlbTemp.setBounds((655 + x + y / 8) * resolution / 80, (375 + y) * resolution / 80, size_chick, size_chick);
+			}
+			jlbChick.add(jlbTemp);
+			farmData.chick.get(i).worker.start();
+		}
+		jlbChicken = new ArrayList<>();
+		for(int i = 0; i < farmData.getCrop("Chicken"); i++) {
+			farmData.createChicken(i);
+			JLabel jlbTemp = new JLabel(poultryImageIcon_chicken_normal);
+			int x = farmData.chicken.get(i).x;
+			int y = farmData.chicken.get(i).y;
+			if(farmData.chicken.get(i).getPosition()) {
+				jlbTemp.setBounds((470 + x - y / 2) * resolution / 80, (350 + y) * resolution / 80, size_chicken, size_chicken);
+			} else {
+				jlbTemp.setBounds((645 + x + y / 8) * resolution / 80, (350 + y) * resolution / 80, size_chicken, size_chicken);
+			}
+			jlbChicken.add(jlbTemp);
+			farmData.chicken.get(i).worker.start();
+		}
+	}
+	
 	private void paintMainLobby() throws IOException {
 			if (la_mainLobby) {
 				loadingMainLobby();
@@ -2507,7 +2570,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jplStorage.add(jlbItemPoultry1down_image);
 		jplStorage.add(jlbItemPoultry1down_text);
 		
-		JLabel jlbItemPoultry2up_image = new JLabel(new ImageIcon(poultryImage_chicken.getSubimage(400, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
+		JLabel jlbItemPoultry2up_image = new JLabel(new ImageIcon(poultryImage_chicken.getSubimage(0, 100, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
 		jlbItemPoultry2up_text = new JLabel(farmData.getCrop("Chick") + " 마리");
 		JLabel jlbItemPoultry2down_image = new JLabel(new ImageIcon(poultryImage_chicken.getSubimage(0, 0, 100, 100).getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
 		jlbItemPoultry2down_text = new JLabel(farmData.getCrop("Chicken") + " 마리");
@@ -3714,11 +3777,24 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbOpaque.setBounds(0, 0, getWidth(), getHeight());
 		add(jlbOpaque, 0);
 		
-		JLabel jlbPoultry = new JLabel(new ImageIcon(poultryImage_farm.getScaledInstance(500 * resolution / 80, 500 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbPoultry = new JLabel(new ImageIcon(poultryImage_farm.getScaledInstance(500 * resolution / 80, 500 * resolution / 80, Image.SCALE_SMOOTH)));
 		if(farmData.getFood() > 0) jlbPoultry.setIcon(new ImageIcon(poultryImage_farmfood.getScaledInstance(500 * resolution / 80, 500 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbPoultry.setBounds(getWidth() / 2 - 250 * resolution / 80 - 1, getHeight() / 2 - 250 * resolution / 80 - 1, 500 * resolution / 80, 500 * resolution / 80);
 		jlbPoultry.setBorder(new LineBorder(Color.black, 5));
 		add(jlbPoultry, 0);
+		
+		if(la_chick) {
+			loadingChick();
+			la_chick = false;
+		}
+		
+		for(int i = 0; i < jlbChick.size(); i++) {
+			add(jlbChick.get(i), 0);
+		}
+		
+		for(int i = 0; i < jlbChicken.size(); i++) {
+			add(jlbChicken.get(i), 0);
+		}
 		
 		JLabel jlbEggBackground = new JLabel(new ImageIcon(poultryImage_btn.getSubimage(0, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbEggBackground.setBounds(100 * resolution / 80, getHeight() / 2 - 250 * resolution / 80, 250 * resolution / 80, 100 * resolution / 80);
@@ -3817,6 +3893,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			break;
 		case 2:
 			jlbTamago.setIcon(new ImageIcon(poultryImage_egg.getSubimage(200, 0, 100, 100).getScaledInstance(120 * resolution / 80, 120 * resolution / 80, Image.SCALE_SMOOTH)));
+			jlbTamago.addMouseListener(farmData.egg.tamagoMouseListener);
 			break;
 		}
 		jlbTamago.setBounds(165 * resolution / 80, getHeight() / 2 + 85 * resolution / 80, 120 * resolution / 80, 120 * resolution / 80);
@@ -3911,7 +3988,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbX, 0);
 	}
 
-	private void refreshCoin() {
+	protected void refreshCoin() {
 		jlbStarCoinValue.setText(farmData.getCoin() + "");
 		if(jlbLore2Potato != null)
 			jlbLore2Potato.setText("씨감자 " + farmData.getCrop("PotatoSeed") + "개, 감자 " + farmData.getCrop("Potato") + "개");
@@ -3992,6 +4069,77 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 	}
 
+	protected void refreshChick(int index, boolean chick) {
+		if(chick) {
+			int x = farmData.chick.get(index).x;
+			int y = farmData.chick.get(index).y;
+			if(farmData.chick.get(index).getPosition()) {
+				jlbChick.get(index).setBounds((490 + x - y / 2) * resolution / 80, (375 + y) * resolution / 80, size_chick, size_chick);
+			} else {
+				jlbChick.get(index).setBounds((655 + x + y / 8) * resolution / 80, (375 + y) * resolution / 80, size_chick, size_chick);
+			}
+		} else {
+			int x = farmData.chicken.get(index).x;
+			int y = farmData.chicken.get(index).y;
+			if(farmData.chicken.get(index).getPosition()) {
+				jlbChicken.get(index).setBounds((470 + x - y / 2) * resolution / 80, (350 + y) * resolution / 80, size_chicken, size_chicken);
+			} else {
+				jlbChicken.get(index).setBounds((645 + x + y / 8) * resolution / 80, (350 + y) * resolution / 80, size_chicken, size_chicken);
+			}
+		}
+		
+		if(chick) {
+			switch(farmData.chick.get(index).action) {
+			case 0:
+				jlbChick.get(index).setIcon(poultryImageIcon_chick_normal);
+				break;
+			case 1:
+				if(farmData.chick.get(index).position == 0)
+					jlbChick.get(index).setIcon(poultryImageIcon_chick_rightfood1);
+				else 
+					jlbChick.get(index).setIcon(poultryImageIcon_chick_leftfood1);
+				break;
+			case 2:
+				if(farmData.chick.get(index).position == 0)
+					jlbChick.get(index).setIcon(poultryImageIcon_chick_rightfood2);
+				else 
+					jlbChick.get(index).setIcon(poultryImageIcon_chick_leftfood2);
+				break;
+			case 3:
+				jlbChick.get(index).setIcon(poultryImageIcon_chick_left);
+				break;
+			case 4:
+				jlbChick.get(index).setIcon(poultryImageIcon_chick_right);
+				break;
+			}
+		} else {
+			switch(farmData.chicken.get(index).action) {
+			case 0:
+				jlbChicken.get(index).setIcon(poultryImageIcon_chicken_normal);
+				break;
+			case 1:
+				if(farmData.chicken.get(index).position == 0)
+					jlbChicken.get(index).setIcon(poultryImageIcon_chicken_rightfood1);
+				else 
+					jlbChicken.get(index).setIcon(poultryImageIcon_chicken_leftfood1);
+				break;
+			case 2:
+				if(farmData.chicken.get(index).position == 0)
+					jlbChicken.get(index).setIcon(poultryImageIcon_chicken_rightfood2);
+				else 
+					jlbChicken.get(index).setIcon(poultryImageIcon_chicken_leftfood2);
+				break;
+			case 3:
+				jlbChicken.get(index).setIcon(poultryImageIcon_chicken_left);
+				break;
+			case 4:
+				jlbChicken.get(index).setIcon(poultryImageIcon_chicken_right);
+				break;
+			}
+		}
+		repaint();
+	}
+	
 	private void setValue() {
 		// 상점
 		// x
@@ -4151,6 +4299,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		//양계장
 		poultryGauge = (int) ((farmData.getFood() / 50f) * (320 * resolution / 80));
+		size_chick = 75 * resolution / 80;
+		size_chicken = 100 * resolution / 80;
 	}
 	
 	private void setCloud() {
