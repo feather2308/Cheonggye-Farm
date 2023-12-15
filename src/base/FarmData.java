@@ -321,7 +321,8 @@ public class FarmData {
 						}
 						farmCanvas.jlbChicken.add(jlbTemp);
 						chicken.get(index).worker.start();
-						farmCanvas.add(jlbTemp, 0);
+						if(farmCanvas.pa_poultryFarm)
+							farmCanvas.add(jlbTemp, 0);
 						
 						worker = null;
 					} else {
