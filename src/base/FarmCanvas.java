@@ -47,6 +47,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	protected Cursor customCursor_chicken;
 	protected Cursor customCursor_wateringcan;
+	protected Cursor customCursor_cheapfertilizer;
+	protected Cursor customCursor_normalfertilizer;
+	protected Cursor customCursor_advancedfertilizer;
+	protected Cursor customCursor_premiumfertilizer;
 	protected Cursor customCursor_potato;
 	protected Cursor customCursor_carrot;
 	protected Cursor customCursor_beetroot;
@@ -55,6 +59,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	protected final String cursor_chicken = "/resource/cursor/cursor_chicken.png";
 	protected final String cursor_wateringcan = "/resource/cursor/cursor_wateringcan.png";
+	protected final String cursor_cheapfertilizer = "/resource/cursor/cursor_cheapfertilizer.png";
+	protected final String cursor_normalfertilizer = "/resource/cursor/cursor_normalfertilizer.png";
+	protected final String cursor_advancedfertilizer = "/resource/cursor/cursor_advancedfertilizer.png";
+	protected final String cursor_premiumfertilizer = "/resource/cursor/cursor_premiumfertilizer.png";
 	protected final String cursor_potato = "/resource/cursor/cursor_potato.png";
 	protected final String cursor_carrot = "/resource/cursor/cursor_carrot.png";
 	protected final String cursor_beetroot = "/resource/cursor/cursor_beetroot.png";
@@ -128,6 +136,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	protected BufferedImage cursorImage_chicken;
 	protected BufferedImage cursorImage_wateringcan;
+	protected BufferedImage cursorImage_cheapfertilizer;
+	protected BufferedImage cursorImage_normalfertilizer;
+	protected BufferedImage cursorImage_advancedfertilizer;
+	protected BufferedImage cursorImage_premiumfertilizer;
 	protected BufferedImage cursorImage_potato;
 	protected BufferedImage cursorImage_carrot;
 	protected BufferedImage cursorImage_beetroot;
@@ -488,6 +500,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		cursorImage_chicken = ImageIO.read(getClass().getResourceAsStream(cursor_chicken));
 		cursorImage_wateringcan = ImageIO.read(getClass().getResourceAsStream(cursor_wateringcan));
+		cursorImage_cheapfertilizer = ImageIO.read(getClass().getResourceAsStream(cursor_cheapfertilizer));
+		cursorImage_normalfertilizer = ImageIO.read(getClass().getResourceAsStream(cursor_normalfertilizer));
+		cursorImage_advancedfertilizer = ImageIO.read(getClass().getResourceAsStream(cursor_advancedfertilizer));
+		cursorImage_premiumfertilizer = ImageIO.read(getClass().getResourceAsStream(cursor_premiumfertilizer));
 		
 		cursorImage_potato = ImageIO.read(getClass().getResourceAsStream(cursor_potato));
 		cursorImage_carrot = ImageIO.read(getClass().getResourceAsStream(cursor_carrot));
@@ -498,6 +514,14 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		customCursor_chicken = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_chicken, new Point(0, 0),
 				"Custom Cursor");
 		customCursor_wateringcan = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_wateringcan, new Point(0, 0),
+				"Custom Cursor");
+		customCursor_cheapfertilizer = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_cheapfertilizer, new Point(0, 0),
+				"Custom Cursor");
+		customCursor_normalfertilizer = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_normalfertilizer, new Point(0, 0),
+				"Custom Cursor");
+		customCursor_advancedfertilizer = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_advancedfertilizer, new Point(0, 0),
+				"Custom Cursor");
+		customCursor_premiumfertilizer = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_premiumfertilizer, new Point(0, 0),
 				"Custom Cursor");
 		
 		customCursor_potato = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage_potato, new Point(0, 0),
@@ -513,6 +537,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		cursor.put("chicken", customCursor_chicken);
 		cursor.put("wateringcan", customCursor_wateringcan);
+		cursor.put("cheapfertilizer", customCursor_cheapfertilizer);
+		cursor.put("normalfertilizer", customCursor_normalfertilizer);
+		cursor.put("advancedfertilizer", customCursor_advancedfertilizer);
+		cursor.put("premiumfertilizer", customCursor_premiumfertilizer);
 		
 		cursor.put("potato", customCursor_potato);
 		cursor.put("carrot", customCursor_carrot);
