@@ -43,6 +43,7 @@ public class FarmData {
 			if(hour >= 24) {
 				day += 1;
 				hour = 0;
+				farmCanvas.jlbDay2.setText(day + " 일");
 			}
 		}
 	}
@@ -151,7 +152,7 @@ public class FarmData {
 	
 	private Map<String, Integer> crop = new HashMap<>();
 	private Map<String, Integer> cropTime = new HashMap<>();
-	private ArrayList<int[]> field = new ArrayList<>();
+	private ArrayList<int[]> field;
 	private int coin = 0;
 	private int food = 0;
 	
@@ -164,7 +165,7 @@ public class FarmData {
 		callData();
 	}
 	
-	private void setting() {
+	public void setting() {
 		coin = 50;
 		
 		crop.put("Potato", 0);
@@ -209,6 +210,7 @@ public class FarmData {
 		cropTime.put("Daikon3", 80);
 		cropTime.put("Daikon", 220);
 		
+		field = new ArrayList<>();
 		addField();
 		addField();
 		addField();
