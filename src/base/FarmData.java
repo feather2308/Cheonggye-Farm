@@ -50,6 +50,16 @@ public class FarmData {
 		}
 	}
 
+	class Price {
+		int buy;
+		int sell;
+		
+		Price(int buy, int sell) {
+			this.buy = buy;
+			this.sell = sell;
+		}
+	}
+	
 	class Egg {
 		FarmCanvas farmCanvas;
 		FarmData farmData;
@@ -409,6 +419,7 @@ public class FarmData {
 	private FarmCanvas farmCanvas;
 	
 	private Map<String, Integer> crop = new HashMap<>();
+	private Map<String, Price> price = new HashMap<>();
 	private Map<String, Integer> cropTime = new HashMap<>();
 	private ArrayList<int[]> field;
 	protected ArrayList<Chick> chick = new ArrayList<>();
@@ -430,17 +441,28 @@ public class FarmData {
 		
 		crop.put("Potato", 0);
 		crop.put("PotatoSeed", 0);
+		price.put("감자", new Price(10, 7));
+		
 		crop.put("Carrot", 0);
 		crop.put("CarrotSeed", 0);
+		price.put("당근", new Price(20, 25));
+		
 		crop.put("Beetroot", 0);
 		crop.put("BeetrootSeed", 0);
+		price.put("비트", new Price(40, 55));
+		
 		crop.put("SweetPotato", 0);
 		crop.put("SweetPotatoSeed", 0);
+		price.put("고구마", new Price(80, 60));
+		
 		crop.put("Daikon", 0);
 		crop.put("DaikonSeed", 0);
+		price.put("무", new Price(100, 150));
 		
 		crop.put("FertilizedEgg", 0);
 		crop.put("UnfertilizedEgg", 0);
+		price.put("알", new Price(100, 10));
+		
 		crop.put("Chick", 0);
 		crop.put("Chicken", 0);
 		
@@ -650,5 +672,33 @@ public class FarmData {
 	
 	public void createChicken(int index, int[] temp) {
 		chicken.add(new Chick(index, false, temp));
+	}
+	
+	public void shopBuy(int selectShop) {
+		if(selectShop == 0) 
+			return;
+		
+		String crop = farmCanvas.getCropName(selectShop, false, true);
+		String item = farmCanvas.getCropName(selectShop, true, false);
+		int price = this.price.get(crop).buy;
+		
+		if(coin >= price) {
+			setCoin(price, false);
+			setCrop(item, 1, true);
+		}
+	}
+	
+	public void shopSell(int selectShop) {
+		if(selectShop == 0) 
+			return;
+		
+		String crop = farmCanvas.getCropName(selectShop, false, true);
+		String item = farmCanvas.getCropName(selectShop, false, false);
+		int price = this.price.get(crop).sell;
+		
+		if(getCrop(item) >= 1) {
+			setCoin(price, true);
+			setCrop(item, 1, false);
+		}
 	}
 }
