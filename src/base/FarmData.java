@@ -439,7 +439,7 @@ public class FarmData {
 	}
 	
 	public void setting() {
-		coin = 1050;
+		coin = 50;
 		
 		crop.put("Potato", 0);
 		crop.put("PotatoSeed", 0);
