@@ -14,8 +14,6 @@ public class SoundHandler {
 	private Clip clip;
 	FloatControl gainControl;
 	
-	float volume = 0.8f;
-	
 	public SoundHandler(String filename) { // 사운드를 설정한다.
 	    try {
 	        InputStream inputStream = getClass().getResourceAsStream(filename);
@@ -58,7 +56,6 @@ public class SoundHandler {
 	}
 
     public void controlSound(float volume) { // 소리를 조절한다.
-    	this.volume = volume;
         if (gainControl != null) {
             // 볼륨 조절
             float minVolume = gainControl.getMinimum();
@@ -96,24 +93,6 @@ public class SoundHandler {
             if (clip != null && clip.isRunning()) {
                 clip.stop();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void changeSound(String filename) { // 사운드를 변경한다.
-        try {
-            if (clip != null && clip.isRunning()) {
-                clip.stop(); // 현재 재생 중인 사운드를 중지
-                clip.close(); // 현재 재생 중인 사운드의 리소스를 해제
-                clip = null; // clip 초기화
-            }
-            
-            InputStream inputStream = getClass().getResourceAsStream(filename);
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream));
-            clip = AudioSystem.getClip(); // clip 생성
-            clip.open(audioInputStream); // 새로운 사운드 파일 열기
-            clip.setMicrosecondPosition(0); // 재생 위치를 처음으로 설정
         } catch (Exception e) {
             e.printStackTrace();
         }

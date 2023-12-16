@@ -44,6 +44,16 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 	// 음성 관리
 	protected final String sound_main = "/resource/sound/main.wav";
+//	protected final String sound_btnclick = "/resource/sound/btnclick.wav";
+//	protected final String sound_btnoverlap = "/resource/sound/btnoverlap.wav";
+//	protected final String sound_plow = "/resource/sound/plow.wav";
+//	protected final String sound_plant = "/resource/sound/plant.wav";
+//	protected final String sound_harvest = "/resource/sound/harvest.wav";
+	protected final String sound_water = "/resource/sound/water.wav";
+//	protected final String sound_fertilizer = "/resource/sound/fertilizer.wav";
+	protected final String sound_coin = "/resource/sound/coin.wav";
+	protected final String sound_egg = "/resource/sound/egg.wav";
+//	protected final String sound_chicken = "/resource/sound/chicken.wav";
 	protected SoundHandler bgm = new SoundHandler(sound_main);
 	
 	// 이미지 관리
@@ -397,6 +407,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		bgm.stop();
 		scheduler.shutdown();
 		farmData.saveData();
 		myLauncher.dispose();
@@ -484,7 +495,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	}
 
 	private void loadingMainLobby() throws IOException {
-		bgm.play();
+		bgm.playLoop();
 		
 		mainLobbyImage_background = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_background)));
 		mainLobbyImage_chicken = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_chicken)));
@@ -3077,6 +3088,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			pa_shopEggComponent = false;
 		}
 		
+		bufferGraphics.setColor(new Color(165, 135, 86));
+		bufferGraphics.fillRect(0, 0, getWidth(), getHeight());
+		bufferGraphics.setColor(Color.black);
+		
 	}
 	
 	private void paintShopComponent() throws IOException {
@@ -3174,7 +3189,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				jlbShopBuy.setIcon(shopImageIcon_btnbuy_normal);
 			}
 		});
-		jlbShopBuy.setBounds(getWidth() / 2 - 200 * resolution / 80, getHeight() / 2 + 140 * resolution / 80, 165, 75);
+		jlbShopBuy.setBounds(getWidth() / 2 - 200 * resolution / 80, getHeight() / 2 + 140 * resolution / 80, 165 * resolution / 80, 75 * resolution / 80);
 		add(jlbShopBuy);
 		
 		jlbShopSell = new JLabel(shopImageIcon_btnsell_normal);
@@ -3205,7 +3220,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				jlbShopSell.setIcon(shopImageIcon_btnsell_normal);
 			}
 		});
-		jlbShopSell.setBounds(getWidth() / 2 + 50 * resolution / 80, getHeight() / 2 + 140 * resolution / 80, 165, 75);
+		jlbShopSell.setBounds(getWidth() / 2 + 50 * resolution / 80, getHeight() / 2 + 140 * resolution / 80, 165 * resolution / 80, 75 * resolution / 80);
 		add(jlbShopSell);
 
 		jlbShopBack = new JLabel(new ImageIcon(inGameImage_back.getScaledInstance(75 * resolution / 80, 75 * resolution / 80, Image.SCALE_SMOOTH)));
@@ -4429,6 +4444,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	    		temp[3] = 40;
 	    		farmData.setField(index, temp);
 	    		refreshField();
+	    		
+	    		new SoundHandler(sound_water).play();
 	    	}
 	    }
 	    

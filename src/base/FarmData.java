@@ -87,6 +87,8 @@ public class FarmData {
 					farmData.setCrop("FertilizedEgg", 1, false);
 					isPlace = true;
 					
+		    		new SoundHandler(farmCanvas.sound_egg).play();
+					
 					farmCanvas.jlbTamago.setIcon(new ImageIcon(farmCanvas.poultryImage_egg.getSubimage(0, 0, 100, 100).getScaledInstance(120 * farmCanvas.resolution / 80, 120 * farmCanvas.resolution / 80, Image.SCALE_SMOOTH)));
 					farmCanvas.jlbPoultryText2.setText("유정란: " + farmData.getCrop("FertilizedEgg"));
 					level = 0;
@@ -437,7 +439,7 @@ public class FarmData {
 	}
 	
 	public void setting() {
-		coin = 50;
+		coin = 1050;
 		
 		crop.put("Potato", 0);
 		crop.put("PotatoSeed", 0);
@@ -685,6 +687,8 @@ public class FarmData {
 		if(coin >= price) {
 			setCoin(price, false);
 			setCrop(item, 1, true);
+			
+    		new SoundHandler(farmCanvas.sound_coin).play();
 		}
 	}
 	
@@ -699,6 +703,8 @@ public class FarmData {
 		if(getCrop(item) >= 1) {
 			setCoin(price, true);
 			setCrop(item, 1, false);
+
+    		new SoundHandler(farmCanvas.sound_coin).play();
 		}
 	}
 }
