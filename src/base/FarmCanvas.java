@@ -99,6 +99,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String inGame_apple = "/resource/inGame/apple.png";
 	protected final String inGame_fertilizer = "/resource/inGame/fertilizer.png";
 	protected final String inGame_fertilizerset = "/resource/inGame/fertilizerset.png";
+	protected final String inGame_fertilizereffect = "/resource/inGame/fertilizereffect.png";
 	protected final String inGame_background = "/resource/inGame/background.png";
 	protected final String inGame_background_dawn = "/resource/inGame/background_dawn.png";
 	protected final String inGame_background_sunset = "/resource/inGame/background_sunset.png";
@@ -110,6 +111,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String inGame_cloud1 = "/resource/inGame/cloud1.png";
 	protected final String inGame_cloud2 = "/resource/inGame/cloud2.png";
 	protected final String inGame_sign = "/resource/inGame/sign.png";
+	protected final String inGame_bat = "/resource/inGame/bat.png";
 	protected final String crop_potato = "/resource/inGame/crop/potato.png";
 	protected final String crop_carrot = "/resource/inGame/crop/carrot.png";
 	protected final String crop_beetroot = "/resource/inGame/crop/beetroot.png";
@@ -122,6 +124,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String poultry_egg = "/resource/inGame/poultry/egg.png";
 	protected final String poultry_chicken = "/resource/inGame/poultry/chicken.png";
 	protected final String poultry_hatchery = "/resource/inGame/poultry/hatchery.png";
+	protected final String poultry_hold = "/resource/inGame/poultry/hold.png";
+	protected final String poultry_bar = "/resource/inGame/poultry/bar.png";
 	protected final String shop_item = "/resource/inGame/shop/item.png";
 	protected final String shop_btnbuy = "/resource/inGame/shop/btnbuy.png";
 	protected final String shop_btnsell = "/resource/inGame/shop/btnsell.png";
@@ -172,6 +176,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage inGameImage_apple;
 	protected BufferedImage inGameImage_fertilizer;
 	protected BufferedImage inGameImage_fertilizerset;
+	protected BufferedImage inGameImage_fertilizereffect;
 	protected BufferedImage inGameImage_btn;
 	protected BufferedImage inGameImage_shop;
 	protected BufferedImage inGameImage_chickenhouse;
@@ -179,6 +184,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage inGameImage_cloud1;
 	protected BufferedImage inGameImage_cloud2;
 	protected BufferedImage inGameImage_sign;
+	protected BufferedImage inGameImage_bat;
 	protected BufferedImage cropImage_potato;
 	protected BufferedImage cropImage_carrot;
 	protected BufferedImage cropImage_beetroot;
@@ -191,6 +197,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage poultryImage_egg;
 	protected BufferedImage poultryImage_chicken;
 	protected BufferedImage poultryImage_hatchery;
+	protected BufferedImage poultryImage_hold;
+	protected BufferedImage poultryImage_bar;
 	protected BufferedImage shopImage_item;
 	protected BufferedImage shopImage_btnbuy;
 	protected BufferedImage shopImage_btnsell;
@@ -234,9 +242,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected Thread worker;
 	protected Point mouseClick = new Point();
 	protected Point mouseCursor = new Point();
-
-	protected final String inGame_bat = "/resource/inGame/bat.png";
-	protected BufferedImage inGameImage_bat;
 	
 	// 더블버퍼링용 변수
 	protected Graphics bufferGraphics = null;
@@ -280,7 +285,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	JLabel jlbEgg, jlbPictureEgg, jlbLoreEgg, jlbLore2Egg, jlbLore3Egg, jlbBuyEgg, jlbSellEgg;
 	
-	ArrayList<JLabel> jlbCropField, jlbCropText, jlbCropTime, jlbBat;
+	ArrayList<JLabel> jlbCropFertilizer, jlbCropField, jlbCropText, jlbCropTime, jlbBat;
 	Map<Integer, BufferedImage> cropImage;
 	
 	ArrayList<JLabel> jlbChick, jlbChicken;
@@ -593,6 +598,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		inGameImage_wateringcan = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_wateringcan)));
 		inGameImage_fertilizer = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizer)));
 		inGameImage_fertilizerset = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizerset)));
+		inGameImage_fertilizereffect = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizereffect)));
 		inGameImage_apple = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_apple)));
 
 		inGameImage_shop = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shop)));
@@ -618,6 +624,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		poultryImage_btn = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_btn)));
 		poultryImage_chicken = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_chicken)));
 		poultryImage_hatchery = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_hatchery)));
+		poultryImage_hold = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_hold)));
+		poultryImage_bar = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(poultry_bar)));
 	
 		shopImage_item = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(shop_item)));
 		shopImage_btnbuy = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(shop_btnbuy)));
@@ -658,15 +666,27 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		int x = jlbPointField.getX();
 		
 		jlbBat = new ArrayList<>();
+		jlbCropFertilizer = new ArrayList<>();
 		jlbCropField = new ArrayList<>();
 		jlbCropText = new ArrayList<>();
 		jlbCropTime = new ArrayList<>();
 		for (int i = 0; i < farmData.getField().size(); i++) {
 			ImageIcon jlbImage = null;
+			JLabel jlbTemp;
+
+			jlbTemp = null;
+			if (farmData.getField(i)[0] != 0 && farmData.getField(i)[4] != 0)
+				jlbImage = new ImageIcon(inGameImage_fertilizereffect.getSubimage(100 * farmData.getField(i)[4] - 100, 0, 100, 100).getScaledInstance(90 * resolution / 80, 90 * resolution / 80, Image.SCALE_SMOOTH));
+			jlbTemp = new JLabel(jlbImage);
+			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 60 * resolution / 80, 90 * resolution / 80, 90 * resolution / 80);
+			add(jlbTemp);
+			jlbCropFertilizer.add(jlbTemp);
+			
+			jlbTemp = null;
 			if (farmData.getField(i)[0] != 0)
 				jlbImage = new ImageIcon(
-						cropImage.get(farmData.getField(i)[0]).getSubimage(100 * farmData.getField(i)[1], 0, 100, 100));
-			JLabel jlbTemp = new JLabel(jlbImage);
+						cropImage.get(farmData.getField(i)[0]).getSubimage(100 * farmData.getField(i)[1], 0, 100, 100).getScaledInstance(90 * resolution / 80, 90 * resolution / 80, Image.SCALE_SMOOTH));
+			jlbTemp = new JLabel(jlbImage);
 			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 60 * resolution / 80, 90 * resolution / 80, 90 * resolution / 80);
 			add(jlbTemp);
 			jlbCropField.add(jlbTemp);
@@ -691,7 +711,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			add(jlbTemp);
 			jlbCropTime.add(jlbTemp);
 			
-			jlbImage = new ImageIcon(inGameImage_bat.getScaledInstance(95 * resolution / 80, 95 * resolution / 80, Image.SCALE_SMOOTH));
+			jlbImage = new ImageIcon(inGameImage_bat.getScaledInstance(90 * resolution / 80, 90 * resolution / 80, Image.SCALE_SMOOTH));
 			jlbTemp = new JLabel(jlbImage);
 			jlbTemp.setBounds(x + (280 + 110 * i) * resolution / 80, getHeight() / 2 - 60 * resolution / 80, 90 * resolution / 80, 90 * resolution / 80);
 			add(jlbTemp);
@@ -1512,6 +1532,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 		add(jlbShop);
 		for (int i = 0; i < jlbCropField.size(); i++) {
+			add(jlbCropFertilizer.get(i));
 			add(jlbCropField.get(i));
 			add(jlbCropText.get(i));
 			add(jlbCropTime.get(i));
@@ -3703,7 +3724,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbTamago.setBounds(165 * resolution / 80, getHeight() / 2 + 85 * resolution / 80, 120 * resolution / 80, 120 * resolution / 80);
 		add(jlbTamago, 0);
 		
-		JLabel jlbPoultryTextBox = new JLabel();
+		JLabel jlbPoultryTextBox = new JLabel(new ImageIcon(poultryImage_hold.getScaledInstance(180 * resolution / 80, 150 * resolution / 80, Image.SCALE_SMOOTH)));
 		JLabel jlbPoultryText1 = new JLabel("보유");
 		jlbPoultryText2 = new JLabel("유정란: " + farmData.getCrop("FertilizedEgg"));
 		jlbPoultryText3 = new JLabel("무정란: " + farmData.getCrop("UnfertilizedEgg"));
@@ -3724,10 +3745,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbPoultryText4.setBounds(getWidth() - 325 * resolution / 80, getHeight() / 2 - 160 * resolution / 80, 170 * resolution / 80, 30 * resolution / 80);
 		jlbPoultryText5.setBounds(getWidth() - 325 * resolution / 80, getHeight() / 2 - 130 * resolution / 80, 170 * resolution / 80, 30 * resolution / 80);
 		
-		jlbPoultryTextBox.setBackground(Color.pink);
-		jlbPoultryTextBox.setOpaque(true);
-		jlbPoultryTextBox.setBorder(new LineBorder(Color.black, 1));
-		
 		add(jlbPoultryTextBox, 0);
 		add(jlbPoultryText1, 0);
 		add(jlbPoultryText2, 0);
@@ -3735,28 +3752,30 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbPoultryText4, 0);
 		add(jlbPoultryText5, 0);
 		
-		JLabel jlbFoodBar = new JLabel();
+		JLabel jlbFoodBar = new JLabel(new ImageIcon(poultryImage_bar.getScaledInstance(50 * resolution / 80, 320 * resolution / 80, Image.SCALE_SMOOTH)));
+		JLabel jlbFoodBarBack = new JLabel();
 		jlbFoodGauge = new JLabel();
-		JLabel jlbFoodText1 = new JLabel("50");
+		JLabel jlbFoodText1 = new JLabel("MAX");
 		JLabel jlbFoodText2 = new JLabel("밥");
 		
-		jlbFoodBar.setBorder(new LineBorder(Color.black, 1));
-		jlbFoodGauge.setBackground(Color.pink);
+		jlbFoodGauge.setBackground(new Color(151, 229, 76));
 		jlbFoodGauge.setOpaque(true);
 		
-		jlbFoodText1.setFont(font);
+		jlbFoodBarBack.setBackground(new Color(233, 233, 233));
+		jlbFoodBarBack.setOpaque(true);
+		
+		jlbFoodText1.setFont(font_count);
 		jlbFoodText1.setHorizontalAlignment(SwingConstants.CENTER);
-		jlbFoodText2.setFont(font);
+		jlbFoodText2.setFont(font_count);
 		jlbFoodText2.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		jlbFoodText1.setBorder(new LineBorder(Color.black, 1));
-		jlbFoodText2.setBorder(new LineBorder(Color.black, 1));
-		
 		jlbFoodBar.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 80 * resolution / 80, 50 * resolution / 80, 320 * resolution / 80);
+		jlbFoodBarBack.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 80 * resolution / 80, 50 * resolution / 80, 320 * resolution / 80);
 		jlbFoodGauge.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 80 * resolution / 80 + 320 * resolution / 80 - poultryGauge, 50 * resolution / 80, poultryGauge);
 		jlbFoodText1.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 - 80 * resolution / 80, 50 * resolution / 80, 30 * resolution / 80);
 		jlbFoodText2.setBounds(getWidth() - 330 * resolution / 80, getHeight() / 2 + 210 * resolution / 80, 50 * resolution / 80, 30 * resolution / 80);
 		
+		add(jlbFoodBarBack, 0);
 		add(jlbFoodGauge, 0);
 		add(jlbFoodBar, 0);
 		add(jlbFoodText1, 0);
@@ -3847,18 +3866,22 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		for (int i = 0; i < jlbCropField.size(); i++) {
 	        int[] fieldData = farmData.getField(i);
 	        ImageIcon jlbImage = null;
+	        JLabel jlbTemp = null;
 	
-	        if (fieldData[0] != 0) {
-	            jlbImage = new ImageIcon(
-	            		cropImage.get(fieldData[0]).getSubimage(100 * fieldData[1], 0, 100, 100).getScaledInstance(100 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH));
-	        }
+	        if (fieldData[0] != 0 && fieldData[4] != 0)
+	        	jlbImage = new ImageIcon(inGameImage_fertilizereffect.getSubimage(100 * fieldData[4] - 100, 0, 100, 100).getScaledInstance(90 * resolution / 80, 90 * resolution / 80, Image.SCALE_SMOOTH));
+	        
+	        jlbTemp = jlbCropFertilizer.get(i);
+	        jlbTemp.setIcon(jlbImage);
+	        
+	        if (fieldData[0] != 0) 
+	            jlbImage = new ImageIcon(cropImage.get(fieldData[0]).getSubimage(100 * fieldData[1], 0, 100, 100).getScaledInstance(90 * resolution / 80, 90 * resolution / 80, Image.SCALE_SMOOTH));
 	
-	        JLabel jlbTemp = jlbCropField.get(i);
+	        jlbTemp = jlbCropField.get(i);
 	        jlbTemp.setIcon(jlbImage);
 	
-	        if (jlbTemp.getMouseListeners().length == 0) {
+	        if (jlbTemp.getMouseListeners().length == 0) 
 	            jlbTemp.addMouseListener(new FieldMouseListener(i));
-	        }
 	
 	        JLabel jlbTextTemp = jlbCropText.get(i);
 	        jlbTextTemp.setText(getCropName(fieldData[0], false, true));
