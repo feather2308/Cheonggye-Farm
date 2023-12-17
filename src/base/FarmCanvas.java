@@ -45,8 +45,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	// 음성 관리
 	protected final String sound_main = "/resource/sound/main.wav";
 //	protected final String sound_btnclick = "/resource/sound/btnclick.wav";
-//	protected final String sound_btnoverlap = "/resource/sound/btnoverlap.wav";
-//	protected final String sound_plow = "/resource/sound/plow.wav";
+	protected final String sound_btnoverlap = "/resource/sound/btnoverlap.wav";
+	protected final String sound_plow = "/resource/sound/plow.wav";
 //	protected final String sound_plant = "/resource/sound/plant.wav";
 //	protected final String sound_harvest = "/resource/sound/harvest.wav";
 	protected final String sound_water = "/resource/sound/water.wav";
@@ -97,6 +97,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String inGame_sprout = "/resource/inGame/sprout.png";
 	protected final String inGame_wateringcan = "/resource/inGame/wateringcan.png";
 	protected final String inGame_apple = "/resource/inGame/apple.png";
+	protected final String inGame_applebtn = "/resource/inGame/applebtn.png";
+	protected final String inGame_appletext = "/resource/inGame/appletext.png";
+	protected final String inGame_yesno = "/resource/inGame/yesno.png";
 	protected final String inGame_fertilizer = "/resource/inGame/fertilizer.png";
 	protected final String inGame_fertilizerset = "/resource/inGame/fertilizerset.png";
 	protected final String inGame_fertilizereffect = "/resource/inGame/fertilizereffect.png";
@@ -130,6 +133,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String shop_btnbuy = "/resource/inGame/shop/btnbuy.png";
 	protected final String shop_btnsell = "/resource/inGame/shop/btnsell.png";
 	protected final String shop_background = "/resource/inGame/shop/background.png";
+	protected final String shop_tab = "/resource/inGame/shop/tab.png";
 	
 	protected final String[] mainLobby_logo = {
 			"/resource/mainLobby/logo1.png",
@@ -174,6 +178,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage inGameImage_sprout;
 	protected BufferedImage inGameImage_wateringcan;
 	protected BufferedImage inGameImage_apple;
+	protected BufferedImage inGameImage_applebtn;
+	protected BufferedImage inGameImage_appletext;
+	protected BufferedImage inGameImage_yesno;
 	protected BufferedImage inGameImage_fertilizer;
 	protected BufferedImage inGameImage_fertilizerset;
 	protected BufferedImage inGameImage_fertilizereffect;
@@ -203,6 +210,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage shopImage_btnbuy;
 	protected BufferedImage shopImage_btnsell;
 	protected BufferedImage shopImage_background;
+	protected BufferedImage shopImage_tab;
 	
 	protected Image[] mainLobbyImage_logo;
 	protected Image[] mainLobbyImage_cloud1;
@@ -600,7 +608,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		inGameImage_fertilizerset = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizerset)));
 		inGameImage_fertilizereffect = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_fertilizereffect)));
 		inGameImage_apple = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_apple)));
-
+		inGameImage_applebtn = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_applebtn)));
+		inGameImage_appletext = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_appletext)));
+		inGameImage_yesno = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_yesno)));
 		inGameImage_shop = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shop)));
 		inGameImage_chickenhouse = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_chickenhouse)));
 		inGameImage_back = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_back)));
@@ -631,6 +641,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		shopImage_btnbuy = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(shop_btnbuy)));
 		shopImage_btnsell = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(shop_btnsell)));
 		shopImage_background = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(shop_background)));
+		shopImage_tab = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(shop_tab)));
 		
 		inGameImageIcon_btn_normal = new ImageIcon(inGameImage_btn.getSubimage(0, 0, 120, 180).getScaledInstance(120 * resolution / 80, 180 * resolution / 80, Image.SCALE_SMOOTH));
 		inGameImageIcon_btn_overlap = new ImageIcon(inGameImage_btn.getSubimage(120, 0, 120, 180).getScaledInstance(120 * resolution / 80, 180 * resolution / 80, Image.SCALE_SMOOTH));
@@ -873,6 +884,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				// 오버랩 이미지
 				btnStart.setIcon(
 						new ImageIcon(mainLobbyImage_buttonstart.getSubimage(0, 125 * 1, 352, 112).getScaledInstance(
@@ -919,6 +931,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				// 오버랩 이미지
 				btnDesc.setIcon(
 						new ImageIcon(mainLobbyImage_buttondesc.getSubimage(0, 125 * 1, 352, 112).getScaledInstance(
@@ -965,6 +978,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				// 오버랩 이미지
 				btnSett.setIcon(
 						new ImageIcon(mainLobbyImage_buttonsett.getSubimage(0, 125 * 1, 352, 112).getScaledInstance(
@@ -1025,6 +1039,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 			}
 			public void mouseExited(MouseEvent e) {
 				press = false;
@@ -1109,6 +1124,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 			}
 			public void mouseExited(MouseEvent e) {
 				press = false;
@@ -1125,7 +1141,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbPanel, 0);
 		
 		jlbBackBtn.setBorder(new LineBorder(Color.black, 3));
-		jlbBackBtn.setBounds(getWidth() /2 + 174 * resolution / 80, 76 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
+		jlbBackBtn.setBounds(getWidth() / 2 + 174 * resolution / 80, 76 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
 		add(jlbBackBtn, 0);
 	}
 	
@@ -1219,6 +1235,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				// 오버랩 이미지
 				jlbShovel.setIcon(new ImageIcon(inGameImage_shovel.getSubimage(236, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
@@ -1263,6 +1280,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				// 오버랩 이미지
 				jlbSprout.setIcon(new ImageIcon(inGameImage_sprout.getSubimage(236, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
@@ -1311,6 +1329,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				// 오버랩 이미지
 				jlbWateringCan.setIcon(new ImageIcon(inGameImage_wateringcan.getSubimage(236, 0, 236, 236)
 						.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80,
@@ -1358,6 +1377,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				// 오버랩 이미지
 				jlbFertilizer.setIcon(new ImageIcon(inGameImage_fertilizer.getSubimage(236, 0, 236, 236)
 						.getScaledInstance(labelImageSize * resolution / 80, labelImageSize * resolution / 80,
@@ -1403,6 +1423,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				// 오버랩 이미지
 				jlbApple.setIcon(new ImageIcon(inGameImage_apple.getSubimage(236, 0, 236, 236).getScaledInstance(
 						labelImageSize * resolution / 80, labelImageSize * resolution / 80, Image.SCALE_SMOOTH)));
@@ -1642,6 +1663,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 					if(farmData.getCoin() >= 100) {
 						farmData.addField();
 						farmData.setCoin(100, false);
+						
+						new SoundHandler(sound_plow).play();
+						
 						refreshCoin();
 						try {
 							loadingField();
@@ -1658,6 +1682,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbHoeClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 			public void mouseExited(MouseEvent e) {
@@ -1704,6 +1729,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbShovelBackClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 
@@ -1804,6 +1830,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 	
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbPotatoClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 	
@@ -1857,6 +1884,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 	
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbCarrotClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 	
@@ -1909,6 +1937,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 	
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbBeetrootClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 	
@@ -1961,6 +1990,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 	
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbSweetPotatoClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 	
@@ -2013,6 +2043,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 	
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbDaikonClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 	
@@ -2063,6 +2094,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 	
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbSproutBackClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 	
@@ -2160,6 +2192,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 	
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbWateringCanBackClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 	
@@ -2213,6 +2246,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbCheapFertilizerClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 			public void mouseExited(MouseEvent e) {
@@ -2260,6 +2294,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbNormalFertilizerClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 			public void mouseExited(MouseEvent e) {
@@ -2307,6 +2342,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbAdvancedFertilizerClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 			public void mouseExited(MouseEvent e) {
@@ -2354,6 +2390,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbPremiumFertilizerClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 			public void mouseExited(MouseEvent e) {
@@ -2402,6 +2439,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbFertilizerBackClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 
@@ -2717,6 +2755,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbAppleBackClick.setIcon(inGameImageIcon_btn_overlap);
 			}
 
@@ -2730,7 +2769,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		JLabel jlbSaveImage = new JLabel();
 		JLabel jlbSaveText = new JLabel("저장하기");
-		JLabel jlbSaveClick = new JLabel();
+		JLabel jlbSaveClick = new JLabel(new ImageIcon(inGameImage_applebtn.getSubimage(0, 85, 240, 85).getScaledInstance(jlb_click_x_size * 2, size_click_y_ap, Image.SCALE_SMOOTH)));
 		jlbSaveClick.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
@@ -2738,10 +2777,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mousePressed(MouseEvent e) {
 				press = true;
+				jlbSaveClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(480, 85, 240, 85).getScaledInstance(jlb_click_x_size * 2, size_click_y_ap, Image.SCALE_SMOOTH)));
 			}
 
 			public void mouseReleased(MouseEvent e) {
 				if (press) {
+					jlbSaveClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(240, 85, 240, 85).getScaledInstance(jlb_click_x_size * 2, size_click_y_ap, Image.SCALE_SMOOTH)));
 					farmData.saveData();
 					paintSaveComponent();
 				}
@@ -2752,10 +2793,13 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
+				jlbSaveClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(240, 85, 240, 85).getScaledInstance(jlb_click_x_size * 2, size_click_y_ap, Image.SCALE_SMOOTH)));
 			}
 
 			public void mouseExited(MouseEvent e) {
 				press = false;
+				jlbSaveClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(0, 85, 240, 85).getScaledInstance(jlb_click_x_size * 2, size_click_y_ap, Image.SCALE_SMOOTH)));
 			}
 		});
 		jlbSaveImage.setBounds(x_saveImage, y_image1_ap, size_image_small, size_image_small);
@@ -2764,15 +2808,13 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbSaveText.setFont(font);
 		jlbSaveText.setHorizontalAlignment(SwingConstants.CENTER);
 		jlbSaveImage.setBorder(new LineBorder(Color.black, 1));
-		jlbSaveText.setBorder(new LineBorder(Color.black, 1));
-		jlbSaveClick.setBorder(new LineBorder(Color.black, 1));
 		add(jlbSaveImage);
 		add(jlbSaveText);
 		add(jlbSaveClick);
 		
 		JLabel jlbExitImage = new JLabel();
 		JLabel jlbExitText = new JLabel("종료하기");
-		JLabel jlbExitClick = new JLabel();
+		JLabel jlbExitClick = new JLabel(new ImageIcon(inGameImage_applebtn.getSubimage(0, 0, 370, 85).getScaledInstance(size_exit_x_ap, size_click_y_ap, Image.SCALE_SMOOTH)));
 		jlbExitClick.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
@@ -2780,10 +2822,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mousePressed(MouseEvent e) {
 				press = true;
+				jlbExitClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(740, 0, 370, 85).getScaledInstance(size_exit_x_ap, size_click_y_ap, Image.SCALE_SMOOTH)));
 			}
 
 			public void mouseReleased(MouseEvent e) {
 				if (press) {
+					jlbExitClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(370, 0, 370, 85).getScaledInstance(size_exit_x_ap, size_click_y_ap, Image.SCALE_SMOOTH)));
 					paintExitComponent();
 				}
 				mouseClickEffect = 0;
@@ -2793,10 +2837,13 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
+				jlbExitClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(370, 0, 370, 85).getScaledInstance(size_exit_x_ap, size_click_y_ap, Image.SCALE_SMOOTH)));
 			}
 
 			public void mouseExited(MouseEvent e) {
 				press = false;
+				jlbExitClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(0, 0, 370, 85).getScaledInstance(size_exit_x_ap, size_click_y_ap, Image.SCALE_SMOOTH)));
 			}
 		});
 		jlbExitImage.setBounds(x_exitImage, y_image2_ap, size_image_small, size_image_small);
@@ -2805,15 +2852,13 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbExitText.setFont(font);
 		jlbExitText.setHorizontalAlignment(SwingConstants.CENTER);
 		jlbExitImage.setBorder(new LineBorder(Color.black, 1));
-		jlbExitText.setBorder(new LineBorder(Color.black, 1));
-		jlbExitClick.setBorder(new LineBorder(Color.black, 1));
 		add(jlbExitImage);
 		add(jlbExitText);
 		add(jlbExitClick);
 		
 		JLabel jlbResetImage = new JLabel();
 		JLabel jlbResetText = new JLabel("!초기화!");
-		JLabel jlbResetClick = new JLabel();
+		JLabel jlbResetClick = new JLabel(new ImageIcon(inGameImage_applebtn.getSubimage(0, 170, 120, 85).getScaledInstance(jlb_click_x_size, size_click_y_ap, Image.SCALE_SMOOTH)));
 		jlbResetClick.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
@@ -2821,10 +2866,12 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 
 			public void mousePressed(MouseEvent e) {
 				press = true;
+				jlbResetClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(240, 170, 120, 85).getScaledInstance(jlb_click_x_size, size_click_y_ap, Image.SCALE_SMOOTH)));
 			}
 
 			public void mouseReleased(MouseEvent e) {
 				if (press) {
+					jlbResetClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(120, 170, 120, 85).getScaledInstance(jlb_click_x_size, size_click_y_ap, Image.SCALE_SMOOTH)));
 					paintResetComponent();
 				}
 				mouseClickEffect = 0;
@@ -2834,10 +2881,13 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
+				jlbResetClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(120, 170, 120, 85).getScaledInstance(jlb_click_x_size, size_click_y_ap, Image.SCALE_SMOOTH)));
 			}
 
 			public void mouseExited(MouseEvent e) {
 				press = false;
+				jlbResetClick.setIcon(new ImageIcon(inGameImage_applebtn.getSubimage(0, 170, 120, 85).getScaledInstance(jlb_click_x_size, size_click_y_ap, Image.SCALE_SMOOTH)));
 			}
 		});
 		jlbResetImage.setBounds(x_resetImage, y_image1_ap, size_image_small, size_image_small);
@@ -2846,8 +2896,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbResetText.setFont(font);
 		jlbResetText.setHorizontalAlignment(SwingConstants.CENTER);
 		jlbResetImage.setBorder(new LineBorder(Color.black, 1));
-		jlbResetText.setBorder(new LineBorder(Color.black, 1));
-		jlbResetClick.setBorder(new LineBorder(Color.black, 1));
 		add(jlbResetImage);
 		add(jlbResetText);
 		add(jlbResetClick);
@@ -2874,9 +2922,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbOpaque.setBounds(0, 0, getWidth(), getHeight());
 		add(jlbOpaque, 0);
 		
-		JLabel jlbBox = new JLabel();
+		JLabel jlbBox = new JLabel(new ImageIcon(inGameImage_appletext.getScaledInstance(300 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBox.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, getHeight() / 2 - 50 * resolution / 80, 300 * resolution / 80, 100 * resolution / 80);
-		jlbBox.setBorder(new LineBorder(Color.black, 1));
 		add(jlbBox, 0);
 		
 		JLabel jlbText = new JLabel("저장이 완료되었습니다!");
@@ -2886,16 +2933,18 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbText.setBorder(new LineBorder(Color.black, 1));
 		add(jlbText, 0);
 		
-		JLabel jlbBack = new JLabel();
+		JLabel jlbBack = new JLabel(new ImageIcon(inGameImage_yesno.getSubimage(0, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBack.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
 				press = true;
+				jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(100, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(press) {
+					jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 					paintAppleComponent();
 				}
 				mouseClickEffect = 0;
@@ -2904,13 +2953,15 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
+				jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseExited(MouseEvent e) {
 				press = false;
+				jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(0, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 		});
 		jlbBack.setBounds(getWidth() / 2 - 25 * resolution / 80 - 1, getHeight() / 2 + 25 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
-		jlbBack.setBorder(new LineBorder(Color.black, 1));
 		add(jlbBack, 0);
 	}
 	
@@ -2935,9 +2986,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbOpaque.setBounds(0, 0, getWidth(), getHeight());
 		add(jlbOpaque, 0);
 		
-		JLabel jlbBox = new JLabel();
+		JLabel jlbBox = new JLabel(new ImageIcon(inGameImage_appletext.getScaledInstance(300 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBox.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, getHeight() / 2 - 50 * resolution / 80, 300 * resolution / 80, 100 * resolution / 80);
-		jlbBox.setBorder(new LineBorder(Color.black, 1));
 		add(jlbBox, 0);
 		
 		JLabel jlbText = new JLabel("정말로 초기화 하시겠습니까?");
@@ -2947,16 +2997,18 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbText.setBorder(new LineBorder(Color.black, 1));
 		add(jlbText, 0);
 		
-		JLabel jlbOk = new JLabel();
+		JLabel jlbOk = new JLabel(new ImageIcon(inGameImage_yesno.getSubimage(0, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbOk.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
+				jlbOk.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(100, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 				press = true;
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(press) {
+					jlbOk.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 					farmData.setting();
 					farmData.saveData();
 					pa_inGame = false;
@@ -2969,25 +3021,29 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
+				jlbOk.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseExited(MouseEvent e) {
 				press = false;
+				jlbOk.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(0, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 		});
 		jlbOk.setBounds(getWidth() / 2 - 75 * resolution / 80, getHeight() / 2 + 25 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
-		jlbOk.setBorder(new LineBorder(Color.black, 1));
 		add(jlbOk, 0);
 		
-		JLabel jlbBack = new JLabel();
+		JLabel jlbBack = new JLabel(new ImageIcon(inGameImage_yesno.getSubimage(0, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBack.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
 				press = true;
+				jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(100, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(press) {
+					jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 					paintAppleComponent();
 				}
 				mouseClickEffect = 0;
@@ -2996,13 +3052,15 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
+				jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseExited(MouseEvent e) {
 				press = false;
+				jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(0, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 		});
 		jlbBack.setBounds(getWidth() / 2 + 25 * resolution / 80, getHeight() / 2 + 25 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
-		jlbBack.setBorder(new LineBorder(Color.black, 1));
 		add(jlbBack, 0);
 	}
 	
@@ -3027,9 +3085,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbOpaque.setBounds(0, 0, getWidth(), getHeight());
 		add(jlbOpaque, 0);
 		
-		JLabel jlbBox = new JLabel();
+		JLabel jlbBox = new JLabel(new ImageIcon(inGameImage_appletext.getScaledInstance(300 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBox.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, getHeight() / 2 - 50 * resolution / 80, 300 * resolution / 80, 100 * resolution / 80);
-		jlbBox.setBorder(new LineBorder(Color.black, 1));
 		add(jlbBox, 0);
 		
 		JLabel jlbText = new JLabel("정말로 종료 하시겠습니까?");
@@ -3039,16 +3096,18 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbText.setBorder(new LineBorder(Color.black, 1));
 		add(jlbText, 0);
 		
-		JLabel jlbOk = new JLabel();
+		JLabel jlbOk = new JLabel(new ImageIcon(inGameImage_yesno.getSubimage(0, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbOk.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
 				press = true;
+				jlbOk.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(100, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(press) {
+					jlbOk.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 					run = false;
 				}
 				mouseClickEffect = 0;
@@ -3057,25 +3116,29 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
+				jlbOk.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseExited(MouseEvent e) {
 				press = false;
+				jlbOk.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(0, 0, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 		});
 		jlbOk.setBounds(getWidth() / 2 - 75 * resolution / 80, getHeight() / 2 + 25 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
-		jlbOk.setBorder(new LineBorder(Color.black, 1));
 		add(jlbOk, 0);
 		
-		JLabel jlbBack = new JLabel();
+		JLabel jlbBack = new JLabel(new ImageIcon(inGameImage_yesno.getSubimage(0, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbBack.addMouseListener(new MouseListener() {
 			boolean press = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
 				press = true;
+				jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(100, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(press) {
+					jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 					paintAppleComponent();
 				}
 				mouseClickEffect = 0;
@@ -3084,13 +3147,15 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
+				jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(50, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseExited(MouseEvent e) {
 				press = false;
+				jlbBack.setIcon(new ImageIcon(inGameImage_yesno.getSubimage(0, 50, 50, 50).getScaledInstance(50 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 		});
 		jlbBack.setBounds(getWidth() / 2 + 25 * resolution / 80, getHeight() / 2 + 25 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
-		jlbBack.setBorder(new LineBorder(Color.black, 1));
 		add(jlbBack, 0);
 	}
 
@@ -3124,62 +3189,80 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbShopBackground = new JLabel(new ImageIcon(shopImage_background.getScaledInstance(1200 * resolution / 80, 675 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbShopBackground.setBounds(40 * resolution / 80, 30 * resolution / 80, 1200 * resolution / 80, 675 * resolution / 80);
 		
-		JLabel jlbTabSeed = new JLabel("seed");
-		jlbTabSeed.addMouseListener(new MouseListener() {
-			boolean press = false;
-			public void mouseClicked(MouseEvent e) {
-			}
-			public void mousePressed(MouseEvent e) {
-				press = true;
-			}
-			public void mouseReleased(MouseEvent e) {
-				if(press) {
-					pa_shopSeedComponent = true;
-					selectShop = 0;
-					refreshShopItem();
+		JLabel jlbTabSeed;
+		if(!pa_shopSeedComponent) {
+			jlbTabSeed = new JLabel(new ImageIcon(shopImage_tab.getSubimage(0, 0, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+			jlbTabSeed.addMouseListener(new MouseListener() {
+				boolean press = false;
+				public void mouseClicked(MouseEvent e) {
 				}
-				mouseClickEffect = 0;
-				mouseClick.x = jlbTabSeed.getX() + e.getPoint().x;
-				mouseClick.y = jlbTabSeed.getY() + e.getPoint().y;
-				repaint();
-			}
-			public void mouseEntered(MouseEvent e) {
-			}
-			public void mouseExited(MouseEvent e) {
-				press = false;
-			}
-		});
+				public void mousePressed(MouseEvent e) {
+					press = true;
+					jlbTabSeed.setIcon(new ImageIcon(shopImage_tab.getSubimage(300, 0, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+				}
+				public void mouseReleased(MouseEvent e) {
+					if(press) {
+						jlbTabSeed.setIcon(new ImageIcon(shopImage_tab.getSubimage(150, 0, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+						pa_shopSeedComponent = true;
+						selectShop = 0;
+						refreshShopItem();
+					}
+					mouseClickEffect = 0;
+					mouseClick.x = jlbTabSeed.getX() + e.getPoint().x;
+					mouseClick.y = jlbTabSeed.getY() + e.getPoint().y;
+					repaint();
+				}
+				public void mouseEntered(MouseEvent e) {
+					new SoundHandler(sound_btnoverlap).play();
+					jlbTabSeed.setIcon(new ImageIcon(shopImage_tab.getSubimage(150, 0, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+				}
+				public void mouseExited(MouseEvent e) {
+					press = false;
+					jlbTabSeed.setIcon(new ImageIcon(shopImage_tab.getSubimage(0, 0, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+				}
+			});
+		} else {
+			jlbTabSeed = new JLabel(new ImageIcon(shopImage_tab.getSubimage(300, 0, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+		}
 		jlbTabSeed.setBounds(200 * resolution / 80, getHeight() - 110 * resolution / 80, 150 * resolution / 80, 30 * resolution / 80);
-		jlbTabSeed.setBorder(new LineBorder(Color.black, 1));
 		add(jlbTabSeed);
 		
-		JLabel jlbTabEgg = new JLabel("egg");
-		jlbTabEgg.addMouseListener(new MouseListener() {
-			boolean press = false;
-			public void mouseClicked(MouseEvent e) {
-			}
-			public void mousePressed(MouseEvent e) {
-				press = true;
-			}
-			public void mouseReleased(MouseEvent e) {
-				if(press) {
-					pa_shopEggComponent = true;
-					selectShop = 0;
-					refreshShopItem();
+		JLabel jlbTabEgg;
+		if(!pa_shopEggComponent) {
+			jlbTabEgg = new JLabel(new ImageIcon(shopImage_tab.getSubimage(0, 30, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+			jlbTabEgg.addMouseListener(new MouseListener() {
+				boolean press = false;
+				public void mouseClicked(MouseEvent e) {
 				}
-				mouseClickEffect = 0;
-				mouseClick.x = jlbTabEgg.getX() + e.getPoint().x;
-				mouseClick.y = jlbTabEgg.getY() + e.getPoint().y;
-				repaint();
-			}
-			public void mouseEntered(MouseEvent e) {
-			}
-			public void mouseExited(MouseEvent e) {
-				press = false;
-			}
-		});
+				public void mousePressed(MouseEvent e) {
+					press = true;
+					jlbTabEgg.setIcon(new ImageIcon(shopImage_tab.getSubimage(300, 30, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+				}
+				public void mouseReleased(MouseEvent e) {
+					if(press) {
+						jlbTabEgg.setIcon(new ImageIcon(shopImage_tab.getSubimage(150, 30, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+						pa_shopEggComponent = true;
+						selectShop = 0;
+						refreshShopItem();
+					}
+					mouseClickEffect = 0;
+					mouseClick.x = jlbTabEgg.getX() + e.getPoint().x;
+					mouseClick.y = jlbTabEgg.getY() + e.getPoint().y;
+					repaint();
+				}
+				public void mouseEntered(MouseEvent e) {
+					new SoundHandler(sound_btnoverlap).play();
+					jlbTabEgg.setIcon(new ImageIcon(shopImage_tab.getSubimage(150, 30, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+				}
+				public void mouseExited(MouseEvent e) {
+					press = false;
+					jlbTabEgg.setIcon(new ImageIcon(shopImage_tab.getSubimage(0, 30, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+				}
+			});
+		} else {
+			jlbTabEgg = new JLabel(new ImageIcon(shopImage_tab.getSubimage(300, 30, 150, 30).getScaledInstance(150 * resolution / 80, 30 * resolution / 80, Image.SCALE_SMOOTH)));
+		}
 		jlbTabEgg.setBounds(360 * resolution / 80, getHeight() - 110 * resolution / 80, 150 * resolution / 80, 30 * resolution / 80);
-		jlbTabEgg.setBorder(new LineBorder(Color.black, 1));
 		add(jlbTabEgg);
 		
 		jlbShopBuy = new JLabel(shopImageIcon_btnbuy_normal);
@@ -3203,6 +3286,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbShopBuy.setIcon(shopImageIcon_btnbuy_overlap);
 			}
 			public void mouseExited(MouseEvent e) {
@@ -3234,6 +3318,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbShopSell.setIcon(shopImageIcon_btnsell_overlap);
 			}
 			public void mouseExited(MouseEvent e) {
@@ -3269,6 +3354,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 	
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 			}
 	
 			public void mouseExited(MouseEvent e) {
@@ -3647,6 +3733,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbEggBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(250, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseExited(MouseEvent e) {
@@ -3693,6 +3780,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 				jlbFoodBackground.setIcon(new ImageIcon(poultryImage_btn.getSubimage(250, 0, 250, 100).getScaledInstance(250 * resolution / 80, 100 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseExited(MouseEvent e) {
@@ -3801,6 +3889,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
+				new SoundHandler(sound_btnoverlap).play();
 			}
 			public void mouseExited(MouseEvent e) {
 				press = false;
