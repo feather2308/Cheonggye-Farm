@@ -4354,7 +4354,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		x_save = 875 * resolution / 80;
 		x_saveImage = 970 * resolution / 80;
 		x_exit = 875 * resolution / 80;
-		x_exitImage = 1030 * resolution / 80;
+		x_exitImage = 1035 * resolution / 80;
 		x_reset = 1125 * resolution / 80;
 		x_resetImage = 1160 * resolution / 80;
 		//저장소 텍스트
