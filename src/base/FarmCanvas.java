@@ -344,6 +344,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	
 	// 양계장
 	JLabel jlbPoultry, jlbTamago, jlbPoultryText2, jlbPoultryText3, jlbPoultryText4, jlbPoultryText5, jlbFoodGauge;
+	JLabel jlbHatcheryBar;
 
 	int x_back_sh, x_back_sp, x_back_fe, x_back_ap;
 	int y_image, y_text, y_count, y_click;
@@ -3991,7 +3992,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			pa_poultryFarmComponent = false;
 		}
 	}
-
+	
 	private void paintPoultryFarmComponent() throws IOException {		
 		JLabel jlbOpaque = new JLabel();
 		jlbOpaque.setBackground(new Color(0, 0, 0, 125));
@@ -4124,6 +4125,13 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbHatchery.setBorder(new LineBorder(Color.black, 3));
 		jlbHatchery.setBounds(100 * resolution / 80, getHeight() / 2 - 10 * resolution / 80, 250 * resolution / 80, 240 * resolution / 80);
 		add(jlbHatchery, 0);
+		
+		jlbHatcheryBar = new JLabel();
+		jlbHatcheryBar.setBackground(new Color(151, 229, 76, 200));
+		jlbHatcheryBar.setOpaque(true);
+		jlbHatcheryBar.setBounds(98 * resolution / 80, getHeight() / 2 + 225 * resolution / 80, (int) ((float)(farmData.egg.time) / 200 * 250) * resolution / 80, 3 * resolution / 80);
+		jlbHatcheryBar.setBorder(new LineBorder(Color.black, 1));
+		add(jlbHatcheryBar, 0);
 		
 		jlbTamago = new JLabel();
 		switch(farmData.egg.level) {

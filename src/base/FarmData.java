@@ -99,6 +99,7 @@ public class FarmData {
 		void addTime() {
 			if(isPlace) {
 				time++;
+				farmCanvas.jlbHatcheryBar.setBounds(100 * farmCanvas.resolution / 80, farmCanvas.getHeight() / 2 + 225 * farmCanvas.resolution / 80, (int) ((float)(farmData.egg.time) / 200 * 250) * farmCanvas.resolution / 80, 5 * farmCanvas.resolution / 80);
 				check();
 			}
 		}
@@ -124,6 +125,7 @@ public class FarmData {
 				farmCanvas.jlbTamago.removeMouseListener(tamagoMouseListener);
 				
 				time = 0;
+				farmCanvas.jlbHatcheryBar.setBounds(100 * farmCanvas.resolution / 80, farmCanvas.getHeight() / 2 + 225 * farmCanvas.resolution / 80, (int) ((float)(farmData.egg.time) / 200 * 250) * farmCanvas.resolution / 80, 5 * farmCanvas.resolution / 80);
 				level = -1;
 				isPlace = false;
 				chick = false;
