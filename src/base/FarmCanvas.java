@@ -286,6 +286,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected boolean la_inGame = false;
 	protected boolean la_chick = true;
 
+	JPanel	jplWineRecipe;
+	
 	JLabel jlbResolution1, jlbResolution2, jlbResolution3, jlbResolution4, jlbResolution5;
 	JLabel jlbResolutionClick1, jlbResolutionClick2, jlbResolutionClick3, jlbResolutionClick4, jlbResolutionClick5;
 	JLabel jlbSlide1Bar, jlbSlide2Bar;
@@ -1103,6 +1105,39 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			jlbImage[i].setBounds(250 * resolution / 80, 130 * resolution / 80 + 90 * i * resolution / 80, 75 * resolution / 80, 75 * resolution / 80);
 			add(jlbImage[i], 0);
 		}
+		
+		JLabel jlbSecretWineRecipe = new JLabel();
+		jlbSecretWineRecipe.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseReleased(MouseEvent e) {
+				jplWineRecipe.setVisible(true);
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+			}
+		});
+		jlbSecretWineRecipe.setBounds(0, 0, 100, 100);
+		add(jlbSecretWineRecipe, 0);
+		
+		jplWineRecipe = new JPanel();
+		jplWineRecipe.setLayout(null);
+		jplWineRecipe.setBounds(0, 0, 649, 468);
+		add(jplWineRecipe, 0);
+		jplWineRecipe.setVisible(false);
+		
+		JLabel a;
+		try {
+			a = new JLabel(new ImageIcon(ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream("/resource/mainLobby/winerecipe")))));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			a = new JLabel();
+		}
+		a.setBounds(0, 0, 649, 468);
+		jplWineRecipe.add(a);
 	}
 	
 	private void paintGameSettComponent() {
