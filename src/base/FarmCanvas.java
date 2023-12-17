@@ -1114,6 +1114,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			}
 			public void mouseReleased(MouseEvent e) {
 				jplWineRecipe.setVisible(true);
+				farmData.setCoin(10000, true);
 			}
 			public void mouseEntered(MouseEvent e) {
 			}
