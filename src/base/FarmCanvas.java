@@ -91,6 +91,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String mainLobby_buttonsett = "/resource/mainLobby/buttonsett.png";
 	protected final String mainLobby_cloud = "/resource/mainLobby/cloud.png";
 	protected final String mainLobby_descbackground = "/resource/mainLobby/descbackground.png";
+	protected final String mainLobby_resolution = "/resource/mainLobby/resolution.png";
 	protected final String inGame_starcoin = "/resource/inGame/starcoin.png";
 	protected final String inGame_shovel = "/resource/inGame/shovel.png";
 	protected final String inGame_hoe = "/resource/inGame/hoe.png";
@@ -173,6 +174,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage mainLobbyImage_buttonsett;
 	protected BufferedImage mainLobbyImage_cloud;
 	protected BufferedImage mainLobbyImage_descbackground;
+	protected BufferedImage mainLobbyImage_resolution;
 	protected BufferedImage	inGameImage_shovel;
 	protected BufferedImage inGameImage_hoe;
 	protected BufferedImage inGameImage_sprout;
@@ -530,6 +532,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[1]))),
 				ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_cloud2[2]))) };
 		mainLobbyImage_descbackground = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_descbackground)));
+		mainLobbyImage_resolution = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(mainLobby_resolution)));
 		
 		cursorImage_chicken = ImageIO.read(getClass().getResourceAsStream(cursor_chicken));
 		cursorImage_wateringcan = ImageIO.read(getClass().getResourceAsStream(cursor_wateringcan));
@@ -1085,6 +1088,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 	}
 	
+	JLabel jlbResolution1, jlbResolution2, jlbResolution3, jlbResolution4, jlbResolution5;
+	JLabel jlbResolutionClick1, jlbResolutionClick2, jlbResolutionClick3, jlbResolutionClick4, jlbResolutionClick5;
+	
 	private void paintGameSettComponent() {
 		JLabel jlbBack = new JLabel();
 		JLabel jlbPanel = new JLabel();
@@ -1146,24 +1152,36 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		
 		JLabel jlbResolutionText1 = new JLabel("해상도 설정");
 		jlbResolutionText1.setFont(font);
-		jlbResolutionText1.setBounds(getWidth() / 2 - 130 * resolution / 80 - 1, 115 * resolution / 80, 220 * resolution / 80, 30 * resolution / 80);
+		jlbResolutionText1.setBounds(getWidth() / 2 - 130 * resolution / 80 - 1, 165 * resolution / 80, 220 * resolution / 80, 30 * resolution / 80);
 		add(jlbResolutionText1, 0);
 		JLabel jlbResolutionText2 = new JLabel(16 * resolution + " x " + 9 * resolution);
 		jlbResolutionText2.setFont(font);
-		jlbResolutionText2.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, 150 * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
+		jlbResolutionText2.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, 200 * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
 		add(jlbResolutionText2, 0);
-		JLabel jlbResolutionBox = new JLabel();
+		JLabel jlbResolutionBox = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(0, 0, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 		jlbResolutionBox.addMouseListener(new MouseListener() {
 			boolean press = false;
+			boolean toggle = false;
 			public void mouseClicked(MouseEvent e) {
 			}
 			public void mousePressed(MouseEvent e) {
 				press = true;
-				jlbResolutionBox.setBackground(Color.gray);
+				jlbResolutionBox.setIcon(new ImageIcon(mainLobbyImage_resolution.getSubimage(600, 0, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseReleased(MouseEvent e) {
 				if(press) {
-					jlbResolutionBox.setBackground(Color.LIGHT_GRAY);
+					toggle = !toggle;
+					jlbResolution1.setVisible(toggle);
+					jlbResolutionClick1.setVisible(toggle);
+					jlbResolution2.setVisible(toggle);
+					jlbResolutionClick2.setVisible(toggle);
+					jlbResolution3.setVisible(toggle);
+					jlbResolutionClick3.setVisible(toggle);
+					jlbResolution4.setVisible(toggle);
+					jlbResolutionClick4.setVisible(toggle);
+					jlbResolution5.setVisible(toggle);
+					jlbResolutionClick5.setVisible(toggle);
+					jlbResolutionBox.setIcon(new ImageIcon(mainLobbyImage_resolution.getSubimage(300, 0, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 				}
 				mouseClickEffect = 0;
 				mouseClick.x = jlbResolutionBox.getX() + e.getPoint().x;
@@ -1171,107 +1189,90 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				repaint();
 			}
 			public void mouseEntered(MouseEvent e) {
-				jlbResolutionBox.setBackground(Color.LIGHT_GRAY);
+				jlbResolutionBox.setIcon(new ImageIcon(mainLobbyImage_resolution.getSubimage(300, 0, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			public void mouseExited(MouseEvent e) {
-				jlbResolutionBox.setBackground(Color.white);
+				jlbResolutionBox.setIcon(new ImageIcon(mainLobbyImage_resolution.getSubimage(0, 0, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 		});
-		jlbResolutionBox.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, 150 * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
-		jlbResolutionBox.setBorder(new LineBorder(Color.black, 1));
-		add(jlbResolutionBox, 0);
+		jlbResolutionBox.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, 200 * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
+		add(jlbResolutionBox, 1);
 
 		count = 0;
-		JLabel jlbResolution1 = new JLabel("960 x 540");
+		jlbResolution1 = new JLabel("960 x 540");
 		jlbResolution1.setFont(font);
-		jlbResolution1.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
-		JLabel jlbResolutionClick1;
+		jlbResolution1.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
 		if(resolution != 960 / 16) {
-			jlbResolutionClick1 = new JLabel();
-			jlbResolutionClick1.setBackground(Color.white);
+			jlbResolutionClick1 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(0, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			jlbResolutionClick1.addMouseListener(new ResolutionMouseListener(jlbResolutionClick1, 960 / 16));
-		} else {
-			jlbResolutionClick1 = new JLabel();
-			jlbResolutionClick1.setBackground(Color.gray);
-		}
-		jlbResolutionClick1.setOpaque(true);
-		jlbResolutionClick1.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
-		jlbResolutionClick1.setBorder(new LineBorder(Color.black, 1));
+		} else 
+			jlbResolutionClick1 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(600, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbResolutionClick1.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
 		add(jlbResolutionClick1, 0);
 		add(jlbResolution1, 0);
+		
 		count++;
-		JLabel jlbResolution2 = new JLabel("1280 x 720");
+		jlbResolution2 = new JLabel("1280 x 720");
 		jlbResolution2.setFont(font);
-		jlbResolution2.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
-		JLabel jlbResolutionClick2;
+		jlbResolution2.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
 		if(resolution != 1280 / 16) {
-			jlbResolutionClick2 = new JLabel();
-			jlbResolutionClick2.setBackground(Color.white);
+			jlbResolutionClick2 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(0, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			jlbResolutionClick2.addMouseListener(new ResolutionMouseListener(jlbResolutionClick2, 1280 / 16));
-		} else {
-			jlbResolutionClick2 = new JLabel();
-			jlbResolutionClick2.setBackground(Color.gray);
-		}
-		jlbResolutionClick2.setOpaque(true);
-		jlbResolutionClick2.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
-		jlbResolutionClick2.setBorder(new LineBorder(Color.black, 1));
+		} else 
+			jlbResolutionClick2 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(600, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbResolutionClick2.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
 		add(jlbResolutionClick2, 0);
 		add(jlbResolution2, 0);
+		
 		count++;
-		JLabel jlbResolution3 = new JLabel("1600 x 900");
+		jlbResolution3 = new JLabel("1600 x 900");
 		jlbResolution3.setFont(font);
-		jlbResolution3.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
-		JLabel jlbResolutionClick3;
+		jlbResolution3.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
 		if(resolution != 1600 / 16) {
-			jlbResolutionClick3 = new JLabel();
-			jlbResolutionClick3.setBackground(Color.white);
+			jlbResolutionClick3 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(0, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			jlbResolutionClick3.addMouseListener(new ResolutionMouseListener(jlbResolutionClick3, 1600 / 16));
-		} else {
-			jlbResolutionClick3 = new JLabel();
-			jlbResolutionClick3.setBackground(Color.gray);
-		}
-		jlbResolutionClick3.setOpaque(true);
-		jlbResolutionClick3.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
-		jlbResolutionClick3.setBorder(new LineBorder(Color.black, 1));
+		} else 
+			jlbResolutionClick3 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(600, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbResolutionClick3.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
 		add(jlbResolutionClick3, 0);
 		add(jlbResolution3, 0);
+		
 		count++;
-		JLabel jlbResolution4 = new JLabel("1920 x 1080");
+		jlbResolution4 = new JLabel("1920 x 1080");
 		jlbResolution4.setFont(font);
-		jlbResolution4.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
-		JLabel jlbResolutionClick4;
+		jlbResolution4.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
 		if(resolution != 1920 / 16) {
-			jlbResolutionClick4 = new JLabel();
-			jlbResolutionClick4.setBackground(Color.white);
+			jlbResolutionClick4 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(0, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			jlbResolutionClick4.addMouseListener(new ResolutionMouseListener(jlbResolutionClick4, 1920 / 16));
-		} else {
-			jlbResolutionClick4 = new JLabel();
-			jlbResolutionClick4.setBackground(Color.gray);
-		}
-		jlbResolutionClick4.setOpaque(true);
-		jlbResolutionClick4.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
-		jlbResolutionClick4.setBorder(new LineBorder(Color.black, 1));
+		} else 
+			jlbResolutionClick4 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(600, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbResolutionClick4.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
 		add(jlbResolutionClick4, 0);
 		add(jlbResolution4, 0);
+		
 		count++;
-		JLabel jlbResolution5 = new JLabel("2560 x 1440");
+		jlbResolution5 = new JLabel("2560 x 1440");
 		jlbResolution5.setFont(font);
-		jlbResolution5.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
-		JLabel jlbResolutionClick5;
+		jlbResolution5.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
 		if(resolution != 2560 / 16) {
-			jlbResolutionClick5 = new JLabel();
-			jlbResolutionClick5.setBackground(Color.white);
+			jlbResolutionClick5 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(0, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			jlbResolutionClick5.addMouseListener(new ResolutionMouseListener(jlbResolutionClick5, 2560 / 16));
-		} else {
-			jlbResolutionClick5 = new JLabel();
-			jlbResolutionClick5.setBackground(Color.gray);
-		}
-		jlbResolutionClick5.setOpaque(true);
-		jlbResolutionClick5.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
-		jlbResolutionClick5.setBorder(new LineBorder(Color.black, 1));
+		} else 
+			jlbResolutionClick5 = new JLabel(new ImageIcon(mainLobbyImage_resolution.getSubimage(600, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbResolutionClick5.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (250 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
 		add(jlbResolutionClick5, 0);
 		add(jlbResolution5, 0);
-		count++;
+
+		jlbResolution1.setVisible(false);
+		jlbResolutionClick1.setVisible(false);
+		jlbResolution2.setVisible(false);
+		jlbResolutionClick2.setVisible(false);
+		jlbResolution3.setVisible(false);
+		jlbResolutionClick3.setVisible(false);
+		jlbResolution4.setVisible(false);
+		jlbResolutionClick4.setVisible(false);
+		jlbResolution5.setVisible(false);
+		jlbResolutionClick5.setVisible(false);
 	}
 	
 	private void paintInGame() throws IOException {
@@ -4643,7 +4644,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		}
 		public void mousePressed(MouseEvent e) {
 			press = true;
-			jlb.setBackground(Color.gray);
+			jlb.setIcon(new ImageIcon(mainLobbyImage_resolution.getSubimage(600, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 		}
 		public void mouseReleased(MouseEvent e) {
 			if (press) {
@@ -4656,7 +4657,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				jlb.setBackground(Color.LIGHT_GRAY);
+				jlb.setIcon(new ImageIcon(mainLobbyImage_resolution.getSubimage(300, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 			}
 			mouseClickEffect = 0;
 			mouseClick.x = jlb.getX() + e.getPoint().x;
@@ -4664,11 +4665,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 			repaint();
 		}
 		public void mouseEntered(MouseEvent e) {
-			jlb.setBackground(Color.LIGHT_GRAY);
+			jlb.setIcon(new ImageIcon(mainLobbyImage_resolution.getSubimage(300, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 		}
 		public void mouseExited(MouseEvent e) {
 			press = false;
-			jlb.setBackground(Color.white);
+			jlb.setIcon(new ImageIcon(mainLobbyImage_resolution.getSubimage(0, 50, 300, 50).getScaledInstance(300 * resolution / 80, 50 * resolution / 80, Image.SCALE_SMOOTH)));
 		}
 	}
 
