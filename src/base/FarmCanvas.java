@@ -364,7 +364,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		this.myLauncher = myLauncher;
 		this.resolution = resolution;
 		addMouseListener(this);
-
+		
 		// 폰트
 		font = myLauncher.font.deriveFont(18f * resolution / 80);
 		font_count = myLauncher.font.deriveFont(15f * resolution / 80);
@@ -1137,12 +1137,141 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbPanel.setBackground(Color.white);
 		jlbPanel.setOpaque(true);
 		jlbPanel.setBorder(new LineBorder(Color.black, 3));
-		jlbPanel.setBounds(getWidth() / 2 - 201 * resolution / 80, 100 * resolution / 80, 400 * resolution / 80, 500 * resolution / 80);
+		jlbPanel.setBounds(getWidth() / 2 - 200 * resolution / 80 - 1, 100 * resolution / 80, 400 * resolution / 80, 500 * resolution / 80);
 		add(jlbPanel, 0);
 		
 		jlbBackBtn.setBorder(new LineBorder(Color.black, 3));
-		jlbBackBtn.setBounds(getWidth() / 2 + 174 * resolution / 80, 76 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
+		jlbBackBtn.setBounds(getWidth() / 2 + 175 * resolution / 80 - 1, 75 * resolution / 80, 50 * resolution / 80, 50 * resolution / 80);
 		add(jlbBackBtn, 0);
+		
+		JLabel jlbResolutionText1 = new JLabel("해상도 설정");
+		jlbResolutionText1.setFont(font);
+		jlbResolutionText1.setBounds(getWidth() / 2 - 130 * resolution / 80 - 1, 115 * resolution / 80, 220 * resolution / 80, 30 * resolution / 80);
+		add(jlbResolutionText1, 0);
+		JLabel jlbResolutionText2 = new JLabel(16 * resolution + " x " + 9 * resolution);
+		jlbResolutionText2.setFont(font);
+		jlbResolutionText2.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, 150 * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
+		add(jlbResolutionText2, 0);
+		JLabel jlbResolutionBox = new JLabel();
+		jlbResolutionBox.addMouseListener(new MouseListener() {
+			boolean press = false;
+			public void mouseClicked(MouseEvent e) {
+			}
+			public void mousePressed(MouseEvent e) {
+				press = true;
+				jlbResolutionBox.setBackground(Color.gray);
+			}
+			public void mouseReleased(MouseEvent e) {
+				if(press) {
+					jlbResolutionBox.setBackground(Color.LIGHT_GRAY);
+				}
+				mouseClickEffect = 0;
+				mouseClick.x = jlbResolutionBox.getX() + e.getPoint().x;
+				mouseClick.y = jlbResolutionBox.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+				jlbResolutionBox.setBackground(Color.LIGHT_GRAY);
+			}
+			public void mouseExited(MouseEvent e) {
+				jlbResolutionBox.setBackground(Color.white);
+			}
+		});
+		jlbResolutionBox.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, 150 * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
+		jlbResolutionBox.setBorder(new LineBorder(Color.black, 1));
+		add(jlbResolutionBox, 0);
+
+		count = 0;
+		JLabel jlbResolution1 = new JLabel("960 x 540");
+		jlbResolution1.setFont(font);
+		jlbResolution1.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
+		JLabel jlbResolutionClick1;
+		if(resolution != 960 / 16) {
+			jlbResolutionClick1 = new JLabel();
+			jlbResolutionClick1.setBackground(Color.white);
+			jlbResolutionClick1.addMouseListener(new ResolutionMouseListener(jlbResolutionClick1, 960 / 16));
+		} else {
+			jlbResolutionClick1 = new JLabel();
+			jlbResolutionClick1.setBackground(Color.gray);
+		}
+		jlbResolutionClick1.setOpaque(true);
+		jlbResolutionClick1.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
+		jlbResolutionClick1.setBorder(new LineBorder(Color.black, 1));
+		add(jlbResolutionClick1, 0);
+		add(jlbResolution1, 0);
+		count++;
+		JLabel jlbResolution2 = new JLabel("1280 x 720");
+		jlbResolution2.setFont(font);
+		jlbResolution2.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
+		JLabel jlbResolutionClick2;
+		if(resolution != 1280 / 16) {
+			jlbResolutionClick2 = new JLabel();
+			jlbResolutionClick2.setBackground(Color.white);
+			jlbResolutionClick2.addMouseListener(new ResolutionMouseListener(jlbResolutionClick2, 1280 / 16));
+		} else {
+			jlbResolutionClick2 = new JLabel();
+			jlbResolutionClick2.setBackground(Color.gray);
+		}
+		jlbResolutionClick2.setOpaque(true);
+		jlbResolutionClick2.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
+		jlbResolutionClick2.setBorder(new LineBorder(Color.black, 1));
+		add(jlbResolutionClick2, 0);
+		add(jlbResolution2, 0);
+		count++;
+		JLabel jlbResolution3 = new JLabel("1600 x 900");
+		jlbResolution3.setFont(font);
+		jlbResolution3.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
+		JLabel jlbResolutionClick3;
+		if(resolution != 1600 / 16) {
+			jlbResolutionClick3 = new JLabel();
+			jlbResolutionClick3.setBackground(Color.white);
+			jlbResolutionClick3.addMouseListener(new ResolutionMouseListener(jlbResolutionClick3, 1600 / 16));
+		} else {
+			jlbResolutionClick3 = new JLabel();
+			jlbResolutionClick3.setBackground(Color.gray);
+		}
+		jlbResolutionClick3.setOpaque(true);
+		jlbResolutionClick3.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
+		jlbResolutionClick3.setBorder(new LineBorder(Color.black, 1));
+		add(jlbResolutionClick3, 0);
+		add(jlbResolution3, 0);
+		count++;
+		JLabel jlbResolution4 = new JLabel("1920 x 1080");
+		jlbResolution4.setFont(font);
+		jlbResolution4.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
+		JLabel jlbResolutionClick4;
+		if(resolution != 1920 / 16) {
+			jlbResolutionClick4 = new JLabel();
+			jlbResolutionClick4.setBackground(Color.white);
+			jlbResolutionClick4.addMouseListener(new ResolutionMouseListener(jlbResolutionClick4, 1920 / 16));
+		} else {
+			jlbResolutionClick4 = new JLabel();
+			jlbResolutionClick4.setBackground(Color.gray);
+		}
+		jlbResolutionClick4.setOpaque(true);
+		jlbResolutionClick4.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
+		jlbResolutionClick4.setBorder(new LineBorder(Color.black, 1));
+		add(jlbResolutionClick4, 0);
+		add(jlbResolution4, 0);
+		count++;
+		JLabel jlbResolution5 = new JLabel("2560 x 1440");
+		jlbResolution5.setFont(font);
+		jlbResolution5.setBounds(getWidth() / 2 - 120 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 240 * resolution / 80, 50 * resolution / 80);
+		JLabel jlbResolutionClick5;
+		if(resolution != 2560 / 16) {
+			jlbResolutionClick5 = new JLabel();
+			jlbResolutionClick5.setBackground(Color.white);
+			jlbResolutionClick5.addMouseListener(new ResolutionMouseListener(jlbResolutionClick5, 2560 / 16));
+		} else {
+			jlbResolutionClick5 = new JLabel();
+			jlbResolutionClick5.setBackground(Color.gray);
+		}
+		jlbResolutionClick5.setOpaque(true);
+		jlbResolutionClick5.setBounds(getWidth() / 2 - 150 * resolution / 80 - 1, (300 + 49 * count) * resolution / 80, 300 * resolution / 80, 50 * resolution / 80);
+		jlbResolutionClick5.setBorder(new LineBorder(Color.black, 1));
+		add(jlbResolutionClick5, 0);
+		add(jlbResolution5, 0);
+		count++;
 	}
 	
 	private void paintInGame() throws IOException {
@@ -4088,6 +4217,10 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	}
 	
 	private void setValue() {
+		// 폰트
+		font = myLauncher.font.deriveFont(18f * resolution / 80);
+		font_count = myLauncher.font.deriveFont(15f * resolution / 80);
+		
 		// 상점
 		// x
 		count = 0;
@@ -4494,6 +4627,49 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	}
 
 	public void mouseExited(MouseEvent e) {
+	}
+
+	class ResolutionMouseListener implements MouseListener {
+		JLabel jlb;
+		int i;
+		boolean press = false;
+		
+		ResolutionMouseListener(JLabel jlb, int i) {
+			this.jlb = jlb;
+			this.i = i;
+		}
+		
+		public void mouseClicked(MouseEvent e) {
+		}
+		public void mousePressed(MouseEvent e) {
+			press = true;
+			jlb.setBackground(Color.gray);
+		}
+		public void mouseReleased(MouseEvent e) {
+			if (press) {
+				myLauncher.setBounds(myLauncher.getX(), myLauncher.getY(), 16 * i, 9 * i);
+				resolution = i;
+				setSize(myLauncher.getWidth(), myLauncher.getHeight());
+				setValue();
+				try {
+					paintMainLobbyComponent();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				jlb.setBackground(Color.LIGHT_GRAY);
+			}
+			mouseClickEffect = 0;
+			mouseClick.x = jlb.getX() + e.getPoint().x;
+			mouseClick.y = jlb.getY() + e.getPoint().y;
+			repaint();
+		}
+		public void mouseEntered(MouseEvent e) {
+			jlb.setBackground(Color.LIGHT_GRAY);
+		}
+		public void mouseExited(MouseEvent e) {
+			press = false;
+			jlb.setBackground(Color.white);
+		}
 	}
 
 	private class FieldMouseListener implements MouseListener {
