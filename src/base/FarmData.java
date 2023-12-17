@@ -87,7 +87,7 @@ public class FarmData {
 					farmData.setCrop("FertilizedEgg", 1, false);
 					isPlace = true;
 					
-		    		new SoundHandler(farmCanvas.sound_egg).play();
+		    		farmCanvas.playSound(farmCanvas.sound_egg);
 					
 					farmCanvas.jlbTamago.setIcon(new ImageIcon(farmCanvas.poultryImage_egg.getSubimage(0, 0, 100, 100).getScaledInstance(120 * farmCanvas.resolution / 80, 120 * farmCanvas.resolution / 80, Image.SCALE_SMOOTH)));
 					farmCanvas.jlbPoultryText2.setText("유정란: " + farmData.getCrop("FertilizedEgg"));
@@ -428,6 +428,8 @@ public class FarmData {
 	protected ArrayList<Chick> chicken = new ArrayList<>();
 	private int coin = 0;
 	private int food = 0;
+	protected float bgmVolume = 0.8f;
+	protected float effectVolume = 0.8f;
 	
 	public FarmData(FarmCanvas farmCanvas) {
 		this.farmCanvas = farmCanvas;
@@ -530,6 +532,9 @@ public class FarmData {
 	        
 	        coin = ois.readInt();
 	        food = ois.readInt();
+	        
+	        bgmVolume = ois.readFloat();
+	        effectVolume = ois.readFloat();
 
 	        ois.close();
 	    } catch (IOException | ClassNotFoundException e) {
@@ -562,6 +567,9 @@ public class FarmData {
 	        oos.writeInt(coin);
 	        oos.writeInt(food);
 
+	        oos.writeFloat(bgmVolume);
+	        oos.writeFloat(effectVolume);
+	        
 	        oos.close();
 	    } catch (IOException e) {
 	        e.printStackTrace();
@@ -688,7 +696,7 @@ public class FarmData {
 			setCoin(price, false);
 			setCrop(item, 1, true);
 			
-    		new SoundHandler(farmCanvas.sound_coin).play();
+			farmCanvas.playSound(farmCanvas.sound_coin);
 		}
 	}
 	
@@ -704,7 +712,7 @@ public class FarmData {
 			setCoin(price, true);
 			setCrop(item, 1, false);
 
-    		new SoundHandler(farmCanvas.sound_coin).play();
+			farmCanvas.playSound(farmCanvas.sound_coin);
 		}
 	}
 }
