@@ -104,6 +104,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected final String inGame_applebtn = "/resource/inGame/applebtn.png";
 	protected final String inGame_appletext = "/resource/inGame/appletext.png";
 	protected final String inGame_yesno = "/resource/inGame/yesno.png";
+	protected final String inGame_save = "/resource/inGame/save.png";
+	protected final String inGame_exit = "/resource/inGame/exit.png";
+	protected final String inGame_reset = "/resource/inGame/reset.png";
 	protected final String inGame_fertilizer = "/resource/inGame/fertilizer.png";
 	protected final String inGame_fertilizerset = "/resource/inGame/fertilizerset.png";
 	protected final String inGame_fertilizereffect = "/resource/inGame/fertilizereffect.png";
@@ -188,6 +191,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 	protected BufferedImage inGameImage_applebtn;
 	protected BufferedImage inGameImage_appletext;
 	protected BufferedImage inGameImage_yesno;
+	protected BufferedImage inGameImage_save;
+	protected BufferedImage inGameImage_exit;
+	protected BufferedImage inGameImage_reset;
 	protected BufferedImage inGameImage_fertilizer;
 	protected BufferedImage inGameImage_fertilizerset;
 	protected BufferedImage inGameImage_fertilizereffect;
@@ -628,6 +634,9 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		inGameImage_applebtn = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_applebtn)));
 		inGameImage_appletext = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_appletext)));
 		inGameImage_yesno = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_yesno)));
+		inGameImage_save = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_save)));
+		inGameImage_exit = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_exit)));
+		inGameImage_reset = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_reset)));
 		inGameImage_shop = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_shop)));
 		inGameImage_chickenhouse = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_chickenhouse)));
 		inGameImage_back = ImageIO.read(new BufferedInputStream(getClass().getResourceAsStream(inGame_back)));
@@ -3075,7 +3084,7 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbAppleBackClick.setBounds(x_back_ap - 10 * resolution / 80, y_click, jlb_click_x_size, jlb_click_y_size);
 		add(jlbAppleBackClick);
 		
-		JLabel jlbSaveImage = new JLabel();
+		JLabel jlbSaveImage = new JLabel(new ImageIcon(inGameImage_save.getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
 		JLabel jlbSaveText = new JLabel("저장하기");
 		JLabel jlbSaveClick = new JLabel(new ImageIcon(inGameImage_applebtn.getSubimage(0, 85, 240, 85).getScaledInstance(jlb_click_x_size * 2, size_click_y_ap, Image.SCALE_SMOOTH)));
 		jlbSaveClick.addMouseListener(new MouseListener() {
@@ -3116,12 +3125,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbSaveClick.setBounds(x_save, y_click, jlb_click_x_size * 2, size_click_y_ap);
 		jlbSaveText.setFont(font);
 		jlbSaveText.setHorizontalAlignment(SwingConstants.CENTER);
-		jlbSaveImage.setBorder(new LineBorder(Color.black, 1));
 		add(jlbSaveImage);
 		add(jlbSaveText);
 		add(jlbSaveClick);
 		
-		JLabel jlbExitImage = new JLabel();
+		JLabel jlbExitImage = new JLabel(new ImageIcon(inGameImage_exit.getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
 		JLabel jlbExitText = new JLabel("종료하기");
 		JLabel jlbExitClick = new JLabel(new ImageIcon(inGameImage_applebtn.getSubimage(0, 0, 370, 85).getScaledInstance(size_exit_x_ap, size_click_y_ap, Image.SCALE_SMOOTH)));
 		jlbExitClick.addMouseListener(new MouseListener() {
@@ -3161,12 +3169,11 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbExitClick.setBounds(x_exit, y_click2_ap, size_exit_x_ap, size_click_y_ap);
 		jlbExitText.setFont(font);
 		jlbExitText.setHorizontalAlignment(SwingConstants.CENTER);
-		jlbExitImage.setBorder(new LineBorder(Color.black, 1));
 		add(jlbExitImage);
 		add(jlbExitText);
 		add(jlbExitClick);
 		
-		JLabel jlbResetImage = new JLabel();
+		JLabel jlbResetImage = new JLabel(new ImageIcon(inGameImage_reset.getScaledInstance(size_image_small, size_image_small, Image.SCALE_SMOOTH)));
 		JLabel jlbResetText = new JLabel("!초기화!");
 		JLabel jlbResetClick = new JLabel(new ImageIcon(inGameImage_applebtn.getSubimage(0, 170, 120, 85).getScaledInstance(jlb_click_x_size, size_click_y_ap, Image.SCALE_SMOOTH)));
 		jlbResetClick.addMouseListener(new MouseListener() {
@@ -3206,7 +3213,6 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		jlbResetClick.setBounds(x_reset, y_click, jlb_click_x_size, size_click_y_ap);
 		jlbResetText.setFont(font);
 		jlbResetText.setHorizontalAlignment(SwingConstants.CENTER);
-		jlbResetImage.setBorder(new LineBorder(Color.black, 1));
 		add(jlbResetImage);
 		add(jlbResetText);
 		add(jlbResetClick);
@@ -4539,8 +4545,8 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		y_itemImage2 = 105 * resolution / 80;
 		y_itemText2 = 150 * resolution / 80;
 		//저장소, 양계장
-		y_image1_ap = getHeight() / 2 + 130 * resolution / 80;
-		y_image2_ap = getHeight() / 2 + 225 * resolution / 80;
+		y_image1_ap = getHeight() / 2 + 135 * resolution / 80;
+		y_image2_ap = getHeight() / 2 + 230 * resolution / 80;
 		y_text1_ap = getHeight() / 2 + 180 * resolution / 80;
 		y_text2_ap = getHeight() / 2 + 275 * resolution / 80;
 		//날짜, 골드
