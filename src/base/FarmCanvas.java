@@ -1229,9 +1229,33 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbSoundText3, 0);
 		
 		JLabel jlbSlide1 = new JLabel(new ImageIcon(mainLobbyImage_slide.getScaledInstance(300 * resolution / 80, 51 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbSlide1.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				if(e.getX() >= 297 * resolution / 80)
+					farmData.bgmVolume = 1f;
+				else if (e.getX() <= 0)
+					farmData.bgmVolume = 0f;
+				else 
+					farmData.bgmVolume =  e.getX() / (float) (297 * resolution / 80);
+				
+				jlbSlide1Bar.setBounds(getWidth() / 2 - (150 + 1 - (int) (297 * farmData.bgmVolume)) * resolution / 80, 373 * resolution / 80, 5 * resolution / 80, 45 * resolution / 80);
+				bgm.controlSound(farmData.bgmVolume);
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseReleased(MouseEvent e) {
+				mouseClickEffect = 0;
+				mouseClick.x = jlbSlide1.getX() + e.getPoint().x;
+				mouseClick.y = jlbSlide1.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+			}
+		});
 		jlbSlide1.addMouseMotionListener(new MouseMotionListener() {
 			public void mouseDragged(MouseEvent e) {
-				System.out.println(e.getX());
 				if(e.getX() >= 297 * resolution / 80)
 					farmData.bgmVolume = 1f;
 				else if (e.getX() <= 0)
@@ -1252,9 +1276,32 @@ public class FarmCanvas extends JPanel implements Runnable, MouseListener {
 		add(jlbSlide1Bar, 0);
 		
 		JLabel jlbSlide2 = new JLabel(new ImageIcon(mainLobbyImage_slide.getScaledInstance(300 * resolution / 80, 51 * resolution / 80, Image.SCALE_SMOOTH)));
+		jlbSlide2.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				if(e.getX() >= 297 * resolution / 80)
+					farmData.effectVolume = 1f;
+				else if (e.getX() <= 0)
+					farmData.effectVolume = 0f;
+				else 
+					farmData.effectVolume = e.getX() / (float) (297 * resolution / 80);
+				
+				jlbSlide2Bar.setBounds(getWidth() / 2 - (150 + 1 - (int) (297 * farmData.effectVolume)) * resolution / 80, 473 * resolution / 80, 5 * resolution / 80, 45 * resolution / 80);
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseReleased(MouseEvent e) {
+				mouseClickEffect = 0;
+				mouseClick.x = jlbSlide2.getX() + e.getPoint().x;
+				mouseClick.y = jlbSlide2.getY() + e.getPoint().y;
+				repaint();
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+			}
+		});
 		jlbSlide2.addMouseMotionListener(new MouseMotionListener() {
 			public void mouseDragged(MouseEvent e) {
-				System.out.println(e.getX());
 				if(e.getX() >= 297 * resolution / 80)
 					farmData.effectVolume = 1f;
 				else if (e.getX() <= 0)
